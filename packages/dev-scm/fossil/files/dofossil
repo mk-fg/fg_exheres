@@ -1,0 +1,117 @@
+#!/usr/bin/env bash
+
+source "${PALUDIS_EBUILD_DIR}/echo_functions.bash"
+
+AUTO_REVERT=false
+
+old_set=$-
+set -a
+for f in ${PALUDIS_BASHRC_FILES}; do
+	[[ -f "${f}" ]] && source "${f}"
+done
+[[ "${old_set}" == *a* ]] || set +a
+
+LOCAL=
+REMOTE=
+PROTO="${0##*/do}"
+
+unset LANG ${!LC_*}
+export LC_ALL=C
+
+while [[ $# -gt 0 ]]; do
+	case "${1}" in
+
+		--help)
+			if [[ "${PROTO}" == fossil+http || "${PROTO}" == fossil+https ]]; then
+				echo "	URL syntax: fossil+http://SERVER/PATH"
+			elif [[ "${PROTO}" == fossil+file ]]; then
+				echo "	URL syntax: fossil+file:///PATH"
+			else
+				ewarn "URL syntax for ${PROTO} is unknown.  This script will likely not work with the ${PROTO} protocol"
+			fi
+			exit 0
+			;;
+
+		--*)
+			ewarn "${0}: unknown option '${1%%=*}'"
+			;;
+
+		*)
+			if [[ -z "${LOCAL}" ]]; then
+				LOCAL="${1}"
+			elif [[ -z "${REMOTE}" ]]; then
+				REMOTE="${1}"
+			else
+				eerror "${0}: extra argument '${1}'"
+				exit 1
+			fi
+			;;
+
+	esac
+	shift
+done
+
+
+if [[ -z "${LOCAL}" ]]; then
+	eerror "${0}: unspecified local repository directory"
+	exit 1
+elif [[ -z "${REMOTE}" ]]; then
+	eerror "${0}: unspecified remote repository URL"
+	exit 1
+fi
+
+
+[[ "${PROTO%s}" == fossil+http ]] && REMOTE="${REMOTE#fossil+}"
+REMOTE="${REMOTE#fossil+file://}"
+RFILE="$(basename "${LOCAL}").fossil"
+
+if [[ -d "${LOCAL}" && ! -f "${LOCAL}/${RFILE}" ]]; then
+	eerror "'${LOCAL}' exists but there's no fossil repository file (${RFILE})"
+	exit 1
+fi
+
+
+rebuild_repo() {
+	if ! fossil rebuild "${RFILE}"; then
+		eerror "Failed to rebuild '${RFILE}'."
+		exit 1
+	fi
+}
+
+open_repo() {
+	if [[ ! -f _FOSSIL_ ]]; then
+		if ! fossil open "${RFILE}"; then
+			ewarn "'${RFILE}' exists, but cannot be opened. Trying rebuild."
+			rebuild_repo || exit
+			if ! fossil open "${RFILE}"; then
+				eerror "Still unable to open '${RFILE}', even after rebuild, bailing out."
+				exit 1
+			fi
+		fi
+	fi
+}
+
+
+[[ ! -d "${LOCAL}" ]] && mkdir "${LOCAL}"
+cd "${LOCAL}" || exit
+
+if [[ -f "${LOCAL}/${RFILE}" ]]
+then
+	open_repo || exit
+	if ! fossil pull "${REMOTE}"; then
+		rebuild_repo || exit
+		if ! fossil pull "${REMOTE}"; then
+			eerror "Failed to pull from '${REMOTE}'."
+			exit 1
+		fi
+	fi
+	if ! fossil co trunk >/dev/null; then
+		if $AUTO_REVERT
+		then fossil revert && fossil co trunk >/dev/null || exit
+		else ewarn "There are unsaved changes in the repository, skipping update"
+		fi
+	fi
+else
+	fossil clone "${REMOTE}" "${RFILE}"
+	open_repo || exit
+fi
