@@ -188,8 +188,20 @@ def check_file(src):
 	chk_definition_len(src, 'DESCRIPTION')
 	chk_emptyline(src)
 
-	chk_definition_len(src, 'HOMEPAGE')
-	chk_definition_len(src, 'DOWNLOADS')
+	# sourceforge exlib can define HOMEPAGE and DOWNLOADS
+	exlib_src = False
+	for line in src:
+		if line.startswith('require') and ' sourceforge ' in line:
+			exlib_src = True
+			break
+		if line.startswith('HOMEPAGE'):
+			src = it.chain([line], src)
+			break
+	del line
+
+	if not exlib_src:
+		chk_definition_len(src, 'HOMEPAGE')
+		chk_definition_len(src, 'DOWNLOADS')
 
 	chk_emptyline(src)
 
