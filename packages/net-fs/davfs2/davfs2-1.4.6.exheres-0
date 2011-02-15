@@ -1,0 +1,53 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+# Based upon 'davfs2-1.4.5.ebuild' from Gentoo, which is:
+#  Copyright 1999-2010 Gentoo Foundation
+
+SUMMARY="FUSE driver to mount WebDAV resources via neon library."
+DESCRIPTION="davfs2 is designed to fully integrate into the filesystem
+    semantics of Unix-like systems (mount, umount, etc.), makes mounting by
+    unprivileged users as easy and secure as possible.
+    davfs2 does extensive caching to make the file system responsive, to avoid
+    unnecessary network traffic and to prevent data loss, and to cope for slow
+    or unreliable connections."
+
+HOMEPAGE="http://savannah.nongnu.org/projects/davfs2"
+DOWNLOADS="http://download.savannah.gnu.org/releases/${PN}/${PNV}.tar.gz"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    dev-libs/libxml2
+    group/davfs2
+    net-misc/neon
+    sys-fs/fuse
+    sys-libs/zlib
+    user/davfs2"
+
+BUGS_TO="mk.fraggod@gmail.com"
+REMOTE_IDS="savannah:${PN}"
+
+
+src_install() {
+    default
+
+    dosym ../usr/sbin/umount.davfs /sbin/umount.davfs
+    dosym ../usr/sbin/mount.davfs /sbin/mount.davfs
+
+    keepdir /etc/davfs2/certs/private
+    diropts -m1770 -gdavfs2
+    keepdir /var/cache/davfs2
+    diropts -m1775 -gdavfs2
+    keepdir /var/run/mount.davfs
+
+    cat >>"${IMAGE}"/etc/davfs2/davfs2.conf <<EOF
+
+# nobody is a system account in exherbo
+ignore_home nobody
+EOF
+
+    edo rm -Rf "${IMAGE}"/usr/share/davfs2 # useless copy of /etc/davfs2
+}
