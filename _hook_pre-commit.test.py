@@ -29,7 +29,7 @@ class TestChkCopyright(unittest.TestCase):
 
 	def test_invalid(self):
 		exc_chk = lambda line: self.assertRaises(
-			mod.ChkException, ft.partial(self.func, line) )
+			mod.ChkError, ft.partial(self.func, line) )
 		exc_chk('# Copyright {0}-{0} Some Автор'.format(self.year))
 		exc_chk('# Copyright 2004 Some Автор')
 		exc_chk('# Copyright {} Some Автор'.format(self.year+1))
@@ -111,7 +111,7 @@ class TestChkDef(unittest.TestCase):
 
 	def test_invalid(self):
 		exc_chk = lambda src, func=self.func, **kwz:\
-			self.assertRaises(mod.ChkException, ft.partial(func, src, **kwz))
+			self.assertRaises(mod.ChkError, ft.partial(func, src, **kwz))
 		exc_chk(self.sum_multiline[:-1])
 		exc_chk(self.sum_oneline[:-1])
 		exc_chk([' ' + self.sum_oneline])
@@ -145,7 +145,7 @@ class TestChkEmptyLine(unittest.TestCase):
 
 	def test_invalid(self):
 		exc_chk = lambda src, **kwz:\
-			self.assertRaises(mod.ChkException, ft.partial(self.func, src, **kwz))
+			self.assertRaises(mod.ChkError, ft.partial(self.func, src, **kwz))
 		exc_chk([])
 		exc_chk(['test', 'a', ' b', 'moar'])
 		exc_chk(['test', '', ' b', 'moar'], count=2)
@@ -166,7 +166,7 @@ class TestChkOrdering(unittest.TestCase):
 
 	def test_invalid(self):
 		exc_chk = lambda src:\
-			self.assertRaises(mod.ChkException, ft.partial(self.func, src))
+			self.assertRaises(mod.ChkError, ft.partial(self.func, src))
 		exc_chk('~x86 ~amd64')
 		exc_chk('amd64 ~amd64 x86 ~x86')
 		exc_chk('flag_x flag1')
@@ -177,7 +177,7 @@ class TestChkOrdering(unittest.TestCase):
 
 	def test_deps(self):
 		func = ft.partial(self.func, token_grouper=mod._deps_grouper)
-		exc_chk = lambda src: self.assertRaises(mod.ChkException, ft.partial(func, src))
+		exc_chk = lambda src: self.assertRaises(mod.ChkError, ft.partial(func, src))
 		self.assertIsNone(func('dev-db/sqlite[>=3.7.0] dev-libs/openssl sys-libs/zlib'))
 		self.assertIsNone(func(
 			'''build+run:

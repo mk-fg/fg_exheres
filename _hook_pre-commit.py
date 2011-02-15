@@ -24,10 +24,10 @@ def signal_error(message):
 	print(message)
 	err_count += 1
 
-class ChkException(Exception):
+class ChkError(Exception):
 	def __init__(self, message, line=None):
 		self.line = line
-		super(ChkException, self).__init__(message)
+		super(ChkError, self).__init__(message)
 
 def _build_stack(tb):
 	while True:
@@ -77,21 +77,21 @@ def chk_copyright( line,
 	date_chk = datetime.now().year
 	date_min, date_max = op.itemgetter('date', 'date_ext')(match.groupdict())
 	if date_min == date_max:
-		raise ChkException('Identical dates: {}'.format(match.group('dates')))
+		raise ChkError('Identical dates: {}'.format(match.group('dates')))
 	date_min = int(date_min)
 	date_max = int(date_max) if date_max is not None else date_min
 	if date_min < date_chk and date_max < date_chk:
-		raise ChkException('Obsolete dates: {}'.format(match.group('dates')))
+		raise ChkError('Obsolete dates: {}'.format(match.group('dates')))
 	if date_min > date_max:
-		raise ChkException( 'Dates ordering is wrong:'
+		raise ChkError( 'Dates ordering is wrong:'
 			' {} ({} > {}!)'.format(match.group('dates'), date_min, date_max) )
 	if date_min < 2005 or date_max > date_chk:
-		raise ChkException( 'Dates are too far in'
+		raise ChkError( 'Dates are too far in'
 			' the past/future: {}'.format(match.group('dates')) )
 
 	author = match.group('author')
 	if author.strip() != author:
-		raise ChkException('Author name is padded with extra whitespaces')
+		raise ChkError('Author name is padded with extra whitespaces')
 
 	return author
 
@@ -107,13 +107,13 @@ def chk_definition(src, var):
 	src = iter(src)
 	for line in src:
 		if line.startswith(var): break
-	else: raise ChkException('{} line not found'.format(var))
+	else: raise ChkError('{} line not found'.format(var))
 	while True:
 		try: vardef = literal_eval(line.split('{}='.format(var), 1)[-1])
 		except SyntaxError:
 			try: line += next(src)
 			except StopIteration:
-				raise ChkException('{} line is not quoted properly'.format(var))
+				raise ChkError('{} line is not quoted properly'.format(var))
 		else: break
 	return vardef
 
@@ -122,7 +122,7 @@ def chk_definition_len(src, var, min_len=10, max_len=None):
 	vardef = chk_definition(src, var)
 	if (min_len is not None and len(vardef) < min_len)\
 			or (max_len is not None and len(vardef) > max_len):
-		raise ChkException( 'Invalid definition length'
+		raise ChkError( 'Invalid definition length'
 			' for {} ({}-{}):\n  {!r}'.format(var, min_len, max_len, vardef) )
 	return vardef
 
@@ -132,7 +132,7 @@ def chk_emptyline(src, count=1):
 		if not line:
 			count -= 1
 			if count <= 0: break
-	else: raise ChkException('Missing empty line')
+	else: raise ChkError('Missing empty line')
 
 @chk_wrapper
 def chk_ordering( vardef,
@@ -142,7 +142,7 @@ def chk_ordering( vardef,
 		it.imap(op.itemgetter(0), rx.findall(vardef)) )
 	for tokens in token_groups:
 		if sorted(tokens) != tokens:
-			raise ChkException( 'Tokens must be'
+			raise ChkError( 'Tokens must be'
 				' sorted:\n  {}\nshould be:\n  {}'.format(
 					', '.join(it.imap(repr, tokens)),
 					', '.join(it.imap(repr, sorted(tokens)))) )
@@ -153,7 +153,7 @@ def _deps_grouper(tokens):
 		if token.endswith(':'):
 			if thead:
 				if not tbuff:
-					raise ChkException('Empty token group: {}'.format(thead))
+					raise ChkError('Empty token group: {}'.format(thead))
 				token_groups[thead], tbuff = tbuff, list()
 			thead = token.rstrip(':')
 		else: tbuff.append(token)
@@ -173,11 +173,11 @@ def check_file(src):
 			break
 		if author == 'Mike Kazantsev': chk = True
 	if not chk:
-		raise ChkException('Forgot to add myself to a copyright')
+		raise ChkError('Forgot to add myself to a copyright')
 
 	line = next(src)
 	if not chk_license(line):
-		raise ChkException('Invalid/missing license line: {}'.format(line))
+		raise ChkError('Invalid/missing license line: {}'.format(line))
 	del line
 
 	chk_emptyline(src)
@@ -228,8 +228,23 @@ def check_db(cdb):
 		check_file(open(path))
 		if err_count: errors += 1
 
-	sys.exit(min(errors, 31))
+	return errors
+
+
+def check_categories():
+	cat_real = set(os.listdir(join(base_dir, 'packages')))
+	cat_conf = set(it.imap( op.methodcaller('strip'),
+		open(join(base_dir, 'metadata', 'categories.conf')) ))
+	if cat_conf != cat_real:
+		cat_err = cat_real - cat_conf
+		if cat_err: raise ChkError('Missing categories in metadata: {}'.format(', '.join(cat_err)))
+		cat_err = cat_conf - cat_real
+		if cat_err: raise ChkError('Non-existing categories in metadata: {}'.format(', '.join(cat_err)))
+	return 0
 
 
 if __name__ == '__main__':
-	with checker_db() as cdb: check_db(cdb)
+	errors = 0
+	with checker_db() as cdb: errors += check_db(cdb)
+	errors += check_categories()
+	sys.exit(min(errors, 31))
