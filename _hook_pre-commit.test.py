@@ -151,4 +151,48 @@ class TestChkEmptyLine(unittest.TestCase):
 		exc_chk(['test', '', ' b', 'moar'], count=2)
 
 
+class TestChkOrdering(unittest.TestCase):
+
+	@classmethod
+	def setUpClass(cls):
+		cls.func = ft.partial(mod.chk_ordering, unwind=True)
+
+	def test_valid(self):
+		self.assertIsNone(self.func('~amd64 ~x86'))
+		self.assertIsNone(self.func('amd64 x86 ~amd64 ~x86'))
+		self.assertIsNone(self.func('flag1 flag2 flag_x some-option'))
+		self.assertIsNone(self.func('flag-a [[ description = [ some stuff ]\n'
+			' other-stuff = [ something else ] ]]\n flag-b [[ some stuff ]] flag-c'))
+
+	def test_invalid(self):
+		exc_chk = lambda src:\
+			self.assertRaises(mod.ChkException, ft.partial(self.func, src))
+		exc_chk('~x86 ~amd64')
+		exc_chk('amd64 ~amd64 x86 ~x86')
+		exc_chk('flag_x flag1')
+		exc_chk('flag-b [[ description = [ some stuff ]\n'
+			' other-stuff = [ something else ] ]]\n flag-a [[ some stuff ]]')
+		exc_chk('flag-b [[ description = [ some stuff ]\n'
+			' other-stuff = [ something else ] ]]\n flag-a')
+
+	def test_deps(self):
+		func = ft.partial(self.func, token_grouper=mod._deps_grouper)
+		exc_chk = lambda src: self.assertRaises(mod.ChkException, ft.partial(func, src))
+		self.assertIsNone(func('dev-db/sqlite[>=3.7.0] dev-libs/openssl sys-libs/zlib'))
+		self.assertIsNone(func(
+			'''build+run:
+				dev-db/sqlite[>=3.7.0]
+				dev-libs/openssl
+				sys-libs/zlib
+			test:
+				dev-lang/tcl'''))
+		exc_chk(
+			'''build+run:
+				dev-libs/openssl
+				dev-db/sqlite[>=3.7.0]
+				sys-libs/zlib
+			test:
+				dev-lang/tcl''')
+
+
 unittest.main()

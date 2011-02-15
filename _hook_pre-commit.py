@@ -68,7 +68,7 @@ def chk_wrapper(func, unwind=True):
 
 @chk_wrapper
 def chk_copyright( line,
-		rx=re.compile( r'^# Copyright'
+		rx = re.compile( r'^# Copyright'
 			r' (?P<dates>(?P<date>\d+)(-(?P<date_ext>\d+))?)'
 			r' (?P<author>.+)$' ) ):
 	match = rx.match(line)
@@ -97,7 +97,7 @@ def chk_copyright( line,
 
 @chk_wrapper
 def chk_license( line,
-		rx=re.compile( r'^# Distributed under the'
+		rx = re.compile( r'^# Distributed under the'
 			' terms of the GNU General Public License v2' ) ):
 	return bool(rx.match(line))
 
@@ -134,6 +134,32 @@ def chk_emptyline(src, count=1):
 			if count <= 0: break
 	else: raise ChkException('Missing empty line')
 
+@chk_wrapper
+def chk_ordering( vardef,
+		token_grouper = lambda tokens: [list(tokens)],
+		rx = re.compile(r'(~?\S+(\s+\[\[.+?\]\])?)', re.DOTALL) ):
+	token_groups = token_grouper(
+		it.imap(op.itemgetter(0), rx.findall(vardef)) )
+	for tokens in token_groups:
+		if sorted(tokens) != tokens:
+			raise ChkException( 'Tokens must be'
+				' sorted:\n  {}\nshould be:\n  {}'.format(
+					', '.join(it.imap(repr, tokens)),
+					', '.join(it.imap(repr, sorted(tokens)))) )
+
+def _deps_grouper(tokens):
+	thead, tbuff, token_groups = None, list(), dict()
+	for token in tokens:
+		if token.endswith(':'):
+			if thead:
+				if not tbuff:
+					raise ChkException('Empty token group: {}'.format(thead))
+				token_groups[thead], tbuff = tbuff, list()
+			thead = token.rstrip(':')
+		else: tbuff.append(token)
+	if tbuff: token_groups[thead] = tbuff
+	return token_groups.viewvalues()
+
 
 @ft.partial(chk_wrapper, unwind=False)
 def check_file(src):
@@ -162,15 +188,18 @@ def check_file(src):
 
 	chk_definition_len(src, 'HOMEPAGE')
 	chk_definition_len(src, 'DOWNLOADS')
+
 	chk_emptyline(src)
 
 	chk_definition_len(src, 'LICENCES', min_len=1)
 	chk_definition_len(src, 'SLOT', min_len=1)
-	chk_definition_len(src, 'PLATFORMS', min_len=4)
-	chk_definition(src, 'MYOPTIONS')
+	chk_ordering(chk_definition_len(src, 'PLATFORMS', min_len=4))
+	chk_ordering(chk_definition(src, 'MYOPTIONS'))
 	chk_emptyline(src)
 
-	chk_definition(src, 'DEPENDENCIES')
+	chk_ordering(
+		chk_definition(src, 'DEPENDENCIES'),
+		token_grouper = _deps_grouper )
 	chk_emptyline(src)
 
 	chk_definition_len(src, 'BUGS_TO')
