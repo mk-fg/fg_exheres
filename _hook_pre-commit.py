@@ -236,8 +236,10 @@ def check_db(cdb):
 
 def check_categories():
 	cat_real = set(os.listdir(join(base_dir, 'packages')))
-	cat_conf = set(it.imap( op.methodcaller('strip'),
+	cat_conf = list(it.imap( op.methodcaller('strip'),
 		open(join(base_dir, 'metadata', 'categories.conf')) ))
+	if sorted(cat_conf) != cat_conf: raise ChkError('Categories need to be sorted')
+	cat_conf = set(cat_conf)
 	if cat_conf != cat_real:
 		cat_err = cat_real - cat_conf
 		if cat_err: raise ChkError('Missing categories in metadata: {}'.format(', '.join(cat_err)))
