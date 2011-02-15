@@ -46,13 +46,14 @@ def err_traceback(tb=None):
 	err = list()
 	for frame in _build_stack(tb):
 		line = open(frame.f_code.co_filename).readlines()[frame.f_lineno - 1]
+		if frame.f_code.co_name == 'safe_chk': continue # hide internals
 		err.append('  {}: {!r}{}'.format( frame.f_code.co_name, line.strip(),
 				',\n    line={!r}'.format(frame.f_locals['line']) if 'line' in frame.f_locals else '' ))
 	return err
 
-def chk_wrapper(func):
+def chk_wrapper(func, unwind=True):
 	def safe_chk(*argz, **kwz):
-		if kwz.pop('unit_test', False):
+		if kwz.pop('unwind', unwind):
 			return func(*argz, **kwz)
 		try: return func(*argz, **kwz)
 		except Exception as err:
@@ -134,7 +135,7 @@ def chk_emptyline(src, count=1):
 	else: raise ChkException('Missing empty line')
 
 
-@chk_wrapper
+@ft.partial(chk_wrapper, unwind=False)
 def check_file(src):
 	src = it.imap(op.methodcaller('strip', '\n\r'), src)
 

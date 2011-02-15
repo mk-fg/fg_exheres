@@ -17,7 +17,7 @@ class TestChkCopyright(unittest.TestCase):
 	def setUpClass(cls):
 		from datetime import datetime
 		cls.year = datetime.now().year
-		cls.func = ft.partial(mod.chk_copyright, unit_test=True)
+		cls.func = ft.partial(mod.chk_copyright, unwind=True)
 
 	def test_valid(self):
 		author_chk = lambda line: self.assertEqual('Some Автор', self.func(line))
@@ -60,7 +60,7 @@ class TestChkLicense(unittest.TestCase):
 
 	@classmethod
 	def setUpClass(cls):
-		cls.func = ft.partial(mod.chk_license, unit_test=True)
+		cls.func = ft.partial(mod.chk_license, unwind=True)
 
 	def test_valid(self):
 		self.assertTrue(self.func('# Distributed under the terms of the GNU General Public License v2'))
@@ -77,8 +77,8 @@ class TestChkDef(unittest.TestCase):
 
 	@classmethod
 	def setUpClass(cls):
-		cls.func = ft.partial(mod.chk_definition, var='SUMMARY', unit_test=True)
-		cls.func_len = ft.partial(mod.chk_definition_len, var='SUMMARY', unit_test=True)
+		cls.func = ft.partial(mod.chk_definition, var='SUMMARY', unwind=True)
+		cls.func_len = ft.partial(mod.chk_definition_len, var='SUMMARY', unwind=True)
 		cls.sum_oneline = r'SUMMARY="Some soft \"test\" \'тест waka\'."'
 		cls.sum_multiline = [r'SUMMARY="Some soft \"test\" \'тест waka\'.',
 			'yada yada', r'\"test2\" blah \blah \blah"']
@@ -128,7 +128,7 @@ class TestChkEmptyLine(unittest.TestCase):
 
 	@classmethod
 	def setUpClass(cls):
-		cls.func = ft.partial(mod.chk_emptyline, unit_test=True)
+		cls.func = ft.partial(mod.chk_emptyline, unwind=True)
 
 	def test_cont(self):
 		src_lst = ['test', '', '', 'moar']
