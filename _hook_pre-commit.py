@@ -137,15 +137,17 @@ def chk_emptyline(src, count=1):
 @chk_wrapper
 def chk_ordering( vardef,
 		token_grouper = lambda tokens: [list(tokens)],
-		rx = re.compile(r'(~?\S+(\s+\[\[.+?\]\])?)', re.DOTALL) ):
+		sort_key = lambda token: token if token\
+			.split(None, 1)[0].endswith('?') else '\x00{}'.format(token),
+		rx = re.compile(r'(~?\S+(\s+\([^)]+\))?(\s+\[\[.+?\]\])?)', re.DOTALL) ):
 	token_groups = token_grouper(
 		it.imap(op.itemgetter(0), rx.findall(vardef)) )
 	for tokens in token_groups:
-		if sorted(tokens) != tokens:
+		if sorted(tokens, key=sort_key) != tokens:
 			raise ChkError( 'Tokens must be'
 				' sorted:\n  {}\nshould be:\n  {}'.format(
 					', '.join(it.imap(repr, tokens)),
-					', '.join(it.imap(repr, sorted(tokens)))) )
+					', '.join(it.imap(repr, sorted(tokens, key=sort_key)))) )
 
 def _deps_grouper(tokens):
 	thead, tbuff, token_groups = None, list(), dict()

@@ -186,10 +186,34 @@ class TestChkOrdering(unittest.TestCase):
 				sys-libs/zlib
 			test:
 				dev-lang/tcl'''))
+		self.assertIsNone(func(
+			'''build+run:
+				dev-db/sqlite[>=3.7.0]
+				sys-libs/zlib
+				dev-libs/openssl? ( aaa/stuff )
+			test:
+				dev-lang/tcl'''))
+		self.assertIsNone(func(
+			'''build+run:
+				dev-db/sqlite[>=3.7.0]
+				sys-libs/zlib
+				dev-libs/openssl? (
+					aaa/stuff other/stuff
+					waka/waka ) [[ some-crap = [ other-crap ] ]]
+			test:
+				dev-lang/tcl'''))
 		exc_chk(
 			'''build+run:
 				dev-libs/openssl
 				dev-db/sqlite[>=3.7.0]
+				sys-libs/zlib
+			test:
+				dev-lang/tcl''')
+		exc_chk(
+			'''build+run:
+				dev-db/sqlite[>=3.7.0]
+				dev-libs/openssh? ( aaa/stuff )
+				dev-libs/openssl
 				sys-libs/zlib
 			test:
 				dev-lang/tcl''')
