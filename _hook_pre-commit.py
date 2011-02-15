@@ -204,7 +204,8 @@ def check_file(src):
 		token_grouper = _deps_grouper )
 	chk_emptyline(src)
 
-	chk_definition_len(src, 'BUGS_TO')
+	if 'gmail.com' not in chk_definition_len(src, 'BUGS_TO'):
+		raise ChkError('No public email (gmail account) specified in BUGS_TO')
 
 
 def check_db(cdb):
