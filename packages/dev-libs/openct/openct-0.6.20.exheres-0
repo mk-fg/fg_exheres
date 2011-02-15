@@ -1,0 +1,64 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+# Based upon 'openct-0.6.20.ebuild' from Gentoo, which is:
+#  Copyright 1999-2010 Gentoo Foundation
+
+SUMMARY="Reader driver interface for various non-standard readers."
+DESCRIPTION="OpenCT implements drivers for several smart card readers.
+    It comes as driver in ifdhandler format for PC/SC-Lite, as CT-API driver,
+    or as a small and lean middleware, so applications can use it with minimal
+    overhead. OpenCT also has a primitive mechanism to export smart card
+    readers to remote machines via tcp/ip."
+
+HOMEPAGE="http://www.opensc-project.org/openct/"
+DOWNLOADS="http://www.opensc-project.org/files/${PN}/${PNV}.tar.gz"
+
+require multilib systemd-service
+
+LICENCES="LGPL-2.1"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="doc
+    pcsc-lite [[ description = [ Register ifdhandler for PC/SC Architecture
+        smartcard middleware library. Not necessary if used with OpenSC, since
+        it can access OpenCT directly (if built with appropriate option) w/o pcsc
+        overhead and bugs. ] ]]"
+
+DEPENDENCIES="
+    build:
+        user/openct
+        doc? ( app-doc/doxygen )
+    build+run:
+        dev-libs/libusb:0.1
+        sys-fs/udev[>=096]
+        pcsc-lite? ( sys-apps/pcsc-lite )"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( doc "doc api-doc" "pcsc-lite pcsc" )
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+        --docdir="/usr/share/doc/${PNVR}"\
+        --htmldir="/usr/share/doc/${PNVR}/html"\
+        --localstatedir=/var\
+        --disable-sunray\
+        --disable-sunrayclient\
+        --enable-usb\
+        --enable-non-privileged\
+        --with-daemon-user=openct\
+        --with-daemon-groups=usb\
+        --with-udev="/$(get_libdir)/udev" )
+
+src_install() {
+    insinto /etc/udev/rules.d/
+    newins etc/openct.udev 70-openct.rules
+
+    diropts -m0750 -gopenct -oopenct
+    keepdir /var/run/openct
+
+    default
+    install_systemd_files
+
+    option doc || rmdir -p "${IMAGE}"/usr/share/doc/openct-0.6.20/html/api
+}
+
