@@ -26,12 +26,11 @@ MYOPTIONS="
     master [[ description = [ Allows node to act as mfs master. ] ]]
     mount [[ description = [ Install FUSE module to actually mount mfs. ] ]]"
 
-
 DEPENDENCIES="
     sys-libs/zlib
     cgi? ( dev-lang/python )
-    chunkserver? ( user/mfs group/mfs )
-    master? ( user/mfs group/mfs )
+    chunkserver? ( group/mfs user/mfs )
+    master? ( group/mfs user/mfs )
     mount? ( sys-fs/fuse[>=2.6] )"
 
 BUGS_TO="mk.fraggod@gmail.com"

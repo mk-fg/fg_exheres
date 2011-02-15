@@ -25,12 +25,12 @@ MYOPTIONS="doc
         overhead and bugs. ] ]]"
 
 DEPENDENCIES="
-    build:
-        user/openct
-        doc? ( app-doc/doxygen )
+    build: doc? ( app-doc/doxygen )
     build+run:
         dev-libs/libusb:0.1
+        group/openct
         sys-fs/udev[>=096]
+        user/openct
         pcsc-lite? ( sys-apps/pcsc-lite )"
 
 BUGS_TO="mk.fraggod@gmail.com"
