@@ -1,0 +1,9 @@
+[Unit]
+Description=FSCache cleanup daemon
+Wants=syslog.target
+
+[Service]
+ExecStart=/sbin/cachefilesd -n
+
+[Install]
+WantedBy=remote-fs.target
