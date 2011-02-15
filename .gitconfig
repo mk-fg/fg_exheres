@@ -1,0 +1,13 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+
+[remote "origin"]
+	url = git@github.com:FraGGod/fg_exheres.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+
+[filter "exheres_syntax"]
+	clean = $GIT_DIR/../_exheres_filter.py clean %f
+	smudge = $GIT_DIR/../_exheres_filter.py smudge %f
