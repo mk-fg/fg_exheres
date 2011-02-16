@@ -29,6 +29,16 @@ class ChkError(Exception):
 		self.line = line
 		super(ChkError, self).__init__(message)
 
+class ChkHeadersError(ChkError): pass
+class ChkDefError(ChkError): pass
+class ChkDefLenError(ChkError): pass
+class ChkOrderingError(ChkError): pass
+class ChkDepsError(ChkError): pass
+class ChkEmptylineError(ChkError): pass
+class ChkFullError(ChkError): pass
+class ChkMetaError(ChkError): pass
+
+
 def _build_stack(tb):
 	while True:
 		if not tb.tb_next: break
@@ -77,21 +87,21 @@ def chk_copyright( line,
 	date_chk = datetime.now().year
 	date_min, date_max = op.itemgetter('date', 'date_ext')(match.groupdict())
 	if date_min == date_max:
-		raise ChkError('Identical dates: {}'.format(match.group('dates')))
+		raise ChkHeadersError('Identical dates: {}'.format(match.group('dates')))
 	date_min = int(date_min)
 	date_max = int(date_max) if date_max is not None else date_min
 	if date_min < date_chk and date_max < date_chk:
-		raise ChkError('Obsolete dates: {}'.format(match.group('dates')))
+		raise ChkHeadersError('Obsolete dates: {}'.format(match.group('dates')))
 	if date_min > date_max:
-		raise ChkError( 'Dates ordering is wrong:'
+		raise ChkHeadersError( 'Dates ordering is wrong:'
 			' {} ({} > {}!)'.format(match.group('dates'), date_min, date_max) )
 	if date_min < 2005 or date_max > date_chk:
-		raise ChkError( 'Dates are too far in'
+		raise ChkHeadersError( 'Dates are too far in'
 			' the past/future: {}'.format(match.group('dates')) )
 
 	author = match.group('author')
 	if author.strip() != author:
-		raise ChkError('Author name is padded with extra whitespaces')
+		raise ChkHeadersError('Author name is padded with extra whitespaces')
 
 	return author
 
@@ -102,37 +112,40 @@ def chk_license( line,
 	return bool(rx.match(line))
 
 @chk_wrapper
-def chk_definition(src, var):
+def chk_definition(src, var, nextline=False):
 	from ast import literal_eval
 	src = iter(src)
 	for line in src:
 		if line.startswith(var): break
-	else: raise ChkError('{} line not found'.format(var))
+		if nextline: raise ChkDefError('Next line with {} not found'.format(var))
+	else: raise ChkDefError('{} line not found'.format(var))
 	while True:
-		try: vardef = literal_eval(line.split('{}='.format(var), 1)[-1])
+		try:
+			vardef = literal_eval('""{}""'.format(
+				line.split('{}='.format(var), 1)[-1].strip() ))
 		except SyntaxError:
 			try: line += next(src)
 			except StopIteration:
-				raise ChkError('{} line is not quoted properly'.format(var))
+				raise ChkDefError('{} line is not quoted properly'.format(var))
 		else: break
 	return vardef
 
 @chk_wrapper
-def chk_definition_len(src, var, min_len=10, max_len=None):
-	vardef = chk_definition(src, var)
+def chk_definition_len(src, var, nextline=False, min_len=10, max_len=None):
+	vardef = chk_definition(src, var, nextline=nextline)
 	if (min_len is not None and len(vardef) < min_len)\
 			or (max_len is not None and len(vardef) > max_len):
-		raise ChkError( 'Invalid definition length'
+		raise ChkDefLenError( 'Invalid definition length'
 			' for {} ({}-{}):\n  {!r}'.format(var, min_len, max_len, vardef) )
 	return vardef
 
 @chk_wrapper
 def chk_emptyline(src, count=1):
 	for line in src:
-		if not line:
+		if not line.strip('\n'):
 			count -= 1
 			if count <= 0: break
-	else: raise ChkError('Missing empty line')
+	else: raise ChkEmptylineError('Missing empty line')
 
 @chk_wrapper
 def chk_ordering( vardef,
@@ -144,10 +157,19 @@ def chk_ordering( vardef,
 		it.imap(op.itemgetter(0), rx.findall(vardef)) )
 	for tokens in token_groups:
 		if sorted(tokens, key=sort_key) != tokens:
-			raise ChkError( 'Tokens must be'
+			raise ChkOrderingError( 'Tokens must be'
 				' sorted:\n  {}\nshould be:\n  {}'.format(
 					', '.join(it.imap(repr, tokens)),
 					', '.join(it.imap(repr, sorted(tokens, key=sort_key)))) )
+
+@chk_wrapper
+def chk_deps(deps):
+	if not deps.endswith('\n') or not deps.startswith('\n'):
+		raise ChkDepsError('Dependencties are written inline or quoted lisp-style')
+	for cat in deps.split(':'):
+		if not cat.startswith('\n'):
+			raise ChkDepsError('Deps\' categories and their contents are written inline')
+	chk_ordering(deps, token_grouper = _deps_grouper)
 
 def _deps_grouper(tokens):
 	thead, tbuff, token_groups = None, list(), dict()
@@ -155,18 +177,19 @@ def _deps_grouper(tokens):
 		if token.endswith(':'):
 			if thead:
 				if not tbuff:
-					raise ChkError('Empty token group: {}'.format(thead))
+					raise ChkDepsError('Empty token group: {}'.format(thead))
 				token_groups[thead], tbuff = tbuff, list()
 			thead = token.rstrip(':')
 		else: tbuff.append(token)
-	if tbuff: token_groups[thead] = tbuff
+	if tbuff:
+		if thead is None:
+			raise ChkDepsError('Dependencies are not categorized')
+		token_groups[thead] = tbuff
 	return token_groups.viewvalues()
 
 
 @ft.partial(chk_wrapper, unwind=False)
 def check_file(src):
-	src = it.imap(op.methodcaller('strip', '\n\r'), src)
-
 	chk = False
 	for line in src:
 		author = chk_copyright(line)
@@ -175,17 +198,13 @@ def check_file(src):
 			break
 		if author == 'Mike Kazantsev': chk = True
 	if not chk:
-		raise ChkError('Forgot to add myself to a copyright')
+		raise ChkFullError('Forgot to add myself to a copyright')
 
 	line = next(src)
 	if not chk_license(line):
-		raise ChkError('Invalid/missing license line: {}'.format(line))
+		raise ChkFullError('Invalid/missing license line: {}'.format(line))
 	del line
 
-	chk_emptyline(src)
-
-	chk_definition_len(src, 'SUMMARY')
-	chk_definition_len(src, 'DESCRIPTION')
 	chk_emptyline(src)
 
 	# sourceforge exlib can define HOMEPAGE and DOWNLOADS
@@ -193,31 +212,41 @@ def check_file(src):
 	for line in src:
 		if line.startswith('require') and ' sourceforge ' in line:
 			exlib_src = True
+			chk_emptyline(src)
 			break
-		if line.startswith('HOMEPAGE'):
+		if line.startswith('SUMMARY'):
 			src = it.chain([line], src)
 			break
+	src, src_chk = it.tee(src, 2)
+	for line in src_chk:
+		if line.strip().startswith('require'):
+			raise ChkFullError('More than one or misplaced require line')
 	del line
+
+	chk_definition_len(src, 'SUMMARY')
+	chk_definition_len( src, 'DESCRIPTION',
+		nextline=True, min_len=None, max_len=100 )
+	chk_emptyline(src)
 
 	if not exlib_src:
 		chk_definition_len(src, 'HOMEPAGE')
-		chk_definition_len(src, 'DOWNLOADS')
-
-	chk_emptyline(src)
+		chk_definition_len(src, 'DOWNLOADS', nextline=True)
+		chk_emptyline(src)
 
 	chk_definition_len(src, 'LICENCES', min_len=1)
-	chk_definition_len(src, 'SLOT', min_len=1)
-	chk_ordering(chk_definition_len(src, 'PLATFORMS', min_len=4))
-	chk_ordering(chk_definition(src, 'MYOPTIONS'))
+	chk_definition_len(src, 'SLOT', nextline=True, min_len=1)
+	chk_ordering(chk_definition_len(src, 'PLATFORMS', nextline=True, min_len=4))
+	chk_ordering(chk_definition(src, 'MYOPTIONS', nextline=True))
 	chk_emptyline(src)
 
-	chk_ordering(
-		chk_definition(src, 'DEPENDENCIES'),
-		token_grouper = _deps_grouper )
+	chk_deps(chk_definition(src, 'DEPENDENCIES'))
 	chk_emptyline(src)
 
 	if 'gmail.com' not in chk_definition_len(src, 'BUGS_TO'):
-		raise ChkError('No public email (gmail account) specified in BUGS_TO')
+		raise ChkFullError('No public email (gmail account) specified in BUGS_TO')
+
+	for line in src: pass
+	if not line.endswith('\n'): raise ChkFullError('No final newline')
 
 
 def check_db(cdb):
@@ -250,13 +279,15 @@ def check_categories():
 	cat_real = set(os.listdir(join(base_dir, 'packages')))
 	cat_conf = list(it.imap( op.methodcaller('strip'),
 		open(join(base_dir, 'metadata', 'categories.conf')) ))
-	if sorted(cat_conf) != cat_conf: raise ChkError('Categories need to be sorted')
+	if sorted(cat_conf) != cat_conf: raise ChkMetaError('Categories need to be sorted')
 	cat_conf = set(cat_conf)
 	if cat_conf != cat_real:
 		cat_err = cat_real - cat_conf
-		if cat_err: raise ChkError('Missing categories in metadata: {}'.format(', '.join(cat_err)))
+		if cat_err:
+			raise ChkMetaError('Missing categories in metadata: {}'.format(', '.join(cat_err)))
 		cat_err = cat_conf - cat_real
-		if cat_err: raise ChkError('Non-existing categories in metadata: {}'.format(', '.join(cat_err)))
+		if cat_err:
+			raise ChkMetaError('Non-existing categories in metadata: {}'.format(', '.join(cat_err)))
 	return 0
 
 
