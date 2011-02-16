@@ -211,7 +211,9 @@ def check_file(src):
 	exlib_src = False
 	for line in src:
 		if line.startswith('require'):
-			if 'sourceforge' in line.split(): exlib_src = True
+			for mod in line.split():
+				if mod in ('sourceforge', 'gnu')\
+					or mod.startswith('scm-'): exlib_src = True
 			chk_emptyline(src)
 			break
 		if line.startswith('SUMMARY'):

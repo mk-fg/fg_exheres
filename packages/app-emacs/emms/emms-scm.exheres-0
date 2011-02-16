@@ -1,0 +1,41 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://git.sv.gnu.org/emms.git"
+
+require gnu scm-git elisp-module
+
+SUMMARY="Emacs Multimedia System."
+DESCRIPTION="Clean and small application to play
+    multimedia files from Emacs using external players."
+
+DOWNLOADS=""
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="
+    taglib [[ description = [ Build emms-print-metadata binary to use from emms-info-libtag functions. ] ]]"
+
+DEPENDENCIES="
+    build+run:
+        app-editors/emacs
+        taglib? ( media-libs/taglib )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+REMOTE_IDS="freshmeat:${PN}"
+
+
+DEFAULT_SRC_INSTALL_PARAMS=( PREFIX="${IMAGE}/usr" INSTALLINFO=echo )
+
+src_compile() {
+    default
+    option taglib && emake emms-print-metadata
+}
+
+src_install() {
+    edo mkdir -p "${IMAGE}/usr/share/man/man1" "${IMAGE}/usr/info"
+    default
+    option taglib && dobin src/emms-print-metadata
+}
