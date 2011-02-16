@@ -1,0 +1,46 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+# Based upon 'flim-1.14.9-r2.ebuild' from Gentoo, which is:
+#  Copyright 1999-2010 Gentoo Foundation
+
+require elisp
+
+SUMMARY="Emacs library to provide basic features for message representation and encoding."
+DESCRIPTION=""
+
+HOMEPAGE="http://cvs.m17n.org/elisp/FLIM/"
+DOWNLOADS="http://www.kanji.zinbun.kyoto-u.ac.jp/~tomo/lemi/dist/flim/${PNV%.*}/${PNV}.tar.gz"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        app-emacs/apel[>=10.3]
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+EMAKE_PARAMS=(
+    DESTDIR="${IMAGE}"
+    PREFIX="${IMAGE}/usr"
+    LISPDIR="${IMAGE}/${ELISP_SITE_LISP}"
+    VERSION_SPECIFIC_LISPDIR="${IMAGE}/${ELISP_SITE_LISP}" )
+
+src_prepare() {
+    expatch "${FILES}/mel-q-ccl.patch"
+}
+
+src_compile() {
+    nonfatal emake "${EMAKE_PARAMS[@]}"
+}
+
+src_install() {
+    nonfatal emake "${EMAKE_PARAMS[@]}" install
+    elisp-install-site-file
+    emagicdocs
+    dodoc FLIM-API.en
+}
