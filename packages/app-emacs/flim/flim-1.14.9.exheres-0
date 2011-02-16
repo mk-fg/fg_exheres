@@ -24,15 +24,13 @@ DEPENDENCIES="
 BUGS_TO="mk.fraggod@gmail.com"
 
 
+DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}"/mel-q-ccl.patch )
+
 EMAKE_PARAMS=(
     DESTDIR="${IMAGE}"
     PREFIX="${IMAGE}/usr"
     LISPDIR="${IMAGE}/${ELISP_SITE_LISP}"
     VERSION_SPECIFIC_LISPDIR="${IMAGE}/${ELISP_SITE_LISP}" )
-
-src_prepare() {
-    expatch "${FILES}/mel-q-ccl.patch"
-}
 
 src_compile() {
     nonfatal emake "${EMAKE_PARAMS[@]}"
