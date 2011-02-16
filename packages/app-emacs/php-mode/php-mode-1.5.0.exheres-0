@@ -1,0 +1,23 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require elisp sourceforge [ suffix=tar.gz ]
+
+SUMMARY="Emacs major mode for editing PHP code."
+DESCRIPTION=""
+
+LICENCES="GPL-3 FDL-1.2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    insinto /usr/share/emacs/site-lisp
+    doins php-mode.el
+    elisp-install-site-file
+}
