@@ -1,0 +1,32 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://fraggod.net/fgc.git"
+
+require distutils scm-git
+
+SUMMARY="Miscellaneous utility extensions to python stdlib."
+DESCRIPTION=""
+
+HOMEPAGE="http://fraggod.net/svc/git/fgc"
+
+LICENCES="BSD"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="X"
+
+DEPENDENCIES="
+    build+run:
+        sys-libs/libcap
+    run:
+        X? (
+            gnome-bindings/pygtk
+            dev-python/python-xlib )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_prepare() {
+    option X || rm -f fgc/wm.py
+}
