@@ -3,7 +3,7 @@
 
 SCM_REPOSITORY="git://git.sv.gnu.org/emms.git"
 
-require gnu scm-git elisp-module
+require gnu scm-git elisp
 
 SUMMARY="Emacs Multimedia System."
 DESCRIPTION="Clean and small application to play
@@ -19,7 +19,6 @@ MYOPTIONS="
 
 DEPENDENCIES="
     build+run:
-        app-editors/emacs
         taglib? ( media-libs/taglib )
 "
 
