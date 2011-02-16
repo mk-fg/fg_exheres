@@ -1,0 +1,46 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://git.gnome.org/librep"
+
+require scm-git sourceforge multilib autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+
+SUMMARY="Shared library implementing a lightweight Lisp dialect."
+DESCRIPTION=""
+
+DOWNLOADS=""
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="
+    emacs [[ description = [ Install rep-debugger module into emacs. ] ]]"
+
+DEPENDENCIES="
+    build:
+        dev-util/pkg-config
+    build+run:
+        dev-libs/gmp
+        dev-libs/libffi
+        sys-libs/gdbm[>=1.8.0]
+        sys-libs/readline
+        emacs? ( app-editors/emacs )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+REMOTE_IDS="freshmeat:${PN}"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --libexecdir=/usr/$(get_libdir)
+    --with-gmp --with-ffi --with-readline )
+
+src_prepare() {
+    # eautreconf fails here, I can assume that it's missing --install in libtoolize
+    edo ./autogen.sh --nocfg
+}
+
+src_install() {
+    default
+    edo rmdir "${IMAGE}/usr/share/aclocal"
+}
