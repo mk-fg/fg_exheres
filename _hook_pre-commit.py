@@ -242,11 +242,15 @@ def check_file(src):
 	chk_deps(chk_definition(src, 'DEPENDENCIES'))
 	chk_emptyline(src)
 
-	if 'gmail.com' not in chk_definition_len(src, 'BUGS_TO'):
+	if os.environ['EMAIL'] not in chk_definition_len(src, 'BUGS_TO'):
 		raise ChkFullError('No public email (gmail account) specified in BUGS_TO')
 
-	for line in src: pass
-	if not line.endswith('\n'): raise ChkFullError('No final newline')
+	line, trailing_lines = None, list()
+	for line in src:
+		if not line.strip(): trailing_lines.append(line)
+		else: trailing_lines = list()
+	if line and not line.endswith('\n'): raise ChkFullError('No final newline')
+	if trailing_lines: raise ChkFullError('{} trailing empty lines'.format(len(trailing_lines)))
 
 
 def check_db(cdb):

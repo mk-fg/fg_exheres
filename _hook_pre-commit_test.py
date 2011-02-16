@@ -329,7 +329,12 @@ src_test() {
 '''.replace('{', '{{').replace('}', '}}').replace('%s', '{}').format(datetime.now().year)
 
 	def test_valid(self):
+		replace_ = lambda rx, repl, *more, **kwz: re.sub(
+			rx, repl, replace_(*more, flags=kwz.pop('flags', 0))
+				if more else self.sample, flags=kwz.pop('flags', 0) )
+		replace = lambda *more: io.StringIO(replace_(*more))
 		self.assertIsNone(self.func(io.StringIO(self.sample)))
+		self.assertIsNone(self.func(replace('(BUGS_TO.+?\n).*', r'\1')))
 
 	def test_invalid(self):
 		exc_chk = lambda src, exc=mod.ChkError:\
@@ -354,6 +359,7 @@ src_test() {
 		for spaced_line in 'SLOT', 'PLATFORMS', 'MYOPTIONS', 'DESCRIPTION':
 			exc_chk(replace('({})'.format(spaced_line), r'\n\1'))
 		exc_chk(io.StringIO(self.sample.strip()))
+		exc_chk(io.StringIO(self.sample + '\n'))
 
 
 if __name__ == '__main__': unittest.main()
