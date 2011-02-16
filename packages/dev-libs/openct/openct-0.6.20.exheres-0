@@ -3,35 +3,30 @@
 # Based upon 'openct-0.6.20.ebuild' from Gentoo, which is:
 #  Copyright 1999-2010 Gentoo Foundation
 
+require multilib systemd-service
+
 SUMMARY="Reader driver interface for various non-standard readers."
-DESCRIPTION="OpenCT implements drivers for several smart card readers.
-    It comes as driver in ifdhandler format for PC/SC-Lite, as CT-API driver,
-    or as a small and lean middleware, so applications can use it with minimal
-    overhead. OpenCT also has a primitive mechanism to export smart card
-    readers to remote machines via tcp/ip."
+DESCRIPTION=""
 
 HOMEPAGE="http://www.opensc-project.org/openct/"
 DOWNLOADS="http://www.opensc-project.org/files/${PN}/${PNV}.tar.gz"
-
-require multilib systemd-service
 
 LICENCES="LGPL-2.1"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS="doc
-    pcsc-lite [[ description = [ Register ifdhandler for PC/SC Architecture
-        smartcard middleware library. Not necessary if used with OpenSC, since
-        it can access OpenCT directly (if built with appropriate option) w/o pcsc
-        overhead and bugs. ] ]]"
+    pcsc-lite [[ description = [ Register ifdhandler for PC/SC Architecture smartcard middleware library. ] ]]"
 
 DEPENDENCIES="
-    build: doc? ( app-doc/doxygen )
+    build:
+        doc? ( app-doc/doxygen )
     build+run:
         dev-libs/libusb:0.1
         group/openct
         sys-fs/udev[>=096]
         user/openct
-        pcsc-lite? ( sys-apps/pcsc-lite )"
+        pcsc-lite? ( sys-apps/pcsc-lite )
+"
 
 BUGS_TO="mk.fraggod@gmail.com"
 REMOTE_IDS="freshmeat:${PN}"
@@ -60,6 +55,5 @@ src_install() {
     default
     install_systemd_files
 
-    option doc || rmdir -p "${IMAGE}"/usr/share/doc/openct-0.6.20/html/api
+    option doc || edo rmdir "${IMAGE}"/usr/share/doc/openct-0.6.20/html{/api,}
 }
-

@@ -1,19 +1,13 @@
 # Copyright 2011 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
+require sourceforge [ suffix=tar.gz ]
+
 SUMMARY="MooseFS distributed parallel fault-tolerant filesystem."
-DESCRIPTION="MooseFS is a fault tolerant, network distributed file system.
-    It spreads data over several physical servers which are visible to the user
-    as one resource.
-    Pros over similar systems is extremely simple and robust architecture,
-    pure C w/o deps like boost, extensive documentation, cow nature (including
-    snapshots and read-only servers) and per-inode fs setings (like replication
-    level, caching parameters and removal grace period)."
+DESCRIPTION=""
 
 MY_PNV="mfs-${PV}"
 WORK="${WORKBASE}/${MY_PNV}"
-
-require sourceforge [ suffix=tar.gz ]
 
 HOMEPAGE="http://www.moosefs.org/"
 
@@ -27,11 +21,13 @@ MYOPTIONS="
     mount [[ description = [ Install FUSE module to actually mount mfs. ] ]]"
 
 DEPENDENCIES="
-    sys-libs/zlib
-    cgi? ( dev-lang/python )
-    chunkserver? ( group/mfs user/mfs )
-    master? ( group/mfs user/mfs )
-    mount? ( sys-fs/fuse[>=2.6] )"
+    build+run:
+        sys-libs/zlib
+        cgi? ( dev-lang/python )
+        chunkserver? ( group/mfs user/mfs )
+        master? ( group/mfs user/mfs )
+        mount? ( sys-fs/fuse[>=2.6] )
+"
 
 BUGS_TO="mk.fraggod@gmail.com"
 REMOTE_IDS="freshmeat:${PN}"
@@ -53,5 +49,5 @@ DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=(
 
 src_install() {
     default
-    rmdir "${IMAGE}/"{etc,usr/share/man/man{1,5,8}}
+    nonfatal edo rmdir "${IMAGE}/"{etc,usr/share/man/man{1,5,8}}
 }

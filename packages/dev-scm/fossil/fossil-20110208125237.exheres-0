@@ -7,11 +7,7 @@ MY_PNV="${PN}-src-${PV}"
 WORK="${WORKBASE}/${MY_PNV}"
 
 SUMMARY="Light distributed version control system, bug tracking system and wiki software server."
-DESCRIPTION="
-Fossil is cross-platform (Linux, Mac OS X and MS Windows), uses HTTP as its wire protocol, and stores its data in an SQLite database to ensure atomicity in any commits.
-It is not only capable of distributed version control like Git and Mercurial but also supports distributed bug tracking, a distributed wiki and a distributed blog mechanism all in a single integrated package.
-With its built-in and easy-to-use web interface, Fossil simplifies project tracking and promotes situational awareness. A user may simply type 'fossil ui' from within any check-out and Fossil automatically opens the user's web browser in a page that gives detailed history and status information on that project.
-Fossil repositories are single-file databases, directly accessible with any SQLite tools and fossil itself is a single binary, available in statically-linked form for any platform."
+DESCRIPTION=""
 
 HOMEPAGE="http://www.fossil-scm.org/"
 DOWNLOADS="http://www.fossil-scm.org/download/${MY_PNV}.tar.gz"
@@ -28,7 +24,8 @@ DEPENDENCIES="
         dev-libs/openssl
         sys-libs/zlib
     test:
-        dev-lang/tcl"
+        dev-lang/tcl
+"
 
 BUGS_TO="mk.fraggod@gmail.com"
 UPSTREAM_CHANGELOG="${HOMEPAGE}fossil/timeline [[ lang = en ]]"
@@ -43,12 +40,4 @@ PALUDIS_SYNCERS_DIR="/usr/libexec/paludis/syncers"
 src_install() {
     dobin fossil
     emagicdocs
-
-    # Install fossil syncer for paludis
-    exeinto "${PALUDIS_SYNCERS_DIR}"
-    doexe "${FILES}/dofossil"
-    edo cd "${IMAGE}${PALUDIS_SYNCERS_DIR}"
-    for syncer in dofossil+http dofossil+https dofossil+file
-    do edo ln dofossil "${syncer}"
-    done
 }

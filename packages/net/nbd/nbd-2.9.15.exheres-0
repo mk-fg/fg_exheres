@@ -3,18 +3,10 @@
 # Based upon 'nbd-2.9.15.ebuild' from Gentoo, which is:
 #  Copyright 1999-2010 Gentoo Foundation
 
-SUMMARY="Userland client/server for kernel network block device"
-DESCRIPTION="With this thing compiled into your kernel, Linux can use
-    a remote server as one of its block devices.
-    Every time the client computer wants to read /dev/nd0, it will send a
-    request to the server via TCP, which will reply with the data requested.
-    This can be used for stations with low disk space (or even diskless - if you
-    boot from floppy) to borrow disk space from other computers.
-    Unlike NFS, it is possible to put any file system on it.
-    But (also unlike NFS), if someone has mounted NBD read/write, you must assure
-    that no one else will have it mounted."
-
 require sourceforge flag-o-matic
+
+SUMMARY="Userland client/server for kernel network block device"
+DESCRIPTION=""
 
 LICENCES="GPL-2"
 SLOT="0"
@@ -22,14 +14,17 @@ PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
 DEPENDENCIES="
-    build: dev-util/pkg-config
-    build+run: dev-libs/glib[>=2.0]"
+    build:
+        dev-util/pkg-config
+    build+run:
+        dev-libs/glib[>=2.0]
+"
 
 BUGS_TO="mk.fraggod@gmail.com"
 
 
 DEFAULT_SRC_PREPARE_PATCHES=( -p0 "${FILES}/headers.patch" )
-DEFAULT_CONFIGURE_ENABLES=( lfs syslog )
+DEFAULT_SRC_CONFIGURE_PARAMS=( --enable-lfs --enable-syslog )
 
 src_prepare() {
     default

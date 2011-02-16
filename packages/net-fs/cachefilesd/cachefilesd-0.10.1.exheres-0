@@ -1,23 +1,23 @@
 # Copyright 2011 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
+require systemd-service
+
 SUMMARY="Maintenance daemon for FSCache kernel subsystem."
-DESCRIPTION="CacheFiles is a caching backend that's meant to use as a cache a directory on
-    an already mounted filesystem of a local type (such as Ext3).
-    CacheFiles uses a userspace daemon to do some of the cache management - such as
-    reaping stale nodes and culling. This is called cachefilesd and lives in /sbin."
+DESCRIPTION=""
 
 HOMEPAGE="http://people.redhat.com/~dhowells/fscache/"
 DOWNLOADS="${HOMEPAGE}${PNV}.tar.bz2"
-
-require systemd-service
 
 LICENCES="GPL-2"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
-DEPENDENCIES="run: sys-apps/attr"
+DEPENDENCIES="
+    run:
+        sys-apps/attr
+"
 
 BUGS_TO="mk.fraggod@gmail.com"
 
