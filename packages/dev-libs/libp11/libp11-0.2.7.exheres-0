@@ -1,0 +1,37 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+# Based upon 'libp11-0.2.7.ebuild' from Gentoo, which is:
+#  Copyright 1999-2010 Gentoo Foundation
+
+SUMMARY="Small layer on top of PKCS#11 API to make using PKCS#11 implementations easier."
+DESCRIPTION=""
+
+HOMEPAGE="http://www.opensc-project.org/libp11/"
+DOWNLOADS="http://www.opensc-project.org/files/${PN}/${PNV}.tar.gz"
+
+LICENCES="LGPL-2.1"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="doc"
+
+DEPENDENCIES="
+    build:
+        dev-util/pkg-config
+        doc? ( app-doc/doxygen )
+    build+run:
+        dev-libs/openssl
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+REMOTE_IDS="freshmeat:${PN}"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --docdir="/usr/share/doc/${PF}"
+    --htmldir="/usr/share/doc/${PF}/html" )
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( doc "doc api-doc" )
+
+src_install() {
+    default
+    option doc || edo rmdir "${IMAGE}"/usr/share/doc/html{/api,}
+}
