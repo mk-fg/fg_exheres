@@ -24,6 +24,7 @@ DEPENDENCIES="
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
+REMOTE_IDS="freshmeat:${PN}"
 
 
 src_install() {
