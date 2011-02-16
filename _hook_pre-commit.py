@@ -152,9 +152,9 @@ def chk_ordering( vardef,
 		token_grouper = lambda tokens: [list(tokens)],
 		sort_key = lambda token: token if token\
 			.split(None, 1)[0].endswith('?') else '\x00{}'.format(token),
-		rx = re.compile(r'(~?\S+(\s+\([^)]+\))?(\s+\[\[.+?\]\])?)', re.DOTALL) ):
+		rx = re.compile(r'((~?\S+\n?)(\s+\([^)]+\))?(\s+\[\[.+?\]\])?)', re.DOTALL) ):
 	token_groups = token_grouper(
-		it.imap(op.itemgetter(0), rx.findall(vardef)) )
+		it.imap(op.itemgetter(1), rx.findall(vardef)) )
 	for tokens in token_groups:
 		if sorted(tokens, key=sort_key) != tokens:
 			raise ChkOrderingError( 'Tokens must be'
@@ -166,15 +166,15 @@ def chk_ordering( vardef,
 def chk_deps(deps):
 	if not deps.endswith('\n') or not deps.startswith('\n'):
 		raise ChkDepsError('Dependencties are written inline or quoted lisp-style')
-	for cat in deps.split(':'):
-		if not cat.startswith('\n'):
-			raise ChkDepsError('Deps\' categories and their contents are written inline')
 	chk_ordering(deps, token_grouper = _deps_grouper)
 
 def _deps_grouper(tokens):
 	thead, tbuff, token_groups = None, list(), dict()
-	for token in tokens:
+	for token_nl in tokens:
+		token = token_nl.strip()
 		if token.endswith(':'):
+			if not token_nl.endswith('\n'):
+				raise ChkDepsError('Deps\' categories and their contents are written inline')
 			if thead:
 				if not tbuff:
 					raise ChkDepsError('Empty token group: {}'.format(thead))
@@ -210,8 +210,8 @@ def check_file(src):
 	# sourceforge exlib can define HOMEPAGE and DOWNLOADS
 	exlib_src = False
 	for line in src:
-		if line.startswith('require') and ' sourceforge ' in line:
-			exlib_src = True
+		if line.startswith('require'):
+			if 'sourceforge' in line.split(): exlib_src = True
 			chk_emptyline(src)
 			break
 		if line.startswith('SUMMARY'):

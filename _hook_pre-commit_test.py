@@ -186,9 +186,11 @@ class TestChkOrdering(unittest.TestCase):
 			build+run:
 				dev-db/sqlite[>=3.7.0]
 				sys-libs/zlib openssl? ( aaa/stuff )
-			test: dev-lang/tcl'''))
+			test:
+				dev-lang/tcl'''))
 		self.assertIsNone(func('''
-			build+run: dev-db/sqlite[>=3.7.0] sys-libs/zlib
+			build+run:
+				dev-db/sqlite[>=3.7.0] sys-libs/zlib
 				openssl? (
 					aaa/stuff other/stuff
 					waka/waka ) [[ some-crap = [ other-crap ] ]]
@@ -202,13 +204,15 @@ class TestChkOrdering(unittest.TestCase):
 				dev-libs/openssl
 				dev-db/sqlite[>=3.7.0]
 				sys-libs/zlib
-			test: dev-lang/tcl''')
+			test:
+				dev-lang/tcl''')
 		exc_chk('''build+run:
 				dev-db/sqlite[>=3.7.0]
 				dev-libs/openssl
 				openssh? ( aaa/stuff )
 				sys-libs/zlib
-			test: dev-lang/tcl''')
+			test:
+				dev-lang/tcl''')
 
 
 class TestChkDeps(unittest.TestCase):
@@ -352,4 +356,4 @@ src_test() {
 		exc_chk(io.StringIO(self.sample.strip()))
 
 
-unittest.main()
+if __name__ == '__main__': unittest.main()

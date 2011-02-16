@@ -30,7 +30,9 @@ if action == 'clean':
 	filter_clean(src)
 	with mod.checker_db() as cdb:
 		cdb[path] = mod.err_count
-	if mod.err_count: sys.exit(1)
+	if mod.err_count:
+		print('File: {}'.format(path), file=sys.stderr)
+		sys.exit(1)
 
 elif action == 'smudge':
 	filter_smudge(src)
