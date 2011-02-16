@@ -1,0 +1,7 @@
+(add-to-list 'load-path "@SITE_LISP@")
+(autoload 'mew "mew" nil t)
+(autoload 'mew-send "mew" nil t)
+
+(setq mew-icon-directory "@SITE_LISP@/mew/etc")
+(setq mew-pop-port "pop-3")
+(setq mew-imap-port "imap2")
