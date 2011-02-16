@@ -1,0 +1,33 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+# Based upon 'pam_p11-0.1.5.ebuild' from Gentoo, which is:
+#  Copyright 1999-2010 Gentoo Foundation
+
+require pam
+
+SUMMARY="pam_p11 is a PAM package for using crpytographic tokens for authentication."
+DESCRIPTION=""
+
+HOMEPAGE="http://www.opensc-project.org/pam_p11/"
+DOWNLOADS="http://www.opensc-project.org/files/${PN}/${PNV}.tar.gz"
+
+LICENCES="LGPL-2.1"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/libp11
+        dev-libs/openssl
+        sys-libs/pam
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    dopammod src/.libs/pam_p11_opensc.so
+    dopammod src/.libs/pam_p11_openssh.so
+    dodoc doc/*.html doc/*.css
+}
