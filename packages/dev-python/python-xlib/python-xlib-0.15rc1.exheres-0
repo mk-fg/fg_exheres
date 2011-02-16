@@ -1,0 +1,23 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require sourceforge distutils
+
+SUMMARY="A fully functional X client library for Python."
+DESCRIPTION=""
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+REMOTE_IDS="pypi:python-xlib"
+UPSTREAM_DOCUMENTATION="
+    http://python-xlib.sourceforge.net/doc/html/index.html [[ lang = en description = [ Documentation ] ]]
+    http://tronche.com/gui/x/xlib/ [[ lang = en description = [ Basic xlib documentation ] ]]
+    http://python-xlib.svn.sourceforge.net/viewvc/python-xlib/trunk/examples/ [[ description = [ Examples ] ]]"
+
+DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}"/nodebug.patch )
