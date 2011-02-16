@@ -1,0 +1,49 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+WORK="${WORKBASE}"
+
+SUMMARY="Privileged python wrapper."
+DESCRIPTION="Drop-in replacement for python binary in shebangs
+    or command line for the scripts that need elevated (or just different)
+    privileges then the ones they've been started with."
+
+HOMEPAGE="http://fraggod.net/prj/ppy/"
+DOWNLOADS="http://fraggod.net/oss/projects/ppy.c"
+
+LICENCES="BSD"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        sys-libs/libcap-ng
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_unpack() {
+    edo cp "${FETCHEDDIR}/${ARCHIVES}" "${WORK}"
+}
+
+src_compile() {
+    edo cc $CFLAGS -lcap-ng ppy.c -o ppy
+}
+
+src_install() {
+    exeinto /usr/bin
+    exeopts -m551
+    doexe ppy
+
+    # cave failed to transfer these in the past (writing after setting caps), but this
+    #  can also fail because /var/tmp (or whatever) is tmpfs and has no xattr support
+    nonfatal edo setcap 'all=ep' "${IMAGE}"/usr/bin/ppy
+}
+
+pkg_postinst() {
+    [[ -z "$(getcap /usr/bin/ppy)" ]] &&\
+        setcap 'all=ep' /usr/bin/ppy ||\
+        die "Failed to set posix capabilities for ppy binary"
+}

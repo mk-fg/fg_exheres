@@ -227,7 +227,7 @@ def check_file(src):
 
 	chk_definition_len(src, 'SUMMARY')
 	chk_definition_len( src, 'DESCRIPTION',
-		nextline=True, min_len=None, max_len=100 )
+		nextline=True, min_len=None, max_len=200 )
 	chk_emptyline(src)
 
 	if not exlib_src:
