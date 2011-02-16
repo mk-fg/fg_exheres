@@ -1,0 +1,13 @@
+[Unit]
+Description=MooseFS chunkserver
+After=syslog.target network.target mfsmaster.service
+
+# This daemon forks out only after it's successfully
+#  initialized, so there's an advantage in running it like this
+[Service]
+Type=forking
+ExecStart=/usr/sbin/mfschunkserver start
+ExecStop=/usr/sbin/mfschunkserver stop
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,13 @@
+[Unit]
+Description=MooseFS master node
+After=syslog.target network.target
+
+# This daemon forks out only after it's successfully
+#  initialized, so there's an advantage in running it like this
+[Service]
+Type=forking
+ExecStart=/usr/sbin/mfsmaster start
+ExecStop=/usr/sbin/mfsmaster stop
+
+[Install]
+WantedBy=multi-user.target
