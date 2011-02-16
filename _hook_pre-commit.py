@@ -241,7 +241,8 @@ def check_file(src):
 	chk_ordering(chk_definition(src, 'MYOPTIONS', nextline=True))
 	chk_emptyline(src)
 
-	chk_deps(chk_definition(src, 'DEPENDENCIES'))
+	deps = chk_definition(src, 'DEPENDENCIES')
+	if deps: chk_deps(deps)
 	chk_emptyline(src)
 
 	if os.environ['EMAIL'] not in chk_definition_len(src, 'BUGS_TO'):

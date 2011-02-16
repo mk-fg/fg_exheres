@@ -1,0 +1,45 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+# Based upon 'apel-10.7-r1.ebuild' from Gentoo, which is:
+#  Copyright 1999-2010 Gentoo Foundation
+
+require elisp
+
+SUMMARY="A Portable Emacs Library is a library for making portable Emacs Lisp programs."
+DESCRIPTION=""
+
+HOMEPAGE="http://cvs.m17n.org/elisp/APEL/"
+DOWNLOADS="ftp://ftp.jpl.org/pub/elisp/apel/${PNV}.tar.gz"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+EMAKE_PARAMS=(
+    DESTDIR="${IMAGE}"
+    PREFIX="${IMAGE}/usr"
+    LISPDIR="${IMAGE}/${ELISP_SITE_LISP}"
+    VERSION_SPECIFIC_LISPDIR="${IMAGE}/${ELISP_SITE_LISP}" )
+
+src_prepare() {
+    cat <<-EOF >> APEL-CFG
+(setq APEL_PREFIX "apel")
+(setq EMU_PREFIX "apel")
+EOF
+}
+
+src_compile() {
+    nonfatal emake "${EMAKE_PARAMS[@]}"
+}
+
+src_install() {
+    nonfatal emake "${EMAKE_PARAMS[@]}" install
+    elisp-install-site-file
+    emagicdocs
+}
