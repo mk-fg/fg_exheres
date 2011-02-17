@@ -46,14 +46,16 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
         --with-udev="/$(get_libdir)/udev" )
 
 src_install() {
+    default
+    install_systemd_files
+
     insinto /etc/udev/rules.d/
     newins etc/openct.udev 70-openct.rules
 
-    diropts -m0750 -gopenct -oopenct
-    keepdir /var/run/openct
-
-    default
-    install_systemd_files
+    if option systemd; then
+        insinto /etc/tmpfiles.d
+        newins "${FILES}"/tmpfiles.conf openct.conf
+    fi
 
     option doc || edo rmdir "${IMAGE}"/usr/share/doc/openct-0.6.20/html{/api,}
 }
