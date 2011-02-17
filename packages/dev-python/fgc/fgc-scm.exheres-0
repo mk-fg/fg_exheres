@@ -16,6 +16,8 @@ PLATFORMS="~amd64 ~x86"
 MYOPTIONS="X"
 
 DEPENDENCIES="
+    build:
+        dev-python/setuptools
     build+run:
         sys-libs/libcap
     run:
