@@ -1,7 +1,7 @@
 # Copyright 2011 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-require systemd-service sourceforge [ suffix=tar.gz ]
+require systemd-service sourceforge
 
 SUMMARY="MooseFS distributed parallel fault-tolerant filesystem."
 DESCRIPTION=""
@@ -10,6 +10,7 @@ MY_PNV="mfs-${PV}"
 WORK="${WORKBASE}/${MY_PNV}"
 
 HOMEPAGE="http://www.moosefs.org/"
+DOWNLOADS="mirror://sourceforge/moosefs/mfs-${PV}.tar.gz"
 
 LICENCES="GPL"
 SLOT="0"
