@@ -1,7 +1,7 @@
 # Copyright 2011 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-require sourceforge systemd-service [ suffix=tar.gz ]
+require systemd-service sourceforge [ suffix=tar.gz ]
 
 SUMMARY="MooseFS distributed parallel fault-tolerant filesystem."
 DESCRIPTION=""
