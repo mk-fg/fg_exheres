@@ -73,7 +73,7 @@ src_install() {
     newbin "${FILES}/djbdns-setup-r17" djbdns-setup
 
     emagicdocs
-    systemd_install_files
+    install_systemd_files
 
     dodir /var/lib/djbdns/resolver
     edo cd "${IMAGE}"/var/lib/djbdns/resolver
