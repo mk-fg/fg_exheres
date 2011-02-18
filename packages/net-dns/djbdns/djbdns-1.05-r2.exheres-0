@@ -2,6 +2,8 @@
 # Copyright 2008 Daniel Mierswa <impulze@impulze.org>
 # Distributed under the terms of the GNU General Public License v2
 
+require systemd-service
+
 SUMMARY="Collection of DNS tools."
 DESCRIPTION="A DNS cache, a DNS server and some DNS client utilities."
 
@@ -66,9 +68,36 @@ src_install() {
 
     dobin dnsip6 dnsip6q "${WORK}-noipv6/dnstrace"
 
-    emagicdocs
-
     dobin "${FILES}/dnscache-setup"
     dobin "${FILES}/tinydns-setup"
     newbin "${FILES}/djbdns-setup-r17" djbdns-setup
+
+    emagicdocs
+    systemd_install_files
+
+    dodir /var/lib/djbdns/resolver
+    edo cd "${IMAGE}"/var/lib/djbdns/resolver
+    insinto /var/lib/djbdns/resolver
+    hereins env.default <<EOF
+UID=65534
+GID=65534
+ROOT=/var/lib/djbdns/resolver
+IP=
+EOF
+
+    dodir /var/lib/djbdns/cache
+    edo cd "${IMAGE}"/var/lib/djbdns/cache
+    insinto /var/lib/djbdns/cache
+    hereins env.default <<EOF
+UID=65534
+GID=65534
+ROOT=/var/lib/djbdns/cache
+CACHESIZE=1000000
+FORWARDONLY=1
+IP=
+IPSEND=
+EOF
+    edo dd if=/dev/urandom of=seed bs=128 count=1
+    edo chown root:root seed
+    edo chmod 600 seed
 }
