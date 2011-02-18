@@ -1,0 +1,69 @@
+# Copyright 2011 Mike Kazantsev
+# Copyright 2008 Daniel Mierswa <impulze@impulze.org>
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Collection of DNS tools."
+DESCRIPTION="A DNS cache, a DNS server and some DNS client utilities."
+
+HOMEPAGE="http://cr.yp.to/djbdns/"
+DOWNLOADS="
+    http://cr.yp.to/djbdns/${PNV}.tar.gz
+    http://www.fefe.de/dns/${PNV}-test23.diff.bz2"
+
+LICENCES="public-domain"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        sys-apps/ucspi-tcp
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_prepare() {
+    expatch "${FILES}"/headtail.patch
+    expatch "${FILES}"/dnsroots.patch
+    expatch "${FILES}"/dnstracesort.patch
+    expatch "${FILES}"/CVE2009-0858_0001-check-response-domain-name-length.patch
+    cp -pR "${WORK}" "${WORK}-noipv6"
+    expatch "${ARCHIVES}/${PNV}-test23.diff.bz2"
+
+    cd "${WORK}-noipv6"
+    expatch "${FILES}"/CVE2008-4392_0001-dnscache-merge-similar-outgoing-queries-ipv6.patch
+    expatch "${FILES}"/CVE2008-4392_0002-dnscache-cache-soa-records-ipv6.patch
+    expatch "${FILES}/${PV}"-errno.patch
+}
+
+src_compile() {
+    edo echo "gcc ${CFLAGS}" > conf-cc
+    edo echo "gcc ${LDFLAGS}" > conf-ld
+    edo echo "/usr" > conf-home
+    emake -j1
+
+    edo cd "${WORK}-noipv6"
+    edo echo "gcc ${CFLAGS}" > conf-cc
+    edo echo "gcc ${LDFLAGS}" > conf-ld
+    edo echo "/usr" > conf-home
+    emake -j1 dnstrace
+}
+
+src_install() {
+    insinto /etc
+    doins dnsroots.global
+
+    into /usr
+    dobin *-conf dnscache tinydns walldns rbldns pickdns axfrdns \
+        *-get *-data *-edit dnsip dnsipq dnsname dnstxt dnsmx \
+        dnsfilter random-ip dnsqr dnsq dnstrace dnstracesort
+
+    dobin dnsip6 dnsip6q "${WORK}-noipv6/dnstrace"
+
+    emagicdocs
+
+    dobin "${FILES}/dnscache-setup"
+    dobin "${FILES}/tinydns-setup"
+    newbin "${FILES}/djbdns-setup-r17" djbdns-setup
+}
