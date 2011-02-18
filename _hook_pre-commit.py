@@ -77,12 +77,13 @@ def chk_wrapper(func, unwind=True):
 
 
 @chk_wrapper
-def chk_copyright( line,
+def chk_copyright( line, prior=False,
 		rx = re.compile( r'^# Copyright'
 			r' (?P<dates>(?P<date>\d+)(-(?P<date_ext>\d+))?)'
 			r' (?P<author>.+)$' ) ):
 	match = rx.match(line)
 	if not match: return False
+	if prior: return match.group('author')
 
 	date_chk = datetime.now().year
 	date_min, date_max = op.itemgetter('date', 'date_ext')(match.groupdict())
@@ -190,17 +191,12 @@ def _deps_grouper(tokens):
 
 @ft.partial(chk_wrapper, unwind=False)
 def check_file(src):
-	chk = False
-	for line in src:
-		author = chk_copyright(line)
-		if not author:
-			src = it.chain([line], src)
-			break
-		if author == 'Mike Kazantsev': chk = True
-	if not chk:
+	author = chk_copyright(next(src))
+	if author != 'Mike Kazantsev':
 		raise ChkFullError('Forgot to add myself to a copyright')
+	for line in src:
+		if not chk_copyright(line, prior=True): break
 
-	line = next(src)
 	if not chk_license(line):
 		raise ChkFullError('Invalid/missing license line: {}'.format(line))
 	del line
