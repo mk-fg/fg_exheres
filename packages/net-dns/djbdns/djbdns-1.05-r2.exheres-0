@@ -24,17 +24,22 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 src_prepare() {
-    expatch "${FILES}"/headtail.patch
-    expatch "${FILES}"/dnsroots.patch
-    expatch "${FILES}"/dnstracesort.patch
-    expatch "${FILES}"/CVE2009-0858_0001-check-response-domain-name-length.patch
-    cp -pR "${WORK}" "${WORK}-noipv6"
-    expatch "${ARCHIVES}/${PNV}-test23.diff.bz2"
+    edo cd "${WORKBASE}"
+    expatch -p1 "${FILES}"/headtail.patch
+    expatch -p0 "${FILES}"/dnsroots.patch
+    expatch -p0 "${FILES}"/dnstracesort.patch
 
-    cd "${WORK}-noipv6"
-    expatch "${FILES}"/CVE2008-4392_0001-dnscache-merge-similar-outgoing-queries-ipv6.patch
-    expatch "${FILES}"/CVE2008-4392_0002-dnscache-cache-soa-records-ipv6.patch
-    expatch "${FILES}/${PV}"-errno.patch
+    edo cd "${WORK}"
+    expatch -p1 "${FILES}"/CVE2009-0858_0001-check-response-domain-name-length.patch
+    edo cp -pR "${WORK}" "${WORK}-noipv6"
+    expatch -p1 "${FETCHEDDIR}/${PNV}-test23.diff.bz2"
+    expatch -p1 "${FILES}"/CVE2008-4392_0001-dnscache-merge-similar-outgoing-queries-ipv6.patch
+    expatch -p1 "${FILES}"/CVE2008-4392_0002-dnscache-cache-soa-records-ipv6.patch
+
+    edo cd "${WORK}-noipv6"
+    expatch -p1 "${FILES}"/CVE2008-4392_0001-dnscache-merge-similar-outgoing-queries.patch
+    expatch -p1 "${FILES}"/CVE2008-4392_0002-dnscache-cache-soa-records.patch
+    expatch -p0 "${FILES}/${PV}"-errno.patch
 }
 
 src_compile() {
