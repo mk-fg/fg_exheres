@@ -2,6 +2,7 @@
 Description=mlocate updatedb timer
 
 [Timer]
+OnBootSec=2h
 OnUnitActiveSec=1d
 
 [Install]
