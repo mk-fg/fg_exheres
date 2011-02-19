@@ -22,6 +22,7 @@ MYOPTIONS=""
 DEPENDENCIES="
     build+run:
         group/cron
+        sys-libs/libcap
         sys-libs/pam
         user/cron
 "
@@ -73,7 +74,7 @@ src_install() {
 
     # fcronsighup needs to be able to send a HUP to the running
     #  fcron daemon, crontab should be able to access any users' tab
-    insopts -m4111 -o root -g cron
+    insopts -m0111 -o root -g cron
     doins fcronsighup
     edo setcap 'cap_kill=ep' "$IMAGE"/usr/bin/fcronsighup
     insopts -m6111 -o cron -g cron
