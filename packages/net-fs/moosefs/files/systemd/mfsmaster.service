@@ -6,6 +6,8 @@ After=syslog.target network.target
 #  initialized, so there's an advantage in running it like this
 [Service]
 Type=forking
+TimeoutSec=600
+ExecStartPre=/bin/su -s /usr/sbin/mfsprepare mfs
 ExecStart=/usr/sbin/mfsmaster start
 ExecStop=/usr/sbin/mfsmaster stop
 
