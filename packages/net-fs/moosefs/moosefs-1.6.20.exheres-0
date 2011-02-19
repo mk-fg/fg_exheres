@@ -63,7 +63,7 @@ cd /var/lib/mfs
 
 if [[ metadata.mfs.emergency -nt metadata.mfs.back ]]
 then mv metadata.mfs.emergency metadata.mfs
-else mfsmetarestore -a
+else /usr/sbin/mfsmetarestore -a
 fi
 EOF
 
