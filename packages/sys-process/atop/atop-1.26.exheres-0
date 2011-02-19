@@ -33,5 +33,5 @@ src_prepare() {
 src_install() {
     default
     edo rm "${IMAGE}"/usr/bin/atop*-"${PV}"
-    edo rm -rf "${IMAGE}"/etc/cron.d "${IMAGE}"/etc/init.d
+    edo rm -rf "${IMAGE}"/etc/{cron.d,init.d,rc.d}
 }
