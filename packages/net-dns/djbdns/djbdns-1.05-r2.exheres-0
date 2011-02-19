@@ -75,29 +75,35 @@ src_install() {
     emagicdocs
     install_systemd_files
 
-    dodir /var/lib/djbdns/resolver
-    edo cd "${IMAGE}"/var/lib/djbdns/resolver
-    insinto /var/lib/djbdns/resolver
+    dodir /etc/djbdns/resolver
+    edo cd "${IMAGE}"/etc/djbdns/resolver
+    insinto /etc/djbdns/resolver
     hereins env.default <<EOF
 UID=65534
 GID=65534
-ROOT=/var/lib/djbdns/resolver
+ROOT=/etc/djbdns/resolver
 IP=
 EOF
 
-    dodir /var/lib/djbdns/cache
-    edo cd "${IMAGE}"/var/lib/djbdns/cache
-    insinto /var/lib/djbdns/cache
+    dodir /etc/djbdns/cache
+    edo cd "${IMAGE}"/etc/djbdns/cache
+    insinto /etc/djbdns/cache
     hereins env.default <<EOF
 UID=65534
 GID=65534
-ROOT=/var/lib/djbdns/cache
+ROOT=/etc/djbdns/cache
 CACHESIZE=1000000
 FORWARDONLY=1
 IP=
 IPSEND=
 EOF
-    edo dd if=/dev/urandom of=seed bs=128 count=1
-    edo chown root:root seed
-    edo chmod 600 seed
+}
+
+pkg_postinst() {
+    if [[ ! -e /etc/djbdns/cache/seed ]]; then
+        edo cd /etc/djbdns/cache
+        edo dd if=/dev/urandom of=seed bs=128 count=1
+        edo chown root:root seed
+        edo chmod 600 seed
+    fi
 }
