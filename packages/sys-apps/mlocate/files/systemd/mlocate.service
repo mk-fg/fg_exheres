@@ -1,0 +1,6 @@
+[Unit]
+Description=mlocate updatedb
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/updatedb
