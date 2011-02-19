@@ -1,0 +1,12 @@
+[Unit]
+Description=Cron Daemon
+Wants=syslog.target
+
+[Service]
+StandardOutput=syslog
+Restart=always
+ExecStart=/usr/sbin/fcron -f
+ExecReload=/bin/kill -USR1 $MAINPID
+
+[Install]
+WantedBy=multi-user.target

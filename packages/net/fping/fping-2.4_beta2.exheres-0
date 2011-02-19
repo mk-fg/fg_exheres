@@ -1,0 +1,55 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+# Based upon 'fping-2.4_beta2_p161-r1.ebuild' from Gentoo, which is:
+#  Copyright 1999-2010 Gentoo Foundation
+
+require flag-o-matic autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+
+SUMMARY="A tool to reliably determine if host(s) are up with ICMP ping."
+DESCRIPTION=""
+
+WORK="${WORKBASE}/fping-2.4b2_to-ipv6"
+
+HOMEPAGE="http://www.fping.com/"
+DOWNLOADS="
+    https://launchpad.net/ubuntu/+archive/primary/+files/fping_2.4b2-to-ipv6.orig.tar.gz
+    https://launchpad.net/ubuntu/+archive/primary/+files/fping_2.4b2-to-ipv6-16.1.diff.gz"
+
+LICENCES="as-is"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+REMOTE_IDS="freshmeat:${PN}"
+
+
+DEFAULT_SRC_PREPARE_PATCHES=( "${FETCHEDDIR}/${PN}_2.4b2-to-ipv6-16.1.diff.gz" )
+
+src_configure() {
+    # v4 version
+    econf --hates=docdir
+    # v6 version
+    edo cp -a "${WORK}" "${WORK}6"
+    cd "${WORK}6"
+    append-flags -DIPV6
+    econf --hates=docdir
+}
+
+src_compile() {
+    # v4 version
+    emake
+    # v6 version
+    cd "${WORK}6"
+    emake
+}
+
+src_install () {
+    dosbin fping # v4
+    newsbin "${WORK}6"/fping fping6 # v6
+    edo chmod 4555 "$IMAGE"/usr/sbin/fping*
+    doman fping.8
+    emagicdocs
+}
