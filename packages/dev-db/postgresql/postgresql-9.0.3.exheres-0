@@ -2,6 +2,8 @@
 # Copyright 2008-2011 Ingmar Vanhassel <ingmar@exherbo.org>
 # Distributed under the terms of the GNU General Public License v2
 
+require systemd-service
+
 PSQL_MAJOR_VERSION=$(ever range 1-2)
 
 SUMMARY="PostgreSQL is a powerful, open source relational database system"
@@ -34,14 +36,12 @@ DEPENDENCIES="
 BUGS_TO="mk.fraggod@gmail.com"
 REMOTE_IDS="freshmeat:pgsql"
 UPSTREAM_DOCUMENTATION="
-${HOMEPAGE}/docs/manuals/ [[ lang = en description = [ PostgreSQL Manuals ] ]]
-${HOMEPAGE}/docs/faq/ [[ lang = en description = [ FAQ ] ]]
-${HOMEPAGE}/support/security.html [[ lang = en description = [ Security Information ] ]]
-"
+    ${HOMEPAGE}/docs/manuals/ [[ lang = en description = [ PostgreSQL Manuals ] ]]
+    ${HOMEPAGE}/docs/faq/ [[ lang = en description = [ FAQ ] ]]
+    ${HOMEPAGE}/support/security.html [[ lang = en description = [ Security Information ] ]]"
 UPSTREAM_RELEASE_NOTES="
-http://wiki.postgresql.org/wiki/WhatsNew${PSQL_MAJOR_VERSION//.}
-${HOMEPAGE}/docs/${PSQL_MAJOR_VERSION}/static/release-${PSQL_MAJOR_VERSION//./-}.html
-"
+    http://wiki.postgresql.org/wiki/WhatsNew${PSQL_MAJOR_VERSION//.}
+    ${HOMEPAGE}/docs/${PSQL_MAJOR_VERSION}/static/release-${PSQL_MAJOR_VERSION//./-}.html"
 
 
 DEFAULT_SRC_CONFIGURE_OPTION_WITHS=(
@@ -64,9 +64,17 @@ src_prepare() {
 src_install() {
     default
 
-    keepdir /var/run/postgresql
-    edo chown postgres:postgres "${IMAGE}"/var/run/postgresql
-    edo chmod 0770 "${IMAGE}"/var/run/postgresql
+    if option systemd; then
+        install_systemd_files
+        insinto /etc/tmpfiles.d
+        hereins postgresql.conf <<EOF
+d /var/run/postgresql 0770 postgres postgres
+EOF
+    else
+        keepdir /var/run/postgresql
+        edo chown postgres:postgres "${IMAGE}"/var/run/postgresql
+        edo chmod 0770 "${IMAGE}"/var/run/postgresql
+    fi
 }
 
 src_test() {
