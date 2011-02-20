@@ -1,0 +1,43 @@
+# Copyright 2011 Mike Kazantsev
+# Copyright 2009 Ingmar Vanhassel
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://git.overlays.gentoo.org/proj/gitosis-gentoo.git"
+
+require distutils scm-git
+
+SUMMARY="Manage git repositories, provide access to them over SSH."
+DESCRIPTION=""
+
+HOMEPAGE="
+    http://git.overlays.gentoo.org/gitweb/?p=proj/gitosis-gentoo.git
+        [[ description = [ Homepage for the Gentoo fork (this package) ] ]]
+    http://eagain.net/gitweb/?p=gitosis.git;a=summary
+        [[ description = [ Homepage for the original Gitosis package ] ]]"
+
+UPSTREAM_DOCUMENTATION="
+    http://git.overlays.gentoo.org/gitweb/?p=proj/gitosis-gentoo.git;a=blob;f=README.rst"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+      dev-python/setuptools[>=0.6_rc5]
+    build+run:
+        dev-scm/git
+        group/git
+        user/git
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+src_install() {
+    distutils_src_install
+    dodoc example.conf gitweb.conf lighttpd-gitweb.conf TODO.rst
+
+    keepdir /var/git/
+    edo chown git:git "${IMAGE}"/var/git/
+}
