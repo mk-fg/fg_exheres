@@ -99,7 +99,9 @@ src_configure() {
         --with-ld-opt="-L${ROOT}usr/lib"
         --sbin-path=/usr/sbin/nginx
         --conf-path=/etc/${PN}/nginx.conf
-        --error-log-path=/var/log/${PN}/error_log # gets opened before configuration file
+        --pid-path=/var/run/${PN}.pid
+        --lock-path=/var/lock/${PN}.lock
+        --error-log-path=/var/log/${PN}/error_log
         --http-log-path=/var/log/${PN}/access_log
         --with-http_ssl_module # broken w/o it
         --with-pcre )

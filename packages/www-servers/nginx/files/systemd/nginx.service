@@ -2,6 +2,7 @@
 Description=nginx
 
 [Service]
+Type=forking
 ExecStart=/usr/sbin/nginx -c /etc/nginx/nginx.conf
 ExecReload=/bin/kill -HUP $MAINPID
 
