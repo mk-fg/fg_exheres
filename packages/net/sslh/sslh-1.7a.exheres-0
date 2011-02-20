@@ -1,0 +1,38 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require systemd-service
+
+SUMMARY="Little hack which accepts both https and ssh connection on the same port."
+DESCRIPTION=""
+
+HOMEPAGE="http://www.rutschle.net/tech/sslh.shtml"
+DOWNLOADS="http://www.rutschle.net/tech/${PNV}.tar.gz"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="baselayout"
+
+DEPENDENCIES="
+    build:
+        dev-lang/perl
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_prepare() {
+    sed -i 's/USELIBWRAP=1/#USELIBWRAP=1/' "${WORK}"/Makefile
+}
+
+src_install() {
+    dosbin "${WORK}"/sslh
+
+    if option baselayout; then
+        newinitd "${FILES}"/sslh.init.d sslh
+        newconfd "${WORK}"/scripts/etc.default.sslh sslh
+    fi
+
+    install_systemd_files
+}
