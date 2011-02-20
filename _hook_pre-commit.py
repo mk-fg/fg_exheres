@@ -228,7 +228,7 @@ def check_file(src):
 
 	if not exlib_src:
 		chk_definition_len(src, 'HOMEPAGE')
-		chk_definition_len(src, 'DOWNLOADS', nextline=True)
+		chk_definition(src, 'DOWNLOADS', nextline=True)
 		chk_emptyline(src)
 
 	chk_definition_len(src, 'LICENCES', min_len=1)
