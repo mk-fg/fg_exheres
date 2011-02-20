@@ -1,0 +1,45 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="A set of a basic tools for files' and their contents' manipulation."
+DESCRIPTION=""
+
+HOMEPAGE="http://fraggod.net/svc/fossil/fgtk"
+DOWNLOADS=""
+
+LICENCES="BSD"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        dev-scm/fossil
+    build+run:
+        dev-python/fgc
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+
+src_fetch_extra() {
+    edo rm -f "$FOSSIL"
+    edo fossil clone "$HOMEPAGE" "$FOSSIL"
+}
+
+src_unpack() {
+    edo cp "$FOSSIL" .
+    edo fossil open "$(basename "$FOSSIL")"
+}
+
+src_install() {
+    for bin in $(fossil ls | grep -v /)
+    do [[ ! -d "$bin" ]] && newbin "$bin" "${bin%.py}"
+    done
+
+    if [[ -d zsh ]]; then
+        insinto /etc/zsh/site-functions
+        doins zsh/*
+    fi
+}
