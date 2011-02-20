@@ -1,0 +1,30 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://git.lighttpd.net/spawn-fcgi"
+
+require scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+
+SUMMARY="FCGI spawner for simple event-based webservers."
+DESCRIPTION=""
+
+HOMEPAGE="http://redmine.lighttpd.net/projects/fcgi-cgi"
+
+LICENCES="BSD"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --enable-ipv6 )
+
+src_install() {
+    default
+
+    docinto examples
+    dodoc doc/run-generic doc/run-php doc/run-rails
+}
