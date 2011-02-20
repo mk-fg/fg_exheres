@@ -123,7 +123,7 @@ def chk_definition(src, var, nextline=False):
 	while True:
 		try:
 			vardef = literal_eval('""{}""'.format(
-				line.split('{}='.format(var), 1)[-1].strip() ))
+				line.split('=', 1)[-1].strip() ))
 		except SyntaxError:
 			try: line += next(src)
 			except StopIteration:
