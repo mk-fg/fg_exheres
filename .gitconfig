@@ -5,7 +5,7 @@
 	logallrefupdates = true
 
 [remote "origin"]
-	url = git@github.com:FraGGod/fg_exheres.git
+	url = git@fraggod.net:fg_exheres.git
 	fetch = +refs/heads/*:refs/remotes/origin/*
 
 [filter "exheres_syntax"]
