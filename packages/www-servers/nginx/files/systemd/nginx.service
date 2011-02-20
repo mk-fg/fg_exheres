@@ -1,0 +1,9 @@
+[Unit]
+Description=nginx
+
+[Service]
+ExecStart=/usr/sbin/nginx -c /etc/nginx/nginx.conf
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
