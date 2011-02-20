@@ -1,0 +1,21 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/ask/python-github2.git"
+
+require pypi distutils scm-git
+
+SUMMARY="Github API v2 library for Python."
+DESCRIPTION=""
+
+HOMEPAGE+=" http://github.com/ask/python-github2"
+DOWNLOADS=""
+
+LICENCES="BSD"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
