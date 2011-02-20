@@ -1,0 +1,27 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Perl script to list cvs tags."
+DESCRIPTION=""
+
+HOMEPAGE="http://www.mail-archive.com/info-cvs@gnu.org/msg30596.html"
+DOWNLOADS=""
+
+LICENCES="GPL"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-lang/perl
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="${WORKBASE}"
+
+src_install() {
+    newbin "${FILES}/${PNV}.pl" "${PN}"
+}
