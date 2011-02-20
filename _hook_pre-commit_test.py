@@ -173,7 +173,76 @@ class TestChkOrdering(unittest.TestCase):
 			' other-stuff = [ something else ] ]]\n flag-a')
 
 	def test_groups_valid(self):
-		func = ft.partial(self.func, token_grouper=mod._deps_grouper)
+		self.assertIsNone(self.func('''aio chunk debug pam
+			nginx_modules_http:
+				access addition auth_basic autoindex [[ test = [ waka ] ]]
+			nginx_modules_mail: imap pop3 smtp'''))
+		self.assertIsNone(self.func('''nginx_modules_http: access $MORE_TOKENS'''))
+		self.assertIsNone(self.func('''nginx_modules_http: $WHATEVER'''))
+		self.assertIsNone(self.func('''$MORE_TOKENS access'''))
+		self.assertIsNone(self.func('''
+			build+run:
+				dev-db/sqlite[>=3.7.0]
+				sys-libs/zlib openssl? ( aaa/stuff )
+			test:
+				dev-lang/tcl'''))
+		self.assertIsNone(self.func('''
+			token2 waka some-stuff? ( yada )
+			build+run:
+				dev-db/sqlite[>=3.7.0] sys-libs/zlib
+				openssl? (
+					aaa/stuff other/stuff
+					waka/waka ) [[ some-crap = [ other-crap ] ]]
+			test:
+				dev-lang/tcl'''))
+
+	def test_groups_invalid(self):
+		exc_chk = lambda src: self.assertRaises(
+			mod.ChkOrderingError, ft.partial(self.func, src) )
+		exc_chk('''aio debug chunk pam
+			nginx_modules_http: access addition auth_basic autoindex
+			nginx_modules_mail: imap pop3 smtp''')
+		exc_chk('''aio debug
+			pam nginx_modules_http: access addition auth_basic
+			nginx_modules_mail: imap pop3 smtp''')
+		exc_chk('''aio debug
+			nginx_modules_http:
+			nginx_modules_mail: imap pop3 smtp''')
+		exc_chk('''nginx_modules_http: test nginx_modules_mail: imap''')
+		exc_chk('''waka? ( stuff ) nginx_modules_http: test''')
+		exc_chk('''build+run:
+				dev-libs/openssl
+				dev-db/sqlite[>=3.7.0]
+				sys-libs/zlib
+			test:
+				dev-lang/tcl''')
+		exc_chk('''build+run:
+				dev-db/sqlite[>=3.7.0]
+				dev-libs/openssl
+				openssh? ( aaa/stuff )
+				sys-libs/zlib
+			test:
+				dev-lang/tcl''')
+		exc_chk('''run:
+				dev-db/sqlite[>=3.7.0]
+				dev-libs/openssl
+				openssh? ( aaa/stuff )
+				sys-libs/zlib
+			build:
+				dev-lang/tcl''')
+
+
+class TestChkDeps(unittest.TestCase):
+
+	@classmethod
+	def setUpClass(cls):
+		cls.func = ft.partial(mod.chk_deps, unwind=True)
+
+	def test_grouper_valid(self):
+		func = ft.partial(mod.chk_ordering, token_grouper=mod._deps_grouper, unwind=True)
+		self.assertIsNone(self.func('''\nbuild+run:\n $WHATEVER\n'''))
+		self.assertIsNone(self.func('''\nbuild+run:\n lib $MORE_TOKENS\n'''))
+		self.assertIsNone(self.func('''\nrun:\n $MORE_TOKENS lib\n'''))
 		self.assertIsNone(func('''
 			build+run:
 				dev-db/sqlite[>=3.7.0]
@@ -197,9 +266,9 @@ class TestChkOrdering(unittest.TestCase):
 			test:
 				dev-lang/tcl'''))
 
-	def test_groups_invalid(self):
+	def test_grouper_invalid(self):
 		exc_chk = lambda src: self.assertRaises( mod.ChkOrderingError,
-			ft.partial(self.func, src, token_grouper=mod._deps_grouper) )
+			ft.partial(mod.chk_ordering, src, token_grouper=mod._deps_grouper, unwind=True) )
 		exc_chk('''build+run:
 				dev-libs/openssl
 				dev-db/sqlite[>=3.7.0]
@@ -213,13 +282,13 @@ class TestChkOrdering(unittest.TestCase):
 				sys-libs/zlib
 			test:
 				dev-lang/tcl''')
-
-
-class TestChkDeps(unittest.TestCase):
-
-	@classmethod
-	def setUpClass(cls):
-		cls.func = ft.partial(mod.chk_deps, unwind=True)
+		exc_chk('''run:
+				dev-db/sqlite[>=3.7.0]
+				dev-libs/openssl
+				openssh? ( aaa/stuff )
+				sys-libs/zlib
+			build:
+				dev-lang/tcl''')
 
 	def test_valid(self):
 		self.assertIsNone(self.func('''
@@ -356,7 +425,7 @@ src_test() {
 		exc_chk(replace(r'gmail\.com', r'example.com'))
 		for spaced_line in 'LICENCES', '# Moar', 'BUGS_TO':
 			exc_chk(replace('\n({})'.format(spaced_line), r'\1'))
-		for spaced_line in 'SLOT', 'PLATFORMS', 'MYOPTIONS', 'DESCRIPTION':
+		for spaced_line in 'SLOT', 'PLATFORMS', 'DESCRIPTION':
 			exc_chk(replace('({})'.format(spaced_line), r'\n\1'))
 		exc_chk(io.StringIO(self.sample.strip()))
 		exc_chk(io.StringIO(self.sample + '\n'))

@@ -148,20 +148,47 @@ def chk_emptyline(src, count=1):
 			if count <= 0: break
 	else: raise ChkEmptylineError('Missing empty line')
 
+def _standard_grouper(tokens):
+	thead, tbuff, token_groups = None, list(), list()
+	token_last = shext = None
+	for token_nl in tokens:
+		token = token_nl.strip()
+		if token.startswith('$'):
+			shext = True
+			continue
+		if token.endswith(':'):
+			if token_last and not token_last[-1] in '\n':
+				raise ChkOrderingError('Inline token group: {}'.format(token[:-1]))
+			if thead and not tbuff and not shext:
+				raise ChkOrderingError('Empty token group: {}'.format(thead))
+			token_groups.append((thead, tbuff))
+			tbuff, shext = list(), False
+			thead = token.rstrip(':')
+		else: tbuff.append(token)
+		token_last = token_nl
+	if tbuff: token_groups.append((thead, tbuff))
+	return token_groups
+
 @chk_wrapper
 def chk_ordering( vardef,
-		token_grouper = lambda tokens: [list(tokens)],
+		token_grouper = _standard_grouper,
 		sort_key = lambda token: token if token\
 			.split(None, 1)[0].endswith('?') else '\x00{}'.format(token),
-		rx = re.compile(r'((~?\S+\n?)(\s+\([^)]+\))?(\s+\[\[.+?\]\])?)', re.DOTALL) ):
-	token_groups = token_grouper(
-		it.imap(op.itemgetter(1), rx.findall(vardef)) )
-	for tokens in token_groups:
+		rx = re.compile(r'(' r'(~?\S+)' r'(\s+\([^)]+\))?' r'(\s+\[\[.+?\]\])?' r'(\n)?' r')', re.DOTALL),
+		**grouper_kwz ):
+	token_groups = token_grouper(it.ifilter( lambda t: t != '||',
+		it.imap(lambda m: m[1] + m[4], rx.findall(vardef)) ), **grouper_kwz)
+	tokens = map( lambda t: '\0' if t is None else t,
+		it.imap(op.itemgetter(0), token_groups) )
+	if tokens != sorted(tokens):
+		raise ChkOrderingError( 'Token groups must be'
+			' sorted:\n  {}\nshould be:\n  {}'.format(
+					' '.join(tokens), ' '.join(sorted(tokens, key=sort_key)) ) )
+	for tokens in it.imap(op.itemgetter(1), token_groups):
 		if sorted(tokens, key=sort_key) != tokens:
 			raise ChkOrderingError( 'Tokens must be'
 				' sorted:\n  {}\nshould be:\n  {}'.format(
-					', '.join(it.imap(repr, tokens)),
-					', '.join(it.imap(repr, sorted(tokens, key=sort_key)))) )
+					' '.join(tokens), ' '.join(sorted(tokens, key=sort_key)) ) )
 
 @chk_wrapper
 def chk_deps(deps):
@@ -170,23 +197,31 @@ def chk_deps(deps):
 	chk_ordering(deps, token_grouper = _deps_grouper)
 
 def _deps_grouper(tokens):
-	thead, tbuff, token_groups = None, list(), dict()
+	thead, tbuff, token_groups = None, list(), list()
+	token_last = shext = None
 	for token_nl in tokens:
 		token = token_nl.strip()
+		if token.startswith('$'):
+			shext = True
+			continue
 		if token.endswith(':'):
+			if token_last and not token_last[-1] in '\n?':
+				raise ChkOrderingError('Inline token group: {}'.format(token[:-1]))
 			if not token_nl.endswith('\n'):
 				raise ChkDepsError('Deps\' categories and their contents are written inline')
 			if thead:
 				if not tbuff:
 					raise ChkDepsError('Empty token group: {}'.format(thead))
-				token_groups[thead], tbuff = tbuff, list()
+				token_groups.append((thead, tbuff))
+				tbuff, shext = list(), False
 			thead = token.rstrip(':')
 		else: tbuff.append(token)
+		token_last = token_nl
 	if tbuff:
 		if thead is None:
 			raise ChkDepsError('Dependencies are not categorized')
-		token_groups[thead] = tbuff
-	return token_groups.viewvalues()
+		token_groups.append((thead, tbuff))
+	return token_groups
 
 
 @ft.partial(chk_wrapper, unwind=False)
@@ -234,7 +269,7 @@ def check_file(src):
 	chk_definition_len(src, 'LICENCES', min_len=1)
 	chk_definition_len(src, 'SLOT', nextline=True, min_len=1)
 	chk_ordering(chk_definition_len(src, 'PLATFORMS', nextline=True, min_len=4))
-	chk_ordering(chk_definition(src, 'MYOPTIONS', nextline=True))
+	chk_ordering(chk_definition(src, 'MYOPTIONS'))
 	chk_emptyline(src)
 
 	deps = chk_definition(src, 'DEPENDENCIES')
