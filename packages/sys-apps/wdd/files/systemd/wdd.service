@@ -1,0 +1,13 @@
+[Unit]
+Description=wdd watchdog
+
+# Killing watchdog (or just pausing it's execution) might result
+#  in a hard-reboot, unless certain options are enabled in the kernel
+[Service]
+Nice=-15
+OOMScoreAdjust=-1000
+KillMode=none
+ExecStart=/sbin/wdd 5 /. /dev/watchdog /proc/self/root /tmp/.
+
+[Install]
+WantedBy=multi-user.target
