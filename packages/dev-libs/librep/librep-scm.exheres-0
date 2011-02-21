@@ -29,14 +29,10 @@ BUGS_TO="mk.fraggod@gmail.com"
 REMOTE_IDS="freshmeat:${PN}"
 
 
+AM_OPTS="--copy --add-missing"
 DEFAULT_SRC_CONFIGURE_PARAMS=(
     --libexecdir=/usr/$(get_libdir)
     --with-gmp --with-ffi --with-readline )
-
-src_prepare() {
-    # eautreconf fails here, I can assume that it's missing --install in libtoolize
-    edo ./autogen.sh --nocfg
-}
 
 src_install() {
     default

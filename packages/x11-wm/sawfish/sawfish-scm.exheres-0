@@ -29,15 +29,11 @@ BUGS_TO="mk.fraggod@gmail.com"
 REMOTE_IDS="freshmeat:${PN}"
 
 
+AM_OPTS="--copy --add-missing"
 DEFAULT_SRC_CONFIGURE_PARAMS=(
     --with-xorg-x11r7 --with-pango --with-gdk-pixbuf --with-nls
     --without-kde4session --without-gnome2session --without-xdmsession )
 DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( xinerama )
-
-src_prepare() {
-    # eautreconf fails here, I can assume that it's missing --install in libtoolize
-    edo ./autogen.sh --nocfg
-}
 
 src_install() {
     default
