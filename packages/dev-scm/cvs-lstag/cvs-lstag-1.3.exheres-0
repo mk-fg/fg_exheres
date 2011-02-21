@@ -6,7 +6,7 @@ SUMMARY="Perl script to list cvs tags."
 HOMEPAGE="http://www.mail-archive.com/info-cvs@gnu.org/msg30596.html"
 DOWNLOADS=""
 
-LICENCES="GPL"
+LICENCES="public-domain"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""

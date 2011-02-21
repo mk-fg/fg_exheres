@@ -5,7 +5,7 @@ require sourceforge [ suffix=tar.gz ]
 
 SUMMARY="Tool to decompress any format using libarchive."
 
-LICENCES="BSD"
+LICENCES="BSD-2"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""

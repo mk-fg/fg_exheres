@@ -9,7 +9,7 @@ SUMMARY="Official python bindings for ZeroMQ library."
 
 HOMEPAGE="http://www.zeromq.org/bindings:python"
 
-LICENCES="LGPL"
+LICENCES="LGPL-3"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""

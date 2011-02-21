@@ -39,7 +39,7 @@ DOWNLOADS="
 LICENCES="
     GPL-2
     nginx_modules:cache_purge? ( BSD-2 [[ note = [ http:cache_purge module ] ]] )
-    nginx_modules:headers_more? ( BSD [[ note = [ http:headers_more module ] ]] )
+    nginx_modules:headers_more? ( BSD-2 [[ note = [ http:headers_more module ] ]] )
     nginx_modules:push? ( MIT [[ note = [ http:push module ] ]] )
     pam? ( as-is )"
 SLOT="0"

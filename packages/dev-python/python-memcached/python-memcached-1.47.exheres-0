@@ -8,7 +8,7 @@ SUMMARY="Pure-python memcached client."
 HOMEPAGE+=" http://www.tummy.com/Community/software/python-memcached/"
 DOWNLOADS+=" ftp://ftp.tummy.com/pub/python-memcached/old-releases/${PNV}.tar.gz"
 
-LICENCES="OSL-2.0"
+LICENCES="PSF-2.2"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""

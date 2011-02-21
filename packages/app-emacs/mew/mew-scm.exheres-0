@@ -11,7 +11,7 @@ SUMMARY="MIME mail reader for Emacs/XEmacs."
 
 HOMEPAGE="http://www.mew.org/"
 
-LICENCES="BSD"
+LICENCES="BSD-3"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""

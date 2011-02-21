@@ -10,7 +10,7 @@ SUMMARY="High-performance, distributed memory object caching system."
 HOMEPAGE="http://code.google.com/p/memcached/"
 DOWNLOADS="http://memcached.googlecode.com/files/${PNV}.tar.gz"
 
-LICENCES="BSD"
+LICENCES="BSD-3"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS="sasl"
