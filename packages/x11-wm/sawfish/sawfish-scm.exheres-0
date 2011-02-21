@@ -4,7 +4,6 @@
 require gnome.org scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
 
 SUMMARY="Extensible window manager using a Lisp dialect as a scripting language."
-DESCRIPTION=""
 
 HOMEPAGE="http://sawfish.wikia.com/"
 
@@ -29,11 +28,18 @@ BUGS_TO="mk.fraggod@gmail.com"
 REMOTE_IDS="freshmeat:${PN}"
 
 
-AM_OPTS="--copy --add-missing"
 DEFAULT_SRC_CONFIGURE_PARAMS=(
     --with-xorg-x11r7 --with-pango --with-gdk-pixbuf --with-nls
     --without-kde4session --without-gnome2session --without-xdmsession )
 DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( xinerama )
+
+src_prepare() {
+    # Nothing seem to create these files, producing the error:
+    #  configure: error: cannot run /bin/sh ./config.sub
+    # Not sure why it needs these at all, see #exherbo logs for 21.02.2010
+    edo cp /usr/share/gnuconfig/config.{sub,guess} .
+    eautoreconf
+}
 
 src_install() {
     default
