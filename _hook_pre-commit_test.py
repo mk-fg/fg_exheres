@@ -344,7 +344,8 @@ require sourceforge flag-o-matic
 # Comment
 
 SUMMARY="Userland client/server for kernel network block device"
-DESCRIPTION=""
+DESCRIPTION="Userland client/server for kernel network
+	block device asd Blah blah blah Waka waka waka Yada yada yada."
 
 LICENCES="GPL-2"
 SLOT="0"
@@ -417,15 +418,16 @@ src_test() {
 			not_(re.compile(rx).search),
 			src or io.StringIO(self.sample) )
 		for missing_line in ('Copyright', 'License', 'require',
-			'SUMMARY', 'DESCRIPTION', 'LICENCES', 'SLOT', 'PLATFORMS', 'MYOPTIONS',
+			'SUMMARY', 'LICENCES', 'SLOT', 'PLATFORMS', 'MYOPTIONS',
 			'DEPENDENCIES', 'BUGS_TO'): exc_chk(drop(missing_line))
+		exc_chk(replace('DESCRIPTION', r'DESCRIPTION=""\n'))
 		exc_chk(replace('DESCRIPTION', r'require stuff\n\0'))
 		exc_chk(replace('require .*', '', 'DEPENDENCIES', r'require stuff\0'))
 		exc_chk(replace('(SLOT.*\n)(PLATFORMS.*\n)', r'\2\1'))
 		exc_chk(replace(r'gmail\.com', r'example.com'))
 		for spaced_line in 'LICENCES', '# Moar', 'BUGS_TO':
 			exc_chk(replace('\n({})'.format(spaced_line), r'\1'))
-		for spaced_line in 'SLOT', 'PLATFORMS', 'DESCRIPTION':
+		for spaced_line in 'SLOT', 'PLATFORMS':
 			exc_chk(replace('({})'.format(spaced_line), r'\n\1'))
 		exc_chk(io.StringIO(self.sample.strip()))
 		exc_chk(io.StringIO(self.sample + '\n'))

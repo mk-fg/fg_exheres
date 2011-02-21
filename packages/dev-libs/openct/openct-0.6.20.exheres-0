@@ -6,7 +6,6 @@
 require multilib systemd-service
 
 SUMMARY="Reader driver interface for various non-standard readers."
-DESCRIPTION=""
 
 HOMEPAGE="http://www.opensc-project.org/openct/"
 DOWNLOADS="http://www.opensc-project.org/files/${PN}/${PNV}.tar.gz"

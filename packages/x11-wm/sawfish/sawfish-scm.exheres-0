@@ -4,7 +4,6 @@
 require gnome.org scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
 
 SUMMARY="Extensible window manager using a Lisp dialect as a scripting language."
-DESCRIPTION=""
 
 HOMEPAGE="http://sawfish.wikia.com/"
 
@@ -35,8 +34,11 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
 DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( xinerama )
 
 src_prepare() {
-    # eautreconf fails here, I can assume that it's missing --install in libtoolize
-    edo ./autogen.sh --nocfg
+    # Nothing seem to create these files, producing the error:
+    #  configure: error: cannot run /bin/sh ./config.sub
+    # Not sure why it needs these at all, see #exherbo logs for 21.02.2010
+    edo cp /usr/share/gnuconfig/config.{sub,guess} .
+    eautoreconf
 }
 
 src_install() {

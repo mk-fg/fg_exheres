@@ -4,7 +4,6 @@
 require systemd-service
 
 SUMMARY="Maintenance daemon for FSCache kernel subsystem."
-DESCRIPTION=""
 
 HOMEPAGE="http://people.redhat.com/~dhowells/fscache/"
 DOWNLOADS="${HOMEPAGE}${PNV}.tar.bz2"

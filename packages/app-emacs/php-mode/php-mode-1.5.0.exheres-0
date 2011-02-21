@@ -4,7 +4,6 @@
 require elisp sourceforge [ suffix=tar.gz ]
 
 SUMMARY="Emacs major mode for editing PHP code."
-DESCRIPTION=""
 
 LICENCES="GPL-3 FDL-1.2"
 SLOT="0"

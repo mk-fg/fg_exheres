@@ -20,7 +20,6 @@ MOD_HEADERS_MORE_SHA1="9508330"
 MOD_PUSH_PNV="nginx_http_push_module-0.692"
 
 SUMMARY="A small and fast HTTP server and mail proxy server."
-DESCRIPTION=""
 
 HOMEPAGE="http://nginx.net/ http://sysoev.ru/nginx/
     http://labs.frickle.com/nginx_ngx_cache_purge/"

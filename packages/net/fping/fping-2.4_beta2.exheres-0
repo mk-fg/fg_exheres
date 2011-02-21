@@ -6,9 +6,6 @@
 require flag-o-matic autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
 
 SUMMARY="A tool to reliably determine if host(s) are up with ICMP ping."
-DESCRIPTION=""
-
-WORK="${WORKBASE}/fping-2.4b2_to-ipv6"
 
 HOMEPAGE="http://www.fping.com/"
 DOWNLOADS="
@@ -25,6 +22,8 @@ DEPENDENCIES=""
 BUGS_TO="mk.fraggod@gmail.com"
 REMOTE_IDS="freshmeat:${PN}"
 
+
+WORK="${WORKBASE}/fping-2.4b2_to-ipv6"
 
 DEFAULT_SRC_PREPARE_PATCHES=( "${FETCHEDDIR}/${PN}_2.4b2-to-ipv6-16.1.diff.gz" )
 

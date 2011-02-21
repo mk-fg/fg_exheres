@@ -6,7 +6,6 @@ SCM_REPOSITORY="git://github.com/zeromq/zeromq2.git"
 require scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
 
 SUMMARY="Library for fast message-based applications."
-DESCRIPTION=""
 
 HOMEPAGE="http://www.zeromq.org/"
 

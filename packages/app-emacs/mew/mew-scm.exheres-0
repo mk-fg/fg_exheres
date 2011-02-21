@@ -8,7 +8,6 @@ SCM_REPOSITORY="git://github.com/kazu-yamamoto/Mew.git"
 require elisp scm-git
 
 SUMMARY="MIME mail reader for Emacs/XEmacs."
-DESCRIPTION=""
 
 HOMEPAGE="http://www.mew.org/"
 

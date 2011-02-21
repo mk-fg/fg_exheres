@@ -9,7 +9,6 @@ SCM_CVS_UPDATE_OPTIONS=( -P -I.scm.exlib.timestamp )
 require elisp scm-cvs autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
 
 SUMMARY="A simple Emacs interface to w3m."
-DESCRIPTION=""
 
 HOMEPAGE="http://emacs-w3m.namazu.org/"
 

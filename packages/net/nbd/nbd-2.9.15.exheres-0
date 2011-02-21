@@ -6,7 +6,6 @@
 require sourceforge flag-o-matic
 
 SUMMARY="Userland client/server for kernel network block device"
-DESCRIPTION=""
 
 LICENCES="GPL-2"
 SLOT="0"

@@ -4,7 +4,6 @@
 require systemd-service sourceforge
 
 SUMMARY="MooseFS distributed parallel fault-tolerant filesystem."
-DESCRIPTION=""
 
 MY_PNV="mfs-${PV}"
 WORK="${WORKBASE}/${MY_PNV}"

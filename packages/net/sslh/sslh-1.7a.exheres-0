@@ -4,7 +4,6 @@
 require systemd-service
 
 SUMMARY="Little hack which accepts both https and ssh connection on the same port."
-DESCRIPTION=""
 
 HOMEPAGE="http://www.rutschle.net/tech/sslh.shtml"
 DOWNLOADS="http://www.rutschle.net/tech/${PNV}.tar.gz"

@@ -6,7 +6,6 @@
 require systemd-service
 
 SUMMARY="Merging locate is an utility to index and quickly search for files"
-DESCRIPTION=""
 
 HOMEPAGE="https://fedorahosted.org/mlocate/"
 DOWNLOADS="https://fedorahosted.org/releases/m/l/mlocate/${PNV}.tar.xz"

@@ -4,7 +4,6 @@
 require pypi distutils
 
 SUMMARY="Pure-python memcached client."
-DESCRIPTION=""
 
 HOMEPAGE+=" http://www.tummy.com/Community/software/python-memcached/"
 DOWNLOADS+=" ftp://ftp.tummy.com/pub/python-memcached/old-releases/${PNV}.tar.gz"

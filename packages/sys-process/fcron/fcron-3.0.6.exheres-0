@@ -6,10 +6,6 @@
 require pam systemd-service
 
 SUMMARY="Simple, high-reliability, distributed software configuration management"
-DESCRIPTION=""
-
-MY_PNV="${PNV/_/-}"
-WORK="${WORKBASE}/${MY_PNV}"
 
 HOMEPAGE="http://fcron.free.fr/"
 DOWNLOADS="http://fcron.free.fr/archives/${MY_PNV}.src.tar.gz -> ${PNV}.tar.gz"
@@ -34,6 +30,9 @@ UPSTREAM_DOCUMENTATION="
     ${HOMEPAGE}doc/en/index.html [[ lang = en ]]
     ${HOMEPAGE}doc/fr/index.html [[ lang = fr ]]"
 
+
+MY_PNV="${PNV/_/-}"
+WORK="${WORKBASE}/${MY_PNV}"
 
 src_prepare() {
     # respect LDFLAGS

@@ -4,7 +4,6 @@
 require gnome.org scm-git sourceforge multilib autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
 
 SUMMARY="Shared library implementing a lightweight Lisp dialect."
-DESCRIPTION=""
 
 DOWNLOADS=""
 
@@ -34,8 +33,11 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
     --with-gmp --with-ffi --with-readline )
 
 src_prepare() {
-    # eautreconf fails here, I can assume that it's missing --install in libtoolize
-    edo ./autogen.sh --nocfg
+    # Nothing seem to create these files, producing the error:
+    #  configure: error: cannot run /bin/sh ./config.sub
+    # Not sure why it needs these at all, see #exherbo logs for 21.02.2010
+    edo cp /usr/share/gnuconfig/config.{sub,guess} .
+    eautoreconf
 }
 
 src_install() {
