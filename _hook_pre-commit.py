@@ -316,24 +316,66 @@ def check_db(cdb):
 	return errors
 
 
-def check_categories():
+def check_categories(): # no tests
 	cat_real = set(os.listdir(join(base_dir, 'packages')))
 	cat_conf = list(it.imap( op.methodcaller('strip'),
 		open(join(base_dir, 'metadata', 'categories.conf')) ))
-	if sorted(cat_conf) != cat_conf: raise ChkMetaError('Categories need to be sorted')
+	if sorted(cat_conf) != cat_conf: signal_error('Categories need to be sorted')
 	cat_conf = set(cat_conf)
 	if cat_conf != cat_real:
 		cat_err = cat_real - cat_conf
-		if cat_err:
-			raise ChkMetaError('Missing categories in metadata: {}'.format(', '.join(cat_err)))
+		if cat_err: signal_error('Missing categories in metadata: {}'.format(', '.join(cat_err)))
 		cat_err = cat_conf - cat_real
-		if cat_err:
-			raise ChkMetaError('Non-existing categories in metadata: {}'.format(', '.join(cat_err)))
-	return 0
+		if cat_err: signal_error('Non-existing categories in metadata: {}'.format(', '.join(cat_err)))
+
+
+def _parse_licences(tokens): # no tests
+	for token in tokens:
+		if token.endswith('?'): continue
+		if token in ['(', ')', '||']: continue
+		if token == '[[':
+			for token in tokens:
+				if token == ']]': break
+			continue
+		yield token
+
+def check_licences(): # no tests
+	from glob import glob
+	masters = it.chain.from_iterable(
+		it.ifilter(None, line.split('=', 1)[-1].split())
+		for line in open(join(base_dir, 'metadata', 'layout.conf'))
+		if line.startswith('masters') )
+	masters = it.chain([join(base_dir, 'licences')], it.chain.from_iterable(
+		[ '/var/db/paludis/*/{}/licences'.format(repo),
+			'/var/db/paludis/*/{}/licenses'.format(repo) ] for repo in masters ))
+	available_licences = set(it.chain.from_iterable(
+		it.imap(os.listdir, it.chain.from_iterable(it.imap(glob, masters))) ))
+
+	from subprocess import Popen, PIPE
+	proc = Popen(['grep', '-rPA10', 'LICENCES=', join(base_dir, 'packages')], stdout=PIPE)
+	src = proc.stdout
+	from ast import literal_eval
+	for line in src:
+		if 'LICENCES' in line:
+			exheres = line.split(':', 1)[0].split(base_dir)[-1].lstrip('/')
+			line = line.split('=', 1)[-1]
+			while True:
+				try: vardef = literal_eval('""{}""'.format(line.strip()))
+				except SyntaxError:
+					try: line += next(src).split('-\t', 1)[-1]
+					except StopIteration:
+						signal_error('LICENCES line is not quoted properly')
+						break
+				else: break
+			unknown_licences = set(_parse_licences(iter(vardef.split()))) - available_licences
+			if unknown_licences:
+				signal_error('Unknown licenses in {}: {}'.format(exheres, ', '.join(unknown_licences)))
+	proc.wait()
+
 
 
 if __name__ == '__main__':
-	errors = 0
-	with checker_db() as cdb: errors += check_db(cdb)
-	errors += check_categories()
-	sys.exit(min(errors, 31))
+	with checker_db() as cdb: check_db(cdb)
+	check_categories()
+	check_licences()
+	sys.exit(min(err_count, 31))
