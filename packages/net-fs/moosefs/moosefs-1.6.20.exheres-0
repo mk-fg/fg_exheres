@@ -66,5 +66,7 @@ else /usr/sbin/mfsmetarestore -a
 fi
 EOF
 
-    nonfatal edo rmdir "${IMAGE}/"{etc,usr/share/man/man{1,5,8}}
+    # There's about 10 combinations of flags, producing different empty
+    #  dirs there, and just looking at Makefile.in gives an eye cancer
+    edo find "${IMAGE}"/{etc,usr/share/man} -type d -empty -delete
 }
