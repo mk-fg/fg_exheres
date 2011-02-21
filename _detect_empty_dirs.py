@@ -5,6 +5,7 @@ from __future__ import unicode_literals, print_function
 ####################
 
 tmp_optz = '/etc/paludis/options.conf.d/check_emptydirs.conf'
+tmp_path = '/var/tmp/paludis/build/{pkg}-*/image/'
 
 ####################
 
@@ -46,7 +47,7 @@ def test_combos(pkg, flags):
 		log.debug('Cave command: {}'.format(' '.join(cave)))
 		Popen(cave, **cave_out).wait()
 
-		try: image, = glob('/var/tmp/paludis/build/{}-*/image/'.format(pkg.split(':', 1)[0].replace('/', '-')))
+		try: image, = glob(tmp_path.format(pkg=pkg.split(':', 1)[0].replace('/', '-')))
 		except (ValueError, IndexError):
 			log.error('Failed to find IMAGE path (combo: {})'.format(combo))
 			continue
