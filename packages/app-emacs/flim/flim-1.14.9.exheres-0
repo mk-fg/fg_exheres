@@ -6,7 +6,6 @@
 require elisp
 
 SUMMARY="Emacs library to provide basic features for message representation and encoding."
-DESCRIPTION=""
 
 HOMEPAGE="http://cvs.m17n.org/elisp/FLIM/"
 DOWNLOADS="http://www.kanji.zinbun.kyoto-u.ac.jp/~tomo/lemi/dist/flim/${PNV%.*}/${PNV}.tar.gz"

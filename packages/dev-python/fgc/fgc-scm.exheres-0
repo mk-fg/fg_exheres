@@ -6,7 +6,6 @@ SCM_REPOSITORY="git://fraggod.net/fgc.git"
 require distutils scm-git
 
 SUMMARY="Miscellaneous utility extensions to python stdlib."
-DESCRIPTION=""
 
 HOMEPAGE="http://fraggod.net/svc/git/fgc"
 

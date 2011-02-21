@@ -6,7 +6,6 @@
 require pam
 
 SUMMARY="pam_p11 is a PAM package for using crpytographic tokens for authentication."
-DESCRIPTION=""
 
 HOMEPAGE="http://www.opensc-project.org/pam_p11/"
 DOWNLOADS="http://www.opensc-project.org/files/${PN}/${PNV}.tar.gz"

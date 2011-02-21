@@ -4,7 +4,6 @@
 #  Copyright 1999-2010 Gentoo Foundation
 
 SUMMARY="Small layer on top of PKCS#11 API to make using PKCS#11 implementations easier."
-DESCRIPTION=""
 
 HOMEPAGE="http://www.opensc-project.org/libp11/"
 DOWNLOADS="http://www.opensc-project.org/files/${PN}/${PNV}.tar.gz"

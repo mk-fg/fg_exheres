@@ -6,7 +6,6 @@ SCM_REPOSITORY="http://pylast.googlecode.com/svn/"
 require distutils scm-svn
 
 SUMMARY="Python last.fm API bindings."
-DESCRIPTION=""
 
 HOMEPAGE="http://code.google.com/p/pylast/"
 DOWNLOADS=""

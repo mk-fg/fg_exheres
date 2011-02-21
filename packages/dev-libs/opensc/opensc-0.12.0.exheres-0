@@ -4,7 +4,6 @@
 #  Copyright 1999-2010 Gentoo Foundation
 
 SUMMARY="SmartCard library and applications."
-DESCRIPTION=""
 
 HOMEPAGE="http://www.opensc-project.org/opensc/"
 DOWNLOADS="http://www.opensc-project.org/files/${PN}/${PNV}.tar.gz"

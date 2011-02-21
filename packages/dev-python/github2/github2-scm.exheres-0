@@ -6,7 +6,6 @@ SCM_REPOSITORY="git://github.com/ask/python-github2.git"
 require pypi distutils scm-git
 
 SUMMARY="Github API v2 library for Python."
-DESCRIPTION=""
 
 HOMEPAGE+=" http://github.com/ask/python-github2"
 DOWNLOADS=""

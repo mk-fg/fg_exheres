@@ -6,7 +6,6 @@ SCM_REPOSITORY="git://github.com/ellisonbg/pyzmq.git"
 require distutils scm-git
 
 SUMMARY="Official python bindings for ZeroMQ library."
-DESCRIPTION=""
 
 HOMEPAGE="http://www.zeromq.org/bindings:python"
 

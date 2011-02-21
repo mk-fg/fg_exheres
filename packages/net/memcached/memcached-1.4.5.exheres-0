@@ -6,7 +6,6 @@
 require flag-o-matic systemd-service autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
 
 SUMMARY="High-performance, distributed memory object caching system."
-DESCRIPTION=""
 
 HOMEPAGE="http://code.google.com/p/memcached/"
 DOWNLOADS="http://memcached.googlecode.com/files/${PNV}.tar.gz"

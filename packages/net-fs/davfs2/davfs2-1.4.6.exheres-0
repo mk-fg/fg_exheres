@@ -4,7 +4,6 @@
 #  Copyright 1999-2010 Gentoo Foundation
 
 SUMMARY="FUSE driver to mount WebDAV resources via neon library."
-DESCRIPTION=""
 
 HOMEPAGE="http://savannah.nongnu.org/projects/davfs2"
 DOWNLOADS="http://download.savannah.gnu.org/releases/${PN}/${PNV}.tar.gz"

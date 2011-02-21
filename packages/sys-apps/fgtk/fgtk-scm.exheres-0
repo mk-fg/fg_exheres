@@ -2,7 +2,6 @@
 # Distributed under the terms of the GNU General Public License v2
 
 SUMMARY="A set of a basic tools for files' and their contents' manipulation."
-DESCRIPTION=""
 
 HOMEPAGE="http://fraggod.net/svc/fossil/fgtk"
 DOWNLOADS=""

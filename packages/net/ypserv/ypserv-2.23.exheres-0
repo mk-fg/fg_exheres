@@ -6,7 +6,6 @@
 require systemd-service
 
 SUMMARY="Network Information Service server."
-DESCRIPTION=""
 
 HOMEPAGE="http://www.linux-nis.org/nis/"
 DOWNLOADS="mirror://kernel/linux/utils/net/NIS/${PNV}.tar.bz2"

@@ -4,7 +4,6 @@
 require distutils
 
 SUMMARY="Feed aggregator written in Python using the Django web development framework."
-DESCRIPTION=""
 
 HOMEPAGE="http://www.feedjack.org/"
 DOWNLOADS=""

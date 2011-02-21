@@ -6,7 +6,6 @@ SCM_REPOSITORY="git://git.lighttpd.net/fcgi-cgi.git"
 require scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
 
 SUMMARY="FastCGI application to run cgi applications."
-DESCRIPTION=""
 
 HOMEPAGE="http://redmine.lighttpd.net/projects/fcgi-cgi"
 

@@ -7,7 +7,6 @@ MY_PNV="${PN}-src-${PV}"
 WORK="${WORKBASE}/${MY_PNV}"
 
 SUMMARY="Light distributed version control system, bug tracking system and wiki software server."
-DESCRIPTION=""
 
 HOMEPAGE="http://www.fossil-scm.org/"
 DOWNLOADS="http://www.fossil-scm.org/download/${MY_PNV}.tar.gz"

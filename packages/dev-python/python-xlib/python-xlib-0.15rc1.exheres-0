@@ -4,7 +4,6 @@
 require sourceforge distutils
 
 SUMMARY="A fully functional X client library for Python."
-DESCRIPTION=""
 
 LICENCES="GPL-2"
 SLOT="0"
