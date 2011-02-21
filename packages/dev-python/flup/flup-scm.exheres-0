@@ -6,12 +6,11 @@ SCM_REPOSITORY="http://hg.saddi.com/flup-server"
 require pypi distutils scm-hg
 
 SUMMARY="Random assortment of WSGI servers."
-DESCRIPTION=""
 
 HOMEPAGE+=" http://trac.saddi.com/flup"
 DOWNLOADS=""
 
-LICENCES="BSD"
+LICENCES="BSD-3"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""

@@ -6,7 +6,6 @@ SCM_REPOSITORY="http://feedparser.googlecode.com/svn"
 require pypi distutils scm-svn
 
 SUMMARY="Parser for RSS and Atom feeds in Python."
-DESCRIPTION=""
 
 HOMEPAGE+=" http://www.feedparser.org/"
 DOWNLOADS=""
