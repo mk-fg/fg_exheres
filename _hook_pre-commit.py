@@ -257,12 +257,15 @@ def check_file(src):
 	del line
 
 	chk_definition_len(src, 'SUMMARY')
-	chk_definition_len( src, 'DESCRIPTION',
-		nextline=True, min_len=None, max_len=200 )
-	chk_emptyline(src)
+	line = next(src)
+	if line.strip():
+		chk_definition_len( it.chain([line], src),
+			'DESCRIPTION', nextline=True, min_len=50, max_len=200 )
+		chk_emptyline(src)
+	del line
 
 	if not exlib_src:
-		chk_definition_len(src, 'HOMEPAGE')
+		chk_definition_len(src, 'HOMEPAGE', nextline=True)
 		chk_definition(src, 'DOWNLOADS', nextline=True)
 		chk_emptyline(src)
 
