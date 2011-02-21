@@ -11,7 +11,7 @@ DESCRIPTION="Drop-in replacement for python binary in shebangs
 HOMEPAGE="http://fraggod.net/prj/ppy/"
 DOWNLOADS="http://fraggod.net/oss/projects/ppy.c"
 
-LICENCES="BSD"
+LICENCES="BSD-2"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""

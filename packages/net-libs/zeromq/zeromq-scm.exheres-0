@@ -9,7 +9,7 @@ SUMMARY="Library for fast message-based applications."
 
 HOMEPAGE="http://www.zeromq.org/"
 
-LICENCES="LGPL"
+LICENCES="GPL-3"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS="doc"

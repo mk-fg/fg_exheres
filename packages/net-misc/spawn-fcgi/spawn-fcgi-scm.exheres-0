@@ -9,7 +9,7 @@ SUMMARY="FCGI spawner for simple event-based webservers."
 
 HOMEPAGE="http://redmine.lighttpd.net/projects/fcgi-cgi"
 
-LICENCES="BSD"
+LICENCES="as-is"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""

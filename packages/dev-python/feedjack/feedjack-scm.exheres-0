@@ -8,7 +8,7 @@ SUMMARY="Feed aggregator written in Python using the Django web development fram
 HOMEPAGE="http://www.feedjack.org/"
 DOWNLOADS=""
 
-LICENCES="BSD"
+LICENCES="BSD-3"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
