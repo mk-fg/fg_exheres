@@ -2,6 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 require multilib
+export_exlib_phases src_install src_test pkg_postinst
 
 SUMMARY="An enhanced syslog daemon for Linux (and Unix)"
 DESCRIPTION="
