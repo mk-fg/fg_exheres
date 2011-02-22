@@ -406,6 +406,25 @@ src_test() {
 		self.assertIsNone(self.func(io.StringIO(self.sample)))
 		self.assertIsNone(self.func(replace('(BUGS_TO.+?\n).*', r'\1')))
 
+	def test_exlib_adhoc(self):
+		pkg_name = 'some-pkg'
+		sample = re.sub(
+			r'(require )', r'\1{} '.format(pkg_name),
+			'\n'.join(it.ifilter(
+				lambda line: line.split('=', 1)[0] not in\
+					['SUMMARY', 'DESCRIPTION', 'LICENCES', 'SLOT'],
+				it.takewhile(
+					lambda line: not line.startswith('MYOPTIONS'),
+					self.sample.splitlines() ) )))
+		self.assertIsNone(self.func(
+			io.StringIO(sample),
+			'{}-1.2.3.exheres-0'.format(pkg_name) ))
+		self.assertRaises(mod.ChkError, ft.partial(
+			self.func, io.StringIO(sample.replace('PLATFORMS', '')) ))
+		self.assertRaises(mod.ChkError, ft.partial(
+			self.func, io.StringIO(re.sub( r'require .*\nPLATFORMS',
+				r'require {}\nPLATFORMS'.format(pkg_name), sample ))))
+
 	def test_invalid(self):
 		exc_chk = lambda src, exc=mod.ChkError:\
 			self.assertRaises(exc, ft.partial(self.func, src))
