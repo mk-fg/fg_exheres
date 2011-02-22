@@ -56,8 +56,11 @@ def test_combos(pkg, flags):
 		empty_dirs = map(op.methodcaller('strip'), proc.stdout)
 		proc.wait()
 
+		# Cleanup to ensure that the next results won't be derived from the same path
+		Popen(['rm', '--one-file-system', '-rf', image]).wait()
+
 		log.info( '\n - Package: {}\n - Flags: {}\n - Empty_dirs:\n{}'\
-			.format(pkg, ' '.join(combo), ''.join('  {}\n'.format(d[2:]) for d in empty_dirs)) )
+			.format(pkg, ' '.join(combo), ''.join('  {}\n'.format(d.split('./', 1)[-1]) for d in empty_dirs)) )
 
 
 cave_out = dict(stdout=open('/dev/null', 'w'), stderr=STDOUT)\
