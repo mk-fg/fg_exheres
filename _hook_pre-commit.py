@@ -225,7 +225,7 @@ def _deps_grouper(tokens):
 
 
 @ft.partial(chk_wrapper, unwind=False)
-def check_file(src):
+def check_file(src, exheres=None):
 	author = chk_copyright(next(src))
 	if author != 'Mike Kazantsev':
 		raise ChkFullError('Forgot to add myself to a copyright')
@@ -245,6 +245,11 @@ def check_file(src):
 			for mod in line.split():
 				if mod in ('sourceforge', 'gnu')\
 					or mod.startswith('scm-'): exlib_src = True
+				# No further checks if exheres is just an extension of ad-hoc exlib
+				if exheres and exheres.startswith(mod):
+					chk_emptyline(src)
+					chk_ordering(chk_definition_len(src, 'PLATFORMS', min_len=4))
+					return
 			chk_emptyline(src)
 			break
 		if line.startswith('SUMMARY'):
@@ -310,7 +315,7 @@ def check_db(cdb):
 
 		print('Checking path: {}'.format(k))
 		err_count = 0
-		check_file(open(path))
+		check_file(open(path), os.path.basename(path))
 		if err_count: errors += 1
 
 	return errors
