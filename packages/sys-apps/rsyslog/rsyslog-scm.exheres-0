@@ -8,6 +8,12 @@ require rsyslog scm-git systemd-service [ systemd_files=[ "${FILES}"/systemd-scm
 
 PLATFORMS="~amd64 ~x86"
 
+DEPENDENCIES="
+    build+run:
+        dev-libs/libee
+        dev-libs/libestr
+"
+
 
 src_install() {
     rsyslog_src_install
