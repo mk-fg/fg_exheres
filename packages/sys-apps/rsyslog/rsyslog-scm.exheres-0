@@ -1,0 +1,14 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://git.adiscon.com/git/rsyslog.git"
+
+require rsyslog scm-git systemd-service [ systemd_files=[ "${FILES}"/systemd-scm ] ]
+
+PLATFORMS="~amd64 ~x86"
+
+
+src_install() {
+    rsyslog_src_install
+    install_systemd_files
+}
