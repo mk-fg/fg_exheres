@@ -1,0 +1,109 @@
+# Copyright 2011 Mike Kazantsev
+# Copyright 2008 Daniel Mierswa <impulze@impulze.org>
+# Distributed under the terms of the GNU General Public License v2
+
+require systemd-service
+
+SUMMARY="Collection of DNS tools."
+DESCRIPTION="A DNS cache, a DNS server and some DNS client utilities."
+
+HOMEPAGE="http://cr.yp.to/djbdns/"
+DOWNLOADS="
+    http://cr.yp.to/djbdns/${PNV}.tar.gz
+    http://www.fefe.de/dns/${PNV}-test23.diff.bz2"
+
+LICENCES="public-domain"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        sys-apps/ucspi-tcp
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_prepare() {
+    edo cd "${WORKBASE}"
+    expatch -p1 "${FILES}"/headtail.patch
+    expatch -p0 "${FILES}"/dnsroots.patch
+    expatch -p0 "${FILES}"/dnstracesort.patch
+
+    edo cd "${WORK}"
+    expatch -p1 "${FILES}"/CVE2009-0858_0001-check-response-domain-name-length.patch
+    edo cp -pR "${WORK}" "${WORK}-noipv6"
+    expatch -p1 "${FETCHEDDIR}/${PNV}-test23.diff.bz2"
+    expatch -p1 "${FILES}"/CVE2008-4392_0001-dnscache-merge-similar-outgoing-queries-ipv6.patch
+    expatch -p1 "${FILES}"/CVE2008-4392_0002-dnscache-cache-soa-records-ipv6.patch
+
+    edo cd "${WORK}-noipv6"
+    expatch -p1 "${FILES}"/CVE2008-4392_0001-dnscache-merge-similar-outgoing-queries.patch
+    expatch -p1 "${FILES}"/CVE2008-4392_0002-dnscache-cache-soa-records.patch
+    expatch -p0 "${FILES}/${PV}"-errno.patch
+}
+
+src_compile() {
+    edo echo "gcc ${CFLAGS}" > conf-cc
+    edo echo "gcc ${LDFLAGS}" > conf-ld
+    edo echo "/usr" > conf-home
+    emake -j1
+
+    edo cd "${WORK}-noipv6"
+    edo echo "gcc ${CFLAGS}" > conf-cc
+    edo echo "gcc ${LDFLAGS}" > conf-ld
+    edo echo "/usr" > conf-home
+    emake -j1 dnstrace
+}
+
+src_install() {
+    insinto /etc
+    doins dnsroots.global
+
+    into /usr
+    dobin *-conf dnscache tinydns walldns rbldns pickdns axfrdns \
+        *-get *-data *-edit dnsip dnsipq dnsname dnstxt dnsmx \
+        dnsfilter random-ip dnsqr dnsq dnstrace dnstracesort
+
+    dobin dnsip6 dnsip6q "${WORK}-noipv6/dnstrace"
+
+    dobin "${FILES}/dnscache-setup"
+    dobin "${FILES}/tinydns-setup"
+    newbin "${FILES}/djbdns-setup-r17" djbdns-setup
+
+    emagicdocs
+    install_systemd_files
+
+    dodir /etc/djbdns/resolver
+    edo cd "${IMAGE}"/etc/djbdns/resolver
+    insinto /etc/djbdns/resolver
+    hereins env.default <<EOF
+UID=65534
+GID=65534
+ROOT=/etc/djbdns/resolver
+IP=
+EOF
+
+    dodir /etc/djbdns/cache
+    edo cd "${IMAGE}"/etc/djbdns/cache
+    insinto /etc/djbdns/cache
+    hereins env.default <<EOF
+UID=65534
+GID=65534
+ROOT=/etc/djbdns/cache
+CACHESIZE=1000000
+FORWARDONLY=1
+IP=
+IPSEND=
+EOF
+}
+
+pkg_postinst() {
+    if [[ ! -e /etc/djbdns/cache/seed ]]; then
+        edo cd /etc/djbdns/cache
+        edo dd if=/dev/urandom of=seed bs=128 count=1
+        edo chown root:root seed
+        edo chmod 600 seed
+    fi
+}

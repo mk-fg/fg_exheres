@@ -1,0 +1,20 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://feedparser.googlecode.com/svn"
+
+require pypi distutils scm-svn
+
+SUMMARY="Parser for RSS and Atom feeds in Python."
+
+HOMEPAGE+=" http://www.feedparser.org/"
+DOWNLOADS=""
+
+LICENCES="PYTHON"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
