@@ -1,0 +1,59 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+# Based upon 'sancho-bin-0.9.4.58-r1.ebuild' from Gentoo, which is:
+#  Copyright 1999-2010 Gentoo Foundation
+
+MY_PNV=${PNV%.*}-${PNV##*.}
+
+SUMMARY="A powerful GUI frontend for MLDonkey."
+
+HOMEPAGE="http://sancho.awardspace.com/"
+DOWNLOADS="
+    java? ( http://fraggod.net/static/mirror/${MY_PNV}-linux-gtk-java.sh )
+    !java? ( http://fraggod.net/static/mirror/${MY_PNV}-linux-gtk.sh )"
+
+LICENCES="CPL-1.0 LGPL-2.1"
+SLOT="0"
+PLATFORMS="~x86"
+MYOPTIONS="java [[ description = [ Use system jvm instead of static bundled libs ] ]]"
+
+DEPENDENCIES="
+    build:
+        app-arch/excat
+    run:
+        x11-libs/gtk+[>=2]
+        x11-libs/libX11
+        x11-libs/libXext
+        x11-libs/libXxf86vm
+        java? ( virtual/jre[>=1.5] )
+"
+
+RESTRICT="strip"
+BUGS_TO="mk.fraggod@gmail.com"
+REMOTE_IDS="freshmeat:${PN}"
+
+
+WORK=$WORKBASE
+
+src_unpack() {
+    # It's a makeself, but of unsupported (by makeself.exlib) version
+    # Patching exlib is possible, but that'd make it 3x as large,
+    #  which I doubt is desirable because of a single use-case
+    local skip input="${FETCHEDDIR}/${ARCHIVES}"
+    skip=$(edo grep -a 'offset=.*head.*wc'\
+        "${input}" | edo awk '{print $3}' | edo head -n 1)
+    skip=$(edo head -n ${skip} "${input}" | wc -c)
+    dd ibs=${skip} skip=1 if="${input}" | excat | tar --no-same-owner -xf -
+}
+
+src_install() {
+    insinto /opt/sancho
+    doins -r distrib lib
+
+    exeinto /opt/sancho
+    doexe sancho
+
+    # Fails when lauched with cwd != /opt/sancho
+    exeinto /opt/bin
+    newexe "${FILES}"/sancho.sh sancho
+}
