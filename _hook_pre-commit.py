@@ -239,7 +239,7 @@ def check_file(src, exheres=None):
 	chk_emptyline(src)
 
 	# sourceforge exlib can define HOMEPAGE and DOWNLOADS
-	exlib_src = False
+	exlib_src = '-scm.' in exheres
 	for line in src:
 		if line.startswith('require'):
 			for mod in line.split():
