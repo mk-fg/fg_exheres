@@ -398,14 +398,6 @@ src_test() {
 }
 '''.replace('{', '{{').replace('}', '}}').replace('%s', '{}').format(datetime.now().year)
 
-	def test_valid(self):
-		replace_ = lambda rx, repl, *more, **kwz: re.sub(
-			rx, repl, replace_(*more, flags=kwz.pop('flags', 0))
-				if more else self.sample, flags=kwz.pop('flags', 0) )
-		replace = lambda *more: io.StringIO(replace_(*more))
-		self.assertIsNone(self.func(io.StringIO(self.sample)))
-		self.assertIsNone(self.func(replace('(BUGS_TO.+?\n).*', r'\1')))
-
 	def test_exlib_adhoc(self):
 		pkg_name = 'some-pkg'
 		sample = re.sub(
@@ -424,6 +416,15 @@ src_test() {
 		self.assertRaises(mod.ChkError, ft.partial(
 			self.func, io.StringIO(re.sub( r'require .*\nPLATFORMS',
 				r'require {}\nPLATFORMS'.format(pkg_name), sample ))))
+
+	def test_valid(self):
+		replace_ = lambda rx, repl, *more, **kwz: re.sub(
+			rx, repl, replace_(*more, flags=kwz.pop('flags', 0))
+				if more else self.sample, flags=kwz.pop('flags', 0) )
+		replace = lambda *more: io.StringIO(replace_(*more))
+		self.assertIsNone(self.func(io.StringIO(self.sample)))
+		self.assertIsNone(self.func(replace('(BUGS_TO.+?\n).*', r'\1')))
+		self.assertIsNone(self.func(replace('(default\n).*', r'\1    --sysconfdir=/etc/special')))
 
 	def test_invalid(self):
 		exc_chk = lambda src, exc=mod.ChkError:\
@@ -444,6 +445,7 @@ src_test() {
 		exc_chk(replace('require .*', '', 'DEPENDENCIES', r'require stuff\0'))
 		exc_chk(replace('(SLOT.*\n)(PLATFORMS.*\n)', r'\2\1'))
 		exc_chk(replace(r'gmail\.com', r'example.com'))
+		exc_chk(replace('(default\n).*', r'\1    --sysconfdir=/etc\n'))
 		for spaced_line in 'LICENCES', '# Moar', 'BUGS_TO':
 			exc_chk(replace('\n({})'.format(spaced_line), r'\1'))
 		for spaced_line in 'SLOT', 'PLATFORMS':

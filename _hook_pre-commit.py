@@ -287,6 +287,22 @@ def check_file(src, exheres=None):
 	if os.environ['EMAIL'] not in chk_definition_len(src, 'BUGS_TO'):
 		raise ChkFullError('No public email (gmail account) specified in BUGS_TO')
 
+	src, src_chk = it.tee(src, 2)
+	econf_included_tokens = dict(it.izip(
+		it.imap('--{}dir'.format, 'man info data doc sysconf localstate'.split(' ')),
+		'/usr/share/man /usr/share/info /usr/share  /etc /var/lib'.split(' ') ))
+	for line in src_chk:
+		for token,val in econf_included_tokens.viewitems():
+			if token in line:
+				line_val = line.split('=', 1)[-1].rstrip('\\\n')
+				if line_val == val:
+					raise ChkFullError( 'Econf-provided'
+						' directive definition specified: {}'.format(token) )
+				else:
+					print('Redefinition of econf-provided'
+						' directive: {} ({} != {})'.format(token, val, line_val))
+	del src_chk
+
 	line, trailing_lines = None, list()
 	for line in src:
 		if not line.strip(): trailing_lines.append(line)
