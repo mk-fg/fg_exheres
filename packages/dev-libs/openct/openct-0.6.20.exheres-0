@@ -33,16 +33,14 @@ REMOTE_IDS="freshmeat:${PN}"
 
 DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( doc "doc api-doc" "pcsc-lite pcsc" )
 DEFAULT_SRC_CONFIGURE_PARAMS=(
-        --docdir="/usr/share/doc/${PNVR}"\
-        --htmldir="/usr/share/doc/${PNVR}/html"\
-        --localstatedir=/var\
-        --disable-sunray\
-        --disable-sunrayclient\
-        --enable-usb\
-        --enable-non-privileged\
-        --with-daemon-user=openct\
-        --with-daemon-groups=usb\
-        --with-udev="/$(get_libdir)/udev" )
+    --localstatedir=/var\
+    --disable-sunray\
+    --disable-sunrayclient\
+    --enable-usb\
+    --enable-non-privileged\
+    --with-daemon-user=openct\
+    --with-daemon-groups=usb\
+    --with-udev="/$(get_libdir)/udev" )
 
 src_install() {
     default
