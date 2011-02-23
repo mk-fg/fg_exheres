@@ -21,10 +21,14 @@ DEPENDENCIES="
 BUGS_TO="mk.fraggod@gmail.com"
 
 
+FOSSIL="${FETCHEDDIR}"/fgtk.fossil
+WORK="${WORKBASE}"
 
 src_fetch_extra() {
-    edo rm -f "$FOSSIL"
-    edo fossil clone "$HOMEPAGE" "$FOSSIL"
+    if [[ ! -e "$FOSSIL" ]]
+    then edo fossil clone "$HOMEPAGE" "$FOSSIL"
+    else edo fossil pull "$HOMEPAGE" -R "$FOSSIL"
+    fi
 }
 
 src_unpack() {
