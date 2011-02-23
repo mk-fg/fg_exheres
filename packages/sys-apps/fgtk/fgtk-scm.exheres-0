@@ -3,7 +3,7 @@
 
 SUMMARY="A set of a basic tools for files' and their contents' manipulation."
 
-HOMEPAGE="http://fraggod.net/svc/fossil/fgtk"
+HOMEPAGE="http://fraggod.net/code/fossil/fgtk"
 DOWNLOADS=""
 
 LICENCES="BSD-2"
