@@ -1,0 +1,32 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://svn.process-one.net/ejabberd-modules/pgsql"
+
+require scm-svn
+
+SUMMARY="Erlang PostgreSQL interface."
+
+HOMEPAGE="https://forge.process-one.net/browse/ejabberd-modules/pgsql/trunk"
+
+LICENCES="EPL-1.1"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-lang/erlang
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_compile() {
+    edo ./build.sh
+}
+
+src_install() {
+    insinto /lib/ejabberd/ebin
+    doins ebin/*.beam
+}

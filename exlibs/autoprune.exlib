@@ -1,0 +1,6 @@
+export_exlib_phases src_install
+
+autoprune_src_install() {
+	default
+	edo find "${IMAGE}" -xdev -type d -empty -delete
+}
