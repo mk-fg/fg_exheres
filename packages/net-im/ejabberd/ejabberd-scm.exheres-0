@@ -28,3 +28,9 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 WORK="${WORK}/src"
+
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLED=( pam )
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --disable-odbc --disable-eldap
+    --enable-ejabberd_zlib --enable-web --enable-tls
+    --enable-mod_pubsub --enable-mod_muc --enable-mod_proxy65 )
