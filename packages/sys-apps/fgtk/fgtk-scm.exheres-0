@@ -15,6 +15,7 @@ DEPENDENCIES="
     build:
         dev-scm/fossil
     build+run:
+        dev-python/dbus-python
         dev-python/fgc
 "
 
