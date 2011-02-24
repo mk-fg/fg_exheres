@@ -294,7 +294,7 @@ def check_file(src, exheres=None):
 	for line in src_chk:
 		for token,val in econf_included_tokens.viewitems():
 			if token in line:
-				line_val = line.split('=', 1)[-1].rstrip('\\\n')
+				line_val = line.split('=', 1)[-1].split(None, 1)[0].rstrip('\\\n')
 				if line_val == val:
 					raise ChkFullError( 'Econf-provided'
 						' directive definition specified: {}'.format(token) )
