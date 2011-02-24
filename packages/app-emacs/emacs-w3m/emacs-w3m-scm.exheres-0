@@ -43,10 +43,6 @@ EMAKE_PARAMS=(
 # 	cvs up
 # }
 
-src_prepare() {
-    eautoreconf
-}
-
 src_compile() {
     emake "${EMAKE_PARAMS[@]}"
 }
