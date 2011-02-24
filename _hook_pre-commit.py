@@ -79,7 +79,7 @@ def chk_wrapper(func, unwind=True):
 @chk_wrapper
 def chk_copyright( line, prior=False,
 		rx = re.compile( r'^# Copyright'
-			r' (?P<dates>(?P<date>\d+)(-(?P<date_ext>\d+))?)'
+			r' (?P<dates>(?P<date>\d+)(-(?P<date_ext>\d+))?(,\s*\d+)*)'
 			r' (?P<author>.+)$' ) ):
 	match = rx.match(line)
 	if not match: return False
