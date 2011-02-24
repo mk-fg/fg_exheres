@@ -7,7 +7,7 @@
 MY_PV=14B01 # paludis fails to parse this
 MY_PNV="otp_src_R${MY_PV}"
 
-require multilib
+require autoprune
 
 SUMMARY="Erlang programming language, runtime environment, and large collection of libraries."
 
@@ -31,10 +31,4 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 WORK="${WORKBASE}/${MY_PNV}"
-
 DEFAULT_SRC_CONFIGURE_PARAMS=( --hates=docdir --enable-dynamic-ssl-lib )
-
-src_install() {
-    default
-    edo find "${IMAGE}" -depth -type d -empty -delete
-}

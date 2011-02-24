@@ -3,7 +3,7 @@
 
 SCM_REPOSITORY="git://git.process-one.net/ejabberd/mainline.git"
 
-require scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+require scm-git autoprune autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
 
 SUMMARY="Cross-platform, fault-tolerant, clusterable and modular Jabber/XMPP instant messaging server."
 
@@ -28,8 +28,7 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 WORK="${WORK}/src"
-
-DEFAULT_SRC_CONFIGURE_OPTION_ENABLED=( pam )
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( pam )
 DEFAULT_SRC_CONFIGURE_PARAMS=(
     --disable-odbc --disable-eldap
     --enable-ejabberd_zlib --enable-web --enable-tls
