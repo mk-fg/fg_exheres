@@ -1,0 +1,14 @@
+[Unit]
+Description=ejabberd
+Requires=network.target
+After=network.target
+
+[Service]
+Type=forking
+User=jabber
+Group=jabber
+ExecStart=/usr/sbin/ejabberdctl start
+ExecStop=/usr/sbin/ejabberdctl stop
+
+[Install]
+WantedBy=multi-user.target

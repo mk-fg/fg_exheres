@@ -1,0 +1,40 @@
+From 6367bfb177b8db091937ca6cef265c35d6736570 Mon Sep 17 00:00:00 2001
+From: Mike Kazantsev <mk.fraggod@gmail.com>
+Date: Fri, 25 Feb 2011 10:19:24 +0500
+Subject: [PATCH] gen_storage_odbc: fixed odbc/pgsql creation statement for primary keys
+
+---
+ src/gen_storage_odbc.erl |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/gen_storage_odbc.erl b/src/gen_storage_odbc.erl
+index 9fd56b4..dcb0e8d 100644
+--- a/gen_storage_odbc.erl
++++ b/gen_storage_odbc.erl
+@@ -167,7 +167,7 @@ create_table(#tabdef{name = Tab,
+ 	       %% last_activity key (text, text) with this error:
+ 	       %% #42000Specified key was too long; max key length is 1000bytes"
+ 	       %% Similarly for rosteritem and other tables, maybe also PgSQL.
+-	       set -> [", PRIMARY KEY (", string:join(K, "(105), "), "(105))"];
++	       set -> [", PRIMARY KEY (", string:join(K, ", "), ")"];
+ 	       bag -> []
+ 	   end,
+     case odbc_command(Host,
+@@ -614,12 +614,12 @@ transaction(#tabdef{host = Host}, Fun) ->
+     %% ejabberd_odbc already returns mnesia-style tuples
+     ejabberd_odbc:sql_transaction(Host, Fun).
+ 
+-%% Mnesia has async_dirty, maybe ODBC has something similar: 
++%% Mnesia has async_dirty, maybe ODBC has something similar:
+ %% "Call the Fun in a context which is not protected by a transaction."
+ async_dirty(Tab, Fun) ->
+     transaction(Tab, Fun).
+ 
+-%% Mnesia has sync_dirty, maybe ODBC has something similar: 
++%% Mnesia has sync_dirty, maybe ODBC has something similar:
+ %% "Call the Fun in a context which is not protected by a transaction."
+ %% "The difference [with async_dirty] is that the operations are performed
+ %%  synchronously. The caller waits for the updates to be performed on all
+-- 
+1.7.4.1
+

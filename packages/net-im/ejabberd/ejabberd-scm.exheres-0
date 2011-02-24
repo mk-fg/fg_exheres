@@ -3,7 +3,7 @@
 
 SCM_REPOSITORY="git://git.process-one.net/ejabberd/mainline.git"
 
-require scm-git autoprune autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+require autoprune scm-git systemd-service autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
 
 SUMMARY="Cross-platform, fault-tolerant, clusterable and modular Jabber/XMPP instant messaging server."
 
@@ -18,18 +18,33 @@ DEPENDENCIES="
     build+run:
         dev-lang/erlang
         dev-libs/openssl
+        group/jabber
         sys-libs/zlib
+        user/jabber
         pam? ( sys-libs/pam )
     run:
-        postgresql? ( dev-erlang/erlang-pgsql )
+        postgresql? (
+            dev-lang/erlang[odbc]
+            dev-erlang/erlang-pgsql )
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
 
 
 WORK="${WORK}/src"
-DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( pam )
+DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}"/pgsql_pkey.patch )
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( pam 'postgresql odbc' )
 DEFAULT_SRC_CONFIGURE_PARAMS=(
-    --localstatedir=/var --disable-odbc --disable-eldap
+    --localstatedir=/var --disable-eldap --enable-user=jabber
     --enable-ejabberd_zlib --enable-web --enable-tls
     --enable-mod_pubsub --enable-mod_muc --enable-mod_proxy65 )
+
+src_install() {
+    insinto /etc/tmpfiles.d
+    hereins ejabberd.conf <<EOF
+d /var/run/ejabberd 0700 jabber jabber -
+d /var/log/ejabberd 0755 jabber jabber -
+EOF
+    install_systemd_files
+    autoprune_src_install
+}
