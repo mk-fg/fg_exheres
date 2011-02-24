@@ -1,0 +1,41 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://gitorious.org/pyicqt/mainline.git"
+
+require python scm-git
+
+SUMMARY="Python-based jabber transport for ICQ protocol."
+
+HOMEPAGE="http://code.google.com/p/pyicqt/"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="webinterface"
+
+DEPENDENCIES="
+    run:
+        dev-python/twisted
+        webinterface? ( dev-python/nevow )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_prepare() {
+    expatch "${FILES}"/reconnect.patch
+}
+
+src_install() {
+    insinto "$(python_get_sitedir)/${PN}"
+    doins -r data src tools
+    newins PyICQt.py "${PN}.py"
+
+    herebin pyicqt <<EOF
+#!/bin/sh
+exec python $(python_get_sitedir)/${PN}/${PN}.py "\$@"
+EOF
+
+    dodoc config_example.xml
+}

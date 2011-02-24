@@ -1,0 +1,78 @@
+diff --git a/src/legacy/icqt.py b/src/legacy/icqt.py
+index d6fce48..923f33e 100644
+--- a/src/legacy/icqt.py
++++ b/src/legacy/icqt.py
+@@ -70,7 +70,7 @@ class B(oscar.BOSConnection):
+ 		oscar.BOSConnection.connectionLost(self, reason)
+ 
+ 		try:
+-			self.session.removeMe()
++			self.session.connectionLost()
+ 		except:
+ 			pass
+ 
+diff --git a/src/session.py b/src/session.py
+index f2c3212..0f9a8fe 100644
+--- a/src/session.py
++++ b/src/session.py
+@@ -41,6 +41,7 @@ class Session(jabw.JabberConnection):
+ 		LogEvent(INFO, jabberID)
+ 		
+ 		self.pytrans = pytrans
++		self.active_close = None # Whether session was closed actively (by us) or not
+ 		self.alive = True
+ 		self.ready = False # Only ready when we're logged into the legacy service
+ 		self.jabberID = jabberID # the JabberID of the Session's user
+@@ -61,7 +62,9 @@ class Session(jabw.JabberConnection):
+ 					# 4 = pep based avatar
+ 		self.lang = ulang
+ 
+-		if rosterID.resource == "registered":
++		if isinstance(rosterID, bool):
++			self.registeredmunge = rosterID
++		elif rosterID.resource == "registered":
+ 			self.registeredmunge = True
+ 		else:
+ 			self.registeredmunge = False
+@@ -97,6 +100,13 @@ class Session(jabw.JabberConnection):
+ 			self.pytrans.serviceplugins['Statistics'].stats["MaxConcurrentSessions"] = len(self.pytrans.sessions)+1
+ 		self.pytrans.serviceplugins['Statistics'].sessionUpdate(self.jabberID, "Connections", 1)
+ 	
++	def connectionLost(self):
++		"""Marks session as passively-closed ("in a non-clean fashion"), if nothing suggests otherwise.
++			Inteneded to be called from similar method in icq connection object.
++			Flag is used to determine whether it's necessary to re-create session."""
++		if self.active_close is None: self.active_close = False
++		self.removeMe()
++
+ 	def removeMe(self):
+ 		""" Safely removes the session object, including sending <presence type="unavailable"/> messages for each legacy related item on the user's contact list """
+ 		# Send offline presence to Jabber ID
+@@ -105,6 +115,9 @@ class Session(jabw.JabberConnection):
+ 		
+ 		LogEvent(INFO, self.jabberID)
+ 		
++		# Mark session as closed by us, unless already set otherwise
++		if self.active_close is None: self.active_close = True
++
+ 		# Mark as dead
+ 		self.alive = False
+ 		self.ready = False
+@@ -129,6 +142,17 @@ class Session(jabw.JabberConnection):
+ 		if self.pytrans:
+ 			# Remove us from the session list
+ 			del self.pytrans.sessions[self.jabberID]
++
++			if self.active_close is False:
++				# Schedule reconnect
++				from twisted.internet import reactor
++				def restore_session(pytrans=self.pytrans, jid=self.jabberID, ulang=self.lang, reg=self.registeredmunge):
++					s = makeSession(pytrans, jid, ulang, reg)
++					if s:
++						pytrans.sessions[jid] = s
++						LogEvent(INFO, msg="Re-created broken session")
++				reactor.callLater(5, restore_session)
++
+ 			# Clean up the no longer needed reference
+ 			self.pytrans = None
+ 		
