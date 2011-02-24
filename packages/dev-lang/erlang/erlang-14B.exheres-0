@@ -1,0 +1,40 @@
+# Copyright 2011 Mike Kazantsev
+# Copyright 2009 Richard Brown
+# Distributed under the terms of the GNU General Public License v2
+# Based in part upon 'erlang-12.2.5-r1.ebuild' from Gentoo, which is:
+#  Copyright 1999-2009 Gentoo Foundation
+
+MY_PV=14B01 # paludis fails to parse this
+MY_PNV="otp_src_R${MY_PV}"
+
+require multilib
+
+SUMMARY="Erlang programming language, runtime environment, and large collection of libraries."
+
+HOMEPAGE="http://www.erlang.org/"
+DOWNLOADS="http://erlang.org/download/${MY_PNV}.tar.gz"
+
+LICENCES="EPL-1.1"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="odbc"
+
+DEPENDENCIES="
+    build+run:
+        dev-lang/perl
+        dev-libs/openssl
+        sys-libs/ncurses
+        odbc? ( dev-db/unixODBC )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="${WORKBASE}/${MY_PNV}"
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --hates=docdir --enable-dynamic-ssl-lib )
+
+src_install() {
+    default
+    edo find "${IMAGE}" -depth -type d -empty -delete
+}
