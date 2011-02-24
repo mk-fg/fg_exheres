@@ -1,0 +1,33 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://dbus-tools.googlecode.com/svn"
+
+require scm-svn zsh-completion
+
+SUMMARY="A set of tools to help developers playing with DBus."
+
+HOMEPAGE="http://code.google.com/p/dbus-tools/"
+DOWNLOADS=""
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-lang/python
+        dev-python/dbus-python
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+ZSH_COMPLETIONS=( _dbus )
+
+src_install() {
+    dobin dbus
+    install-zsh-completions
+    emagicdocs
+}
