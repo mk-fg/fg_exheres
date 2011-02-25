@@ -185,6 +185,9 @@ def chk_ordering( vardef,
 			' sorted:\n  {}\nshould be:\n  {}'.format(
 					' '.join(tokens), ' '.join(sorted(tokens, key=sort_key)) ) )
 	for tokens in it.imap(op.itemgetter(1), token_groups):
+		if ')' in tokens or '(' in tokens:
+			print('SKIPPED: Failed to parse tokens: {}'.format(', '.join(tokens)))
+			continue
 		if sorted(tokens, key=sort_key) != tokens:
 			raise ChkOrderingError( 'Tokens must be'
 				' sorted:\n  {}\nshould be:\n  {}'.format(
@@ -259,7 +262,7 @@ def check_file(src, exheres=None):
 			break
 	src, src_chk = it.tee(src, 2)
 	for line in src_chk:
-		if line.strip().startswith('require'):
+		if line.strip().startswith('require '):
 			raise ChkFullError('More than one or misplaced require line')
 	del line
 
@@ -281,7 +284,8 @@ def check_file(src, exheres=None):
 		chk_definition_len(src, 'SLOT', nextline=True, min_len=1)
 	chk_ordering(chk_definition_len(src, 'PLATFORMS', nextline=not exlib_meta, min_len=4))
 	if not exlib_meta:
-		chk_ordering(chk_definition(src, 'MYOPTIONS'))
+		optz = chk_definition(src, 'MYOPTIONS')
+		if 'requires' not in optz: chk_ordering(optz)
 		chk_emptyline(src)
 
 	deps = chk_definition(src, 'DEPENDENCIES')
