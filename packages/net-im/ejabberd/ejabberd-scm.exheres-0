@@ -25,7 +25,7 @@ DEPENDENCIES="
     run:
         postgresql? (
             dev-lang/erlang[odbc]
-            dev-erlang/erlang-pgsql )
+            net-im/ejabberd-pgsql )
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
