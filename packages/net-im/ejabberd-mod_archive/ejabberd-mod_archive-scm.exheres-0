@@ -1,24 +1,15 @@
 # Copyright 2011 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="git://github.com/ndl/mod_archive2.git"
-
-require scm-git ejabberd-module
+require ejabberd-module
 
 SUMMARY="ejabberd module to support history archiving standard XEP-136."
 
-HOMEPAGE="http://www.ejabberd.im/mod_archive2"
-
-LICENCES="GPL-3"
-SLOT="0"
 PLATFORMS="~amd64 ~x86"
-MYOPTIONS=""
 
 DEPENDENCIES=""
 
 BUGS_TO="mk.fraggod@gmail.com"
 
 
-src_compile() {
-    edo ./make.sh
-}
+DEFAULT_SRC_PREPARE_PATCHES=( -lp0 "${FILES}/webview.patch" )

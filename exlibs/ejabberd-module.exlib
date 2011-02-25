@@ -17,10 +17,14 @@ DEPENDENCIES="
 "
 
 if ever is_scm && [[ -z "$SCM_REPOSITORY" ]]; then
-	SCM_REPOSITORY="https://svn.process-one.net/ejabberd-modules/${EJ_MODULE}"
-	require scm-svn
-fi
+	SCM_SVN_RAW_URI=true
+	SCM_REPOSITORY="https://svn.process-one.net/ejabberd-modules"
+	SCM_CHECKOUT_TO="ejabberd-modules"
 
+	require scm-svn
+
+	WORK="${WORK}/${EJ_MODULE}/trunk"
+fi
 
 ejabberd-module_src_compile() {
 	edo ./build.sh
