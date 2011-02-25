@@ -240,11 +240,13 @@ def check_file(src, exheres=None):
 
 	# sourceforge exlib can define HOMEPAGE and DOWNLOADS
 	exlib_src = '-scm.' in exheres
+	exlib_meta = False
 	for line in src:
 		if line.startswith('require'):
 			for mod in line.split():
 				if mod in ('sourceforge', 'gnu')\
 					or mod.startswith('scm-'): exlib_src = True
+				if mod == 'ejabberd-module': exlib_meta = True
 				# No further checks if exheres is just an extension of ad-hoc exlib
 				if exheres and exheres.startswith(mod):
 					chk_emptyline(src)
@@ -274,11 +276,13 @@ def check_file(src, exheres=None):
 		chk_definition(src, 'DOWNLOADS', nextline=True)
 		chk_emptyline(src)
 
-	chk_definition_len(src, 'LICENCES', min_len=1)
-	chk_definition_len(src, 'SLOT', nextline=True, min_len=1)
-	chk_ordering(chk_definition_len(src, 'PLATFORMS', nextline=True, min_len=4))
-	chk_ordering(chk_definition(src, 'MYOPTIONS'))
-	chk_emptyline(src)
+	if not exlib_meta:
+		chk_definition_len(src, 'LICENCES', min_len=1)
+		chk_definition_len(src, 'SLOT', nextline=True, min_len=1)
+	chk_ordering(chk_definition_len(src, 'PLATFORMS', nextline=not exlib_meta, min_len=4))
+	if not exlib_meta:
+		chk_ordering(chk_definition(src, 'MYOPTIONS'))
+		chk_emptyline(src)
 
 	deps = chk_definition(src, 'DEPENDENCIES')
 	if deps: chk_deps(deps)

@@ -3,7 +3,7 @@
 
 require ejabberd-module
 
-SUMMARY="Erlang/ejabberd PostgreSQL interface."
+SUMMARY="ejabberd module for additional ejabberdctl commands."
 
 PLATFORMS="~amd64 ~x86"
 

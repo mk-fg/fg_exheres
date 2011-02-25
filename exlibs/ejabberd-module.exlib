@@ -1,0 +1,32 @@
+
+export_exlib_phases src_compile src_install
+require multilib
+
+EJ_MODULE=${PN/ejabberd-/}
+HOMEPAGE="https://forge.process-one.net/browse/ejabberd-modules/${EJ_MODULE}/trunk"
+
+LICENCES="EPL-1.1"
+SLOT="0"
+MYOPTIONS=""
+
+DEPENDENCIES="
+	build+run:
+		dev-lang/erlang
+	run:
+		net-im/ejabberd
+"
+
+if ever is_scm && [[ -z "$SCM_REPOSITORY" ]]; then
+	SCM_REPOSITORY="https://svn.process-one.net/ejabberd-modules/${EJ_MODULE}"
+	require scm-svn
+fi
+
+
+ejabberd-module_src_compile() {
+	edo ./build.sh
+}
+
+ejabberd-module_src_install() {
+	insinto /usr/$(get_libdir)/ejabberd/ebin
+	find -name '*.beam' | xargs -n1 doins
+}

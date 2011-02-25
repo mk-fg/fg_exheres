@@ -3,7 +3,7 @@
 
 SCM_REPOSITORY="git://github.com/ndl/mod_archive2.git"
 
-require scm-git
+require scm-git ejabberd-module
 
 SUMMARY="ejabberd module to support history archiving standard XEP-136."
 
@@ -14,19 +14,11 @@ SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
-DEPENDENCIES="
-    build+run:
-        dev-lang/erlang
-"
+DEPENDENCIES=""
 
 BUGS_TO="mk.fraggod@gmail.com"
 
 
 src_compile() {
     edo ./make.sh
-}
-
-src_install() {
-    insinto /usr/lib/ejabberd/ebin
-    doins ebin/*.beam
 }
