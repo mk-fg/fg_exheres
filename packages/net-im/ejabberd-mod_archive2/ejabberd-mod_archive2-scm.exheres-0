@@ -1,0 +1,26 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/ndl/mod_archive2.git"
+
+require scm-git ejabberd-module
+
+SUMMARY="ejabberd 3.x.x module to support history archiving standard XEP-136."
+
+HOMEPAGE="https://github.com/ndl/mod_archive2"
+
+PLATFORMS="~amd64 ~x86"
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_prepare() {
+    edo sed -i '/test\//d' Emakefile
+    edo mkdir -p ebin/tools
+}
+
+src_compile() {
+    edo erl -make
+}
