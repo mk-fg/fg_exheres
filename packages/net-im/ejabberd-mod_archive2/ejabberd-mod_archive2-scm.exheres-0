@@ -20,3 +20,13 @@ DEPENDENCIES="
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_compile() {
+    edo ./make.sh
+}
+
+src_install() {
+    insinto /usr/lib/ejabberd/ebin
+    doins ebin/*.beam
+}
