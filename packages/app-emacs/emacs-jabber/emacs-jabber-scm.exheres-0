@@ -1,0 +1,33 @@
+# Copyright 2011 Mike Kazantsev
+# Copyright 2009 Elias Pipping <pipping@exherbo.org>
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://emacs-jabber.git.sourceforge.net/gitroot/emacs-jabber/emacs-jabber"
+
+require scm-git elisp-module sourceforge [ suffix=tar.lzma ]
+
+SUMMARY="A Jabber client for Emacs."
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        app-arch/xz
+    build+run:
+        app-editors/emacs
+    suggestion:
+        dev-libs/gnutls [[ description = [ For use with Google Talk ] ]]
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --disable-schemas-install )
+
+src_install() {
+    default
+    elisp-install-site-file
+}
