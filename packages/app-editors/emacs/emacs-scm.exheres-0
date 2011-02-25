@@ -4,9 +4,9 @@
 # Based in part upon 'emacs-22.2-r2.ebuild' from Gentoo, which is:
 #     Copyright 1999-2008 Gentoo Foundation.
 
-SCM_REPOSITORY="bzr://bzr.savannah.gnu.org/emacs"
+SCM_REPOSITORY="git://git.savannah.gnu.org/emacs.git"
 
-require scm-bzr game alternatives elisp-module
+require scm-git game alternatives elisp-module
 
 SUMMARY="The extensible, customizable, self-documenting, real-time display editor"
 
