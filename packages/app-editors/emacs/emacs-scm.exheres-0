@@ -6,7 +6,7 @@
 
 SCM_REPOSITORY="git://git.savannah.gnu.org/emacs.git"
 
-require scm-git game alternatives elisp-module
+require scm-git alternatives elisp-module
 
 SUMMARY="The extensible, customizable, self-documenting, real-time display editor"
 
@@ -104,14 +104,6 @@ src_install() {
 (require 'site-exherbo)
 EOF
 
-    keepdir /var/lib/games/emacs
-    dovarlibgames -R
-    # they lose group write permission anyway after being updated
-    edo chmod g-w "${IMAGE}"/var/lib/games/emacs/*
-    preserve_scores "${IMAGE}"/var/lib/games/emacs/*
-    edo chown wizard:games "${IMAGE}"/usr/libexec/emacs/${PV}/${CHOST}/update-game-score
-    edo chmod ug+s "${IMAGE}"/usr/libexec/emacs/${PV}/${CHOST}/update-game-score
-
     local i
     for i in "${IMAGE}"/usr/share/info/${PN}/*; do
         edo mv "${i}" "${i}.info"
@@ -130,7 +122,6 @@ EOF
 }
 
 pkg_postinst() {
-    game_pkg_postinst
     alternatives_pkg_postinst
     elisp-generate-global-site-file
 }

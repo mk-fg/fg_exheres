@@ -4,7 +4,7 @@
 #  Copyright 1999-2010 Gentoo Foundation
 
 SCM_REPOSITORY=":pserver:anonymous@cvs.namazu.org:/storage/cvsroot"
-SCM_CVS_UPDATE_OPTIONS=( -P -I.scm.exlib.timestamp )
+SCM_SUBPATH="."
 
 require elisp scm-cvs autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
 
@@ -32,16 +32,20 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
     --with-lispdir="${ELISP_SITE_LISP}/${PN}"
     --with-icondir="${ELISP_SITE_LISP}/${PN}/etc" )
 
+WORK="${WORK}/${PN}"
+
 EMAKE_PARAMS=(
     lispdir="${IMAGE}${ELISP_SITE_LISP}/${PN}"
     ICONDIR="${IMAGE}${ELISP_SITE_LISP}/${PN}/etc"
     infodir="${IMAGE}/usr/share/info" )
 
-# scm_src_fetch_extra() {
-# 	# Vanilla src_fetch_extra fails
-# 	cd $(scm_get_var CHECKOUT_TO)
-# 	cvs up
-# }
+src_fetch_extra() {
+    if [[ -d $(scm_get_var CHECKOUT_TO) ]]; then
+        edo cd $(scm_get_var CHECKOUT_TO)
+        edo cvs up -dP
+    else scm_src_fetch_extra
+    fi
+}
 
 src_compile() {
     emake "${EMAKE_PARAMS[@]}"

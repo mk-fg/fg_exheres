@@ -29,7 +29,7 @@ REMOTE_IDS="freshmeat:${PN}"
 DEFAULT_SRC_INSTALL_PARAMS=( PREFIX="${IMAGE}/usr" INSTALLINFO=echo )
 
 src_compile() {
-    default
+    nonfatal emake
     option taglib && emake emms-print-metadata
 }
 
