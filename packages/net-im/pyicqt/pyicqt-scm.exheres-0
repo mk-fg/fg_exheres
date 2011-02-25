@@ -16,6 +16,7 @@ MYOPTIONS="webinterface"
 
 DEPENDENCIES="
     run:
+        dev-python/Imaging
         dev-python/twisted
         webinterface? ( dev-python/nevow )
 "
