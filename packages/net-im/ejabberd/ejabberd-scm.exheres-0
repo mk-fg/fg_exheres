@@ -42,7 +42,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
 src_install() {
     insinto /etc/tmpfiles.d
     hereins ejabberd.conf <<EOF
-d /var/run/ejabberd 0700 jabber jabber -
+d /var/lib/ejabberd 0700 jabber jabber -
 d /var/log/ejabberd 0755 jabber jabber -
 EOF
     install_systemd_files
