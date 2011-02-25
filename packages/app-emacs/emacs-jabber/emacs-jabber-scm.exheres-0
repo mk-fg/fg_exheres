@@ -4,7 +4,7 @@
 
 SCM_REPOSITORY="git://emacs-jabber.git.sourceforge.net/gitroot/emacs-jabber/emacs-jabber"
 
-require scm-git elisp-module sourceforge [ suffix=tar.lzma ]
+require scm-git elisp sourceforge [ suffix=tar.lzma ] autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
 
 SUMMARY="A Jabber client for Emacs."
 
@@ -14,10 +14,6 @@ PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
 DEPENDENCIES="
-    build:
-        app-arch/xz
-    build+run:
-        app-editors/emacs
     suggestion:
         dev-libs/gnutls [[ description = [ For use with Google Talk ] ]]
 "
@@ -27,7 +23,16 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 DEFAULT_SRC_CONFIGURE_PARAMS=( --disable-schemas-install )
 
+src_prepare() {
+    eautoreconf
+    edo sed -i '/AX_CHECK_EMACS_LIB/d' configure
+}
+
+src_compile() {
+    nonfatal emake
+}
+
 src_install() {
-    default
+    nonfatal emake DESTDIR="${IMAGE}" install
     elisp-install-site-file
 }
