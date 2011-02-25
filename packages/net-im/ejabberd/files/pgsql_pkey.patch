@@ -1,14 +1,5 @@
-From 6367bfb177b8db091937ca6cef265c35d6736570 Mon Sep 17 00:00:00 2001
-From: Mike Kazantsev <mk.fraggod@gmail.com>
-Date: Fri, 25 Feb 2011 10:19:24 +0500
-Subject: [PATCH] gen_storage_odbc: fixed odbc/pgsql creation statement for primary keys
-
----
- src/gen_storage_odbc.erl |    6 +++---
- 1 files changed, 3 insertions(+), 3 deletions(-)
-
 diff --git a/src/gen_storage_odbc.erl b/src/gen_storage_odbc.erl
-index 9fd56b4..dcb0e8d 100644
+index 9fd56b4..22382d3 100644
 --- a/gen_storage_odbc.erl
 +++ b/gen_storage_odbc.erl
 @@ -167,7 +167,7 @@ create_table(#tabdef{name = Tab,
@@ -20,21 +11,21 @@ index 9fd56b4..dcb0e8d 100644
  	       bag -> []
  	   end,
      case odbc_command(Host,
-@@ -614,12 +614,12 @@ transaction(#tabdef{host = Host}, Fun) ->
-     %% ejabberd_odbc already returns mnesia-style tuples
-     ejabberd_odbc:sql_transaction(Host, Fun).
- 
--%% Mnesia has async_dirty, maybe ODBC has something similar: 
-+%% Mnesia has async_dirty, maybe ODBC has something similar:
- %% "Call the Fun in a context which is not protected by a transaction."
- async_dirty(Tab, Fun) ->
-     transaction(Tab, Fun).
- 
--%% Mnesia has sync_dirty, maybe ODBC has something similar: 
-+%% Mnesia has sync_dirty, maybe ODBC has something similar:
- %% "Call the Fun in a context which is not protected by a transaction."
- %% "The difference [with async_dirty] is that the operations are performed
- %%  synchronously. The caller waits for the updates to be performed on all
--- 
-1.7.4.1
-
+@@ -178,7 +178,7 @@ create_table(#tabdef{name = Tab,
+ 		bag ->
+ 		    KeyColumns = tabdef_column_names(TabDef, KeyName),
+ 		    Q = ["CREATE INDEX ", TabS, "_bag ON ",
+-			 TabS, " (", string:join(KeyColumns, "(75), "), "(75))"],
++			 TabS, " (", string:join(KeyColumns, ", "), ")"],
+ 		    case odbc_command(Host, Q) of
+ 			ok ->
+ 			    {atomic, ok};
+@@ -226,7 +226,7 @@ add_table_index(#tabdef{name = Tab, host = Host} = TabDef, Attribute) ->
+     AttributeS = atom_to_list(Attribute),
+     A = tabdef_column_names(TabDef, AttributeS),
+     Q = ["CREATE INDEX ", TabS, $_, AttributeS,
+-	 " ON ", TabS, " (", string:join(A, "(75), "), "(75))"],
++	 " ON ", TabS, " (", string:join(A, ", "), ")"],
+     case odbc_command(Host, Q) of
+ 	ok ->
+ 	    {atomic, ok};
