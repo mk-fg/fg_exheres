@@ -17,10 +17,15 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 src_prepare() {
+    # Clone of current ejabberd sources
+    EJ_SRC="${SCM_HOME}"/ejabberd
+    [[ ! -e "${EJ_SRC}" ]] && die "Unable to find ejabberd-scm sources in ${EJ_SRC}"
+    edo git clone "${EJ_SRC}" "${WORKBASE}"/ejabberd
+
     edo sed -i '/test\//d' Emakefile
     edo mkdir -p ebin/tools
 }
 
 src_compile() {
-    edo erl -make
+    edo erl -pa ../ejabberd/src -make
 }
