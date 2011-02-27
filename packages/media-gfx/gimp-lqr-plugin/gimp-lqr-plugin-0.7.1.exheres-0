@@ -1,0 +1,25 @@
+# Copyright 2011 Mike Kazantsev
+# Copyright 2010 Bernhard Frauendienst
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="GIMP Liquid Rescale plugin."
+
+HOMEPAGE="http://liquidrescale.wikidot.com/"
+DOWNLOADS="http://liquidrescale.wikidot.com/local--files/en:download-page-sources/${PNV}.tar.bz2"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        dev-util/intltool
+        dev-util/pkg-config
+    build+run:
+        media-gfx/gimp[>=2.4]
+        media-libs/liblqr[>=0.4.1]
+        sys-devel/gettext
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
