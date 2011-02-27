@@ -1,0 +1,30 @@
+# Copyright 2011 Mike Kazantsev
+# Copyright 2010 Bernhard Frauendienst
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Plugin to access exif tags from jpeg images."
+
+HOMEPAGE="http://registry.gimp.org/node/8839"
+DOWNLOADS="http://registry.gimp.org/files/exif-browser.tar.gz"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        dev-util/intltool
+        dev-util/pkg-config
+    build+run:
+        media-gfx/gimp[>=2.0]
+        media-libs/libexif[>=0.5.9]
+        sys-devel/gettext
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="${WORKBASE}/exif-browser"
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --hates=docdir )
