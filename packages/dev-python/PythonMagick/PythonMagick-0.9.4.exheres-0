@@ -1,0 +1,38 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require flag-o-matic autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+
+SUMMARY="Object-oriented Python interface to ImageMagick."
+
+HOMEPAGE="http://www.imagemagick.org/"
+DOWNLOADS="http://www.imagemagick.org/download/python/${PN}-0.9.4.tar.xz"
+
+LICENCES="ImageMagick"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        dev-util/pkg-config
+    build+run:
+        dev-lang/python
+        dev-libs/boost
+        media-gfx/ImageMagick[cxx]
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --with-boost )
+
+src_compile() {
+    # configure fails to find python include dirs
+    # also, crappy boost has some weird ssize_t redeclaration in
+    #  /usr/include/boost/python/ssize_t.hpp, if compilation will fail,
+    #  comment that one out like this: "// typedef Py_ssize_t ssize_t;"
+    emake\
+        PYTHON_INCLUDE_DIR=$(ls -1Ud /usr/include/python* | head -1)\
+        PYTHON_LIB=$(basename /usr/bin/python2*)
+}
