@@ -1,0 +1,25 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://bazaar.launchpad.net/~osomon/pyexiv2"
+SCM_BRANCH="pyexiv2-0.3"
+
+require scons scm-bzr
+
+SUMMARY="Python binding to exiv2, the C++ library for manipulation of EXIF, IPTC and XMP image metadata."
+
+HOMEPAGE="http://tilloy.net/dev/pyexiv2/"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-lang/python
+        dev-libs/boost
+        graphics/exiv2
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
