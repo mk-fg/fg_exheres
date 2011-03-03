@@ -1,0 +1,28 @@
+# Copyright 2011 Mike Kazantsev
+# Copyright 2010 Julien Pivotto <roidelapluie@gmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require launchpad [ branch=trunk suffix=tar.bz2 ]
+
+SUMMARY="Redshift color temperature adjustment"
+
+HOMEPAGE="http://jonls.dk/redshift/"
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="gtk"
+
+DEPENDENCIES="
+    build+run:
+        sys-devel/gettext
+        x11-libs/libX11
+        x11-libs/libXxf86vm
+        gtk? ( gnome-bindings/pygtk:2 )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --enable-randr --enable-vidmode )
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( gtk )

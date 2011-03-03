@@ -241,13 +241,13 @@ def check_file(src, exheres=None):
 
 	chk_emptyline(src)
 
-	# sourceforge exlib can define HOMEPAGE and DOWNLOADS
+	# some exlibs can define HOMEPAGE and DOWNLOADS
 	exlib_src = '-scm.' in exheres
 	exlib_meta = False
 	for line in src:
 		if line.startswith('require'):
 			for mod in line.split():
-				if mod in ('sourceforge', 'gnu')\
+				if mod in ('sourceforge', 'gnu', 'gnome-2', 'launchpad')\
 					or mod.startswith('scm-'): exlib_src = True
 				if mod == 'ejabberd-module': exlib_meta = True
 				# No further checks if exheres is just an extension of ad-hoc exlib

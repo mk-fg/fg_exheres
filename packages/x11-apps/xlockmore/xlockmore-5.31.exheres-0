@@ -1,0 +1,91 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require pam
+
+SUMMARY="Just another screensaver application for X"
+
+HOMEPAGE="http://www.tux.org/~bagleyd/xlockmore.html"
+DOWNLOADS="http://ftp.tux.org/pub/tux/bagleyd/${PN}/${PNV}/${PNV}.tar.bz2"
+
+LICENCES="BSD-2 GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="crypt debug gtk truetype xlockrc"
+
+DEPENDENCIES="
+    build:
+        dev-util/pkg-config
+    build+run:
+        x11-libs/libX11
+        x11-libs/libXext
+        x11-libs/libXmu
+        x11-libs/libXpm
+        x11-libs/libXt
+        gtk? ( x11-libs/gtk+:2 )
+        truetype? ( media-libs/freetype:2 )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+MAKEOPTS="${MAKEOPTS} -j1"
+
+src_configure() {
+    econf\
+        --with-x\
+        --enable-vtlock\
+        --enable-syslog\
+        --enable-pam\
+        --enable-allow-root\
+        --enable-multiple-user\
+        --enable-multiple-root\
+        --disable-window-visibility\
+        --enable-bomb\
+        --disable-unstable\
+        --disable-interactive\
+        --disable-negative-logout\
+        --enable-session-logout\
+        --disable-kerberos4\
+        --disable-kerberos5\
+        --disable-dce-passwd\
+        --disable-afs\
+        --disable-sia\
+        --disable-sunos-adjunct-passwd\
+        --enable-customization\
+        --disable-modules\
+        --enable-blank-only\
+        --enable-nice-only\
+        --disable-setuid\
+        --enable-pam\
+        --disable-use-mb\
+        --enable-appdefaultdir=/usr/share/X11/app-defaults\
+        --without-gtk\
+        --without-opengl\
+        --without-gltt\
+        --without-ftgl\
+        --without-mesa\
+        --without-motif\
+        --without-xinerama\
+        --without-esound\
+        --without-nas\
+        --without-rplay\
+        --with-ext\
+        --with-dpms\
+        $(option_enable xlockrc)\
+        $(option_with debug editres)\
+        $(option_with truetype ttf)\
+        $(option_with truetype freetype)\
+        $(option_with crypt)\
+        $(option_with gtk gtk2)
+}
+
+src_install() {
+    einstall xapploaddir="${IMAGE}/usr/share/X11/app-defaults" \
+        mandir="${IMAGE}/usr/share/man/man1" INSTPGMFLAGS=""
+
+    pamd_mimic_system xlock auth
+    edo chmod 755 "$IMAGE"/usr/bin/xlock
+
+    eautomagicdocs
+}

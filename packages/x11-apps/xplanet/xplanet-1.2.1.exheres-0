@@ -1,0 +1,68 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require sourceforge [ suffix=tar.gz ]
+
+SUMMARY="A program to render images of the earth into the X root window."
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="X gif jpeg png tiff truetype"
+
+DEPENDENCIES="
+    build:
+        X? (
+            x11-proto/xproto
+            x11-proto/scrnsaverproto )
+    build+run:
+        X? (
+            x11-libs/libX11
+            x11-libs/libXScrnSaver
+            x11-libs/libXt
+            x11-libs/libXext )
+        gif? ( media-libs/giflib )
+        jpeg? ( media-libs/jpeg )
+        png? (
+            media-libs/libpng
+            media-libs/netpbm )
+        tiff? ( media-libs/tiff )
+        truetype? (
+            media-libs/freetype:2
+            x11-libs/pango )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}/${PNV}-gentoo.patch" )
+
+
+src_configure() {
+    local myconf
+
+    option X \
+        && myconf="${myconf} --with-x --with-xscreensaver" \
+        || myconf="${myconf} --with-x=no --with-xscreensaver=no"
+
+    option gif \
+        && myconf="${myconf} --with-gif" \
+        || myconf="${myconf} --with-gif=no"
+
+    option jpeg \
+        && myconf="${myconf} --with-jpeg" \
+        || myconf="${myconf} --with-jpeg=no"
+
+    option tiff \
+        && myconf="${myconf} --with-tiff" \
+        || myconf="${myconf} --with-tiff=no"
+
+    option png \
+        && myconf="${myconf} --with-png --with-pnm" \
+        || myconf="${myconf} --with-png=no --with-pnm=no"
+
+    option truetype \
+        && myconf="${myconf} --with-freetype --with-pango" \
+        || myconf="${myconf} --with-freetype=no --with-pango=no"
+
+    econf --with-cspice=no ${myconf}
+}
