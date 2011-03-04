@@ -3,11 +3,13 @@ Description=tinydns
 Requires=network.target
 After=network.target
 
-# logger here is a hack, but systemd doesn't seem to be able to log from non-kernel facility
-# TODO: use proper systemd-logger capabilities (as per systemd.exec(5)), when it'll be fixed
 [Service]
 EnvironmentFile=/etc/djbdns/resolver/env
-ExecStart=/bin/sh -c '/usr/bin/tinydns 2>&1 | /usr/bin/logger -t tinydns -p daemon.info'
+StandardOutput=syslog
+StandardError=syslog
+SyslogFacility=daemon
+SyslogLevel=info
+ExecStart=/usr/bin/tinydns
 
 [Install]
 WantedBy=multi-user.target
