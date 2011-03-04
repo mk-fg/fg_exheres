@@ -5,7 +5,7 @@ require distutils
 
 SUMMARY="Feed aggregator written in Python using the Django web development framework."
 
-HOMEPAGE="http://www.feedjack.org/"
+HOMEPAGE="http://fraggod.net/code/fossil/feedjack"
 DOWNLOADS=""
 
 LICENCES="BSD-3"
