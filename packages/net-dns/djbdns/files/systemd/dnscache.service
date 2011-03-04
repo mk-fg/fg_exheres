@@ -5,10 +5,11 @@ After=network.target
 
 [Service]
 EnvironmentFile=/etc/djbdns/cache/env
-StandardOutput=syslog
-StandardError=syslog
+StandardOutput=null
+StandardError=inherit
 SyslogFacility=daemon
 SyslogLevel=info
+SyslogIdentifier=dnscache
 ExecStart=/bin/sh -c 'exec /usr/bin/dnscache </etc/djbdns/cache/seed'
 
 [Install]

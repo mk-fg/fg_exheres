@@ -5,10 +5,11 @@ After=network.target
 
 [Service]
 EnvironmentFile=/etc/djbdns/resolver/env
-StandardOutput=syslog
-StandardError=syslog
+StandardOutput=null
+StandardError=inherit
 SyslogFacility=daemon
 SyslogLevel=info
+SyslogIdentifier=tinydns
 ExecStart=/usr/bin/tinydns
 
 [Install]
