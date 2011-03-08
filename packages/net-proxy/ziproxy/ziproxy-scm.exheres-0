@@ -1,0 +1,46 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY=":pserver:anonymous@ziproxy.cvs.sourceforge.net:/cvsroot/ziproxy"
+SCM_SUBPATH="."
+
+require scm-cvs sourceforge autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+
+SUMMARY="Forwarding (non-caching) compressing HTTP proxy server."
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        media-libs/giflib
+        media-libs/jasper
+        media-libs/jpeg
+        media-libs/libpng
+        net-libs/cyrus-sasl
+        sys-libs/zlib
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="${WORK}"/ziproxy-default
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --with-jasper --with-sasl2 --with-cfgfile=/etc/ziproxy/ziproxy.conf )
+
+src_fetch_extra() {
+    if [[ -d $(scm_get_var CHECKOUT_TO) ]]; then
+        edo cd $(scm_get_var CHECKOUT_TO)
+        edo cvs up -dP
+    else scm_src_fetch_extra
+    fi
+}
+
+src_install() {
+    default
+    edo rm -Rf etc/ziproxy/{,sasl/}CVS
+    insinto /etc
+    doins -r etc/ziproxy
+}
