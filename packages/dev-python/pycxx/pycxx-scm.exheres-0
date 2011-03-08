@@ -1,0 +1,22 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://cxx.svn.sourceforge.net/svnroot/cxx"
+
+require distutils scm-svn sourceforge [ project=cxx ]
+
+SUMMARY="A set of C++ facilities to make it easier to write Python extensions."
+
+HOMEPAGE="http://cxx.sourceforge.net/"
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="${WORK}"/CXX
