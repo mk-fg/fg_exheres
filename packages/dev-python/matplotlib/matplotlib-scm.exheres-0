@@ -1,0 +1,33 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://matplotlib.svn.sourceforge.net/svnroot/matplotlib"
+
+require distutils pypi sourceforge scm-svn
+
+SUMMARY="Pure python plotting library with matlab like syntax."
+
+DOWNLOADS=""
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        dev-util/pkg-config
+    build+run:
+        dev-python/numpy
+        dev-python/pycxx
+        dev-python/python-dateutil
+        dev-python/pytz
+        media-libs/freetype
+        media-libs/libpng
+        x11-libs/agg
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="${WORK}"/"${PN}"
