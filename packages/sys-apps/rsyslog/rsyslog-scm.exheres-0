@@ -3,19 +3,98 @@
 
 SCM_REPOSITORY="git://git.adiscon.com/git/rsyslog.git"
 
-require rsyslog scm-git systemd-service [ systemd_files=[ "${FILES}"/systemd-scm ] ]\
-    autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+require scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
 
+SUMMARY="An enhanced syslog daemon for Linux (and Unix)"
+
+HOMEPAGE="http://www.${PN}.com"
+
+LICENCES="GPL-3 LGPL-3"
+SLOT="4"
 PLATFORMS="~amd64 ~x86"
+MYOPTIONS="
+    debug
+    gnutls
+    kerberos
+    mysql [[ description = [ Support logging to a MySQL database ] ]]
+    postgresql [[ description = [ Support logging to a PostgreSQL database ] ]]
+    relp [[ description = [ Support relp network protocol ] ]]
+"
 
 DEPENDENCIES="
+    build:
+        dev-util/pkg-config
     build+run:
         dev-libs/libee
         dev-libs/libestr
+        sys-apps/systemd
+        gnutls? ( dev-libs/gnutls )
+        kerberos? ( app-crypt/heimdal )
+        mysql? ( dev-db/mysql )
+        postgresql? ( dev-db/postgresql )
+        relp? ( net-libs/librelp )
+    suggestion:
+        app-admin/logrotate [[ description = [ Support for rotating log files ] ]]
 "
 
+BUGS_TO="mk.fraggod@gmail.com"
+REMOTE_IDS="freshmeat:${PN}"
+UPSTREAM_CHANGELOG="${HOMEPAGE}/changelog-for-${PV/./-}-v$(ever major)-stable.txt [[ lang = en ]]"
+UPSTREAM_DOCUMENTATION="${HOMEPAGE}/doc/manual.html [[ lang = en ]]"
+
+
+DEFAULT_SRC_PREPARE_PATCHES=(
+    "${FILES}"/0001-systemd-use-standard-syslog.socket-unit.patch )
+
+# TODO: libdbi, "snmp net-snmp"
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --enable-imdiag
+    --enable-imptcp
+    --enable-imfile
+    --enable-inet
+    --enable-klog
+    --enable-mail
+    --enable-omprog
+    --enable-omuxsock
+    --enable-pthreads
+    --enable-regexp
+    --enable-rsyslogd
+    --enable-rsyslogrt
+    --enable-zlib
+    --disable-imtemplate
+    --disable-libdbi
+    --disable-omtemplate
+    --disable-oracle
+    --disable-snmp
+    --with-systemdsystemunitdir=/lib/systemd/system
+
+    # This is not a mistake and passing it to configure is correct.
+    # Java is not being used at all yet, however the tests depend on it.
+    HAVE_JAVAC=yes )
+
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=(
+    "build_options:recommended_tests testbench"
+    "build_options:recommended_tests extended-tests"
+    debug
+    "debug diagtools"
+    gnutls
+    "kerberos gssapi-krb5"
+    mysql
+    "postgresql pgsql"
+    relp )
 
 src_install() {
-    rsyslog_src_install
-    install_systemd_files
+    default
+
+    insinto /etc/logrotate.d
+    newins "${FILES}"/rsyslog.logrotate rsyslog
+
+    # Default config
+    insinto /etc
+    doins "${FILES}"/rsyslog.conf
+
+    # html docs
+    insinto /usr/share/doc/${PNVR}/html
+    doins -r "${WORK}"/doc/*.{html,png,jpg}
+    dodoc "${WORK}"/rsyslog.conf
 }
