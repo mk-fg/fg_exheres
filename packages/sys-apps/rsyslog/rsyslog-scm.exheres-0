@@ -43,9 +43,6 @@ UPSTREAM_CHANGELOG="${HOMEPAGE}/changelog-for-${PV/./-}-v$(ever major)-stable.tx
 UPSTREAM_DOCUMENTATION="${HOMEPAGE}/doc/manual.html [[ lang = en ]]"
 
 
-DEFAULT_SRC_PREPARE_PATCHES=(
-    "${FILES}"/0001-systemd-use-standard-syslog.socket-unit.patch )
-
 # TODO: libdbi, "snmp net-snmp"
 DEFAULT_SRC_CONFIGURE_PARAMS=(
     --enable-imdiag
