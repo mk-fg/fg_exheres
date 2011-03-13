@@ -1,0 +1,24 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require python
+
+SUMMARY="Module to access parallel port."
+
+HOMEPAGE="http://pyserial.sourceforge.net/pyparallel.html"
+DOWNLOADS="http://downloads.sourceforge.net/project/pyserial/pyparallel/0.2/pyparallel-0.2.zip"
+
+LICENCES="PYTHON"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    insinto $(python_get_sitedir)
+    doins -r parallel
+}
