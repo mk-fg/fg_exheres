@@ -1,0 +1,62 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+# Based upon 'star-1.5.1-r1.ebuild' from Gentoo, which is:
+#  Copyright 1999-2011 Gentoo Foundation
+
+SUMMARY="An enhanced (world's fastest) tar, as well as enhanced mt/rmt."
+
+HOMEPAGE="http://cdrecord.berlios.de/old/private/star.html"
+DOWNLOADS="ftp://ftp.berlios.de/pub/${PN}/${PNV}.tar.bz2"
+
+LICENCES="GPL-2 LGPL-2.1 CDDL-Schily"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        sys-apps/acl
+        sys-apps/attr
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_prepare() {
+    edo sed -i\
+        -e "s:/opt/schily:/usr:g"\
+        -e 's:bin:root:g'\
+        -e "s:/usr/src/linux/include:/usr/include:"\
+        DEFAULTS/Defaults.linux
+}
+
+src_configure() { :; }
+
+src_compile() {
+    emake COPTX="${CFLAGS}" CPPOPTX="${CPPFLAGS}" LDOPTX="${LDFLAGS}"
+}
+
+src_install() {
+    dobin star/OBJ/*-*-cc/star tartest/OBJ/*-*-cc/tartest\
+        star_sym/OBJ/*-*-cc/star_sym mt/OBJ/*-*-cc/smt
+
+    newsbin rmt/OBJ/*-*-cc/rmt rmt.star
+    newman rmt/rmt.1 rmt.star.1
+
+    dosym {star,/usr/bin/ustar}
+    dosym {star,/usr/bin/spax}
+    dosym {star,/usr/bin/scpio}
+    dosym {star,/usr/bin/suntar}
+
+    mv star/{star.4,star.5}
+    doman man/man1/match.1 tartest/tartest.1\
+        star/{star.5,star.1,spax.1,scpio.1,suntar.1}
+
+    insinto /etc/default
+    newins star/star.dfl star
+    newins rmt/rmt.dfl rmt
+
+    dodoc star/{README.ACL,README.crash,README.largefiles,README.otherbugs}\
+        star/{README.pattern,README.pax,README.posix-2001,README,STARvsGNUTAR}\
+        rmt/default-rmt.sample TODO AN-* Changelog CONTRIBUTING
+}
