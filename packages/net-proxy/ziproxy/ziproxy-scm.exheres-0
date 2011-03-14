@@ -4,7 +4,8 @@
 SCM_REPOSITORY=":pserver:anonymous@ziproxy.cvs.sourceforge.net:/cvsroot/ziproxy"
 SCM_SUBPATH="."
 
-require scm-cvs sourceforge autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+require scm-cvs sourceforge systemd-service\
+    autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
 
 SUMMARY="Forwarding (non-caching) compressing HTTP proxy server."
 
@@ -43,4 +44,5 @@ src_install() {
     edo rm -Rf etc/ziproxy/{,sasl/}CVS
     insinto /etc
     doins -r etc/ziproxy
+    install_systemd_files
 }
