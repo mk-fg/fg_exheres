@@ -1,3 +1,23 @@
+Source: by Mike Kazantsev
+Upstream: http://code.google.com/p/pyicqt/issues/detail?id=5
+Reason:
+  Connect breaks frequently: "in a non-clean fashion"
+
+  I didn't dig deep into code, just wrote a test-case (connection breaker)
+ and compared the log of broken connection and a cleanly closed one, noticing
+ that former gets connectionLost event before removing the session, while
+ latter gets it as a result, and exploited this difference by introducing an
+ "active_close" flag to session and a simple session re-creation sequence in
+ removeMe method.
+
+  Note that it's probably not the best way to do it, and it's only designed to
+ be a cure for unexpectedly broken (for whatever reason) _TCP_ connections.
+
+  Simple scapy-based script to hijack and break the tcp connection after any
+ activity on it is attached to the tracker issue, which can be used as a simple
+ real-world test-case (unless icq server bans you for too frequent reconnects)
+ for further improvements.
+
 diff --git a/src/legacy/icqt.py b/src/legacy/icqt.py
 index d6fce48..923f33e 100644
 --- a/src/legacy/icqt.py

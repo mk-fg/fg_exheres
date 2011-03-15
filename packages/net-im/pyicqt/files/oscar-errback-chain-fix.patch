@@ -1,3 +1,38 @@
+Source: by Mike Kazantsev
+Upstream: http://code.google.com/p/pyicqt/issues/detail?id=179
+Reason:
+
+ Unhandled error in Deferred:
+ Traceback (most recent call last):
+ File "/usr/lib64/python2.7/site-packages/pyicqt/src/tlib/oscar.py", line 663, in dataReceived
+ state=func(flap)
+ File "/usr/lib64/python2.7/site-packages/pyicqt/src/tlib/oscar.py", line 805, in oscar_Data
+ d.errback(snac)
+ File "/usr/lib64/python2.7/site-packages/twisted/internet/defer.py", line 388, in errback
+ self._startRunCallbacks(fail)
+ File "/usr/lib64/python2.7/site-packages/twisted/internet/defer.py", line 455, in _startRunCallbacks
+ self._runCallbacks()
+ --- <exception caught here> ---
+ File "/usr/lib64/python2.7/site-packages/twisted/internet/defer.py", line 542, in _runCallbacks
+ current.result = callback(current.result, *args, **kw)
+ File "/usr/lib64/python2.7/site-packages/pyicqt/src/tlib/oscar.py", line 2097, in _cbRequestSSI
+ if snac[1] == 0x0f: # same SSI as we have
+ exceptions.TypeError: 'NoneType' object is not subscriptable
+
+  Looking at the code, it looks like proper snac (not None) is passed to
+ errback chain but is get lost somewhere on the way to _cbRequestSSI.
+
+  _ebDeferredError seem to be the first errback for these deferreds and it
+ doesn't seem to return anything and indicates a critical errors, so it looks
+ like either adding callbacks after that errback (so they'll be processed
+ after it with None argument) is wrong or errback itself should re-raise error
+ (or return a Failure object) to pass it to next errback, not the callback
+ chain.
+
+ Patch returns the same Failure, so further errbacks
+ (_ebDeferredRequestSSIError) should be called in case of errors instead of
+ callbacks (_cbRequestSSI).
+
 diff --git a/src/tlib/oscar.py b/src/tlib/oscar.py
 index befba43..5e5bed8 100644
 --- a/src/tlib/oscar.py
