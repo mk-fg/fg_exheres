@@ -26,6 +26,7 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 src_prepare() {
     expatch "${FILES}"/reconnect.patch
+    expatch "${FILES}"/oscar-errback-chain-fix.patch
 }
 
 src_install() {

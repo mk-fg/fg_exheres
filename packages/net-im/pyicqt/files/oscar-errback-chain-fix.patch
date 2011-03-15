@@ -1,0 +1,12 @@
+diff --git a/src/tlib/oscar.py b/src/tlib/oscar.py
+index befba43..5e5bed8 100644
+--- a/src/tlib/oscar.py
++++ b/src/tlib/oscar.py
+@@ -756,6 +756,7 @@ class SNACBased(OscarConnection):
+ 		log.msg('On sending of message, family 0x%02x, subtype 0x%02x' % (fam, sub))
+ 	if showdata:
+ 		log.msg('data not sent: %s' % repr(data))
++	return error
+ 
+     def sendSNACnr(self,fam,sub,data,flags=[0,0]):
+         """
