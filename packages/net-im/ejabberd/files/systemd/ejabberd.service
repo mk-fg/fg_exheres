@@ -7,6 +7,7 @@ After=network.target
 Type=forking
 User=jabber
 Group=jabber
+GuessMainPID=false
 ExecStart=/usr/sbin/ejabberdctl start
 ExecStop=/usr/sbin/ejabberdctl stop
 
