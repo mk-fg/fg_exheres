@@ -17,7 +17,12 @@ MYOPTIONS="
         x86
 "
 
-DEPENDENCIES=""
+DEPENDENCIES="
+    run:
+        dev-lang/perl
+        dev-libs/gmp
+        sys-libs/ncurses
+"
 
 BUGS_TO="mk.fraggod@gmail.com"
 

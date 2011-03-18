@@ -30,7 +30,7 @@ DEPENDENCIES="
             dev-lang/ghc-bin ) )
     build+run:
         dev-lang/perl
-        dev-libs/gmp[>=4.1]
+        dev-libs/gmp
         sys-libs/ncurses
 "
 
