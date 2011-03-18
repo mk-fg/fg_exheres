@@ -1,0 +1,19 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require hackage
+
+SUMMARY="A small, efficient and portable regex
+    library for Perl 5 compatible regular expressions."
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    $(haskell_lib_dependencies "
+        dev-haskell/bytestring")
+"
+
+BUGS_TO="mk.fraggod@gmail.com"

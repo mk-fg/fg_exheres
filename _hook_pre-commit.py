@@ -243,13 +243,14 @@ def check_file(src, exheres=None):
 
 	# some exlibs can define HOMEPAGE and DOWNLOADS
 	exlib_src = '-scm.' in exheres
-	exlib_meta = False
+	exlib_meta = exlib_deps = False
 	for line in src:
 		if line.startswith('require'):
 			for mod in line.split():
-				if mod in ('sourceforge', 'gnu', 'gnome-2', 'launchpad')\
+				if mod in ('sourceforge', 'gnu', 'gnome-2', 'launchpad', 'hackage')\
 					or mod.startswith('scm-'): exlib_src = True
 				if mod == 'ejabberd-module': exlib_meta = True
+				if mod == 'hackage': exlib_deps = True
 				# No further checks if exheres is just an extension of ad-hoc exlib
 				if exheres and exheres.startswith(mod):
 					chk_emptyline(src)
@@ -288,9 +289,10 @@ def check_file(src, exheres=None):
 		if 'requires' not in optz: chk_ordering(optz)
 		chk_emptyline(src)
 
-	deps = chk_definition(src, 'DEPENDENCIES')
-	if deps: chk_deps(deps)
-	chk_emptyline(src)
+	if not exlib_deps:
+		deps = chk_definition(src, 'DEPENDENCIES')
+		if deps: chk_deps(deps)
+		chk_emptyline(src)
 
 	if os.environ['EMAIL'] not in chk_definition_len(src, 'BUGS_TO'):
 		raise ChkFullError('No public email (gmail account) specified in BUGS_TO')
