@@ -291,7 +291,7 @@ def check_file(src, exheres=None):
 
 	if not exlib_deps:
 		deps = chk_definition(src, 'DEPENDENCIES')
-		if deps: chk_deps(deps)
+		if deps and '$(' not in deps: chk_deps(deps)
 		chk_emptyline(src)
 
 	if os.environ['EMAIL'] not in chk_definition_len(src, 'BUGS_TO'):
