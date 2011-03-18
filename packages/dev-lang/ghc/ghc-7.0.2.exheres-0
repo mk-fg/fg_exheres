@@ -1,0 +1,42 @@
+# Copyright 2011 Mike Kazantsev
+# Copyright 2008 Santiago M. Mola
+# Copyright 2008, 2009, 2010, 2011 Ingmar Vanhassel
+# Distributed under the terms of the GNU General Public License v2
+# Based in part upon 'ghc-6.8.2.ebuild' from Gentoo, which is:
+#     Copyright 1999-2008 Gentoo Foundation
+
+SUMMARY="The Glorious Glasgow Haskell Compilation System"
+DESCRIPTION="
+GHC is a state-of-the-art, open source, compiler and interactive environment for the functional language Haskell.
+"
+
+HOMEPAGE="http://www.haskell.org/ghc/"
+DOWNLOADS="http://haskell.org/ghc/dist/${PV}/${PNV}-src.tar.bz2"
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="
+    bootstrap doc
+    platform:
+        amd64
+        x86
+"
+
+DEPENDENCIES="
+    build:
+        bootstrap? ( || (
+            dev-lang/ghc
+            dev-lang/ghc-bin ) )
+    build+run:
+        dev-lang/perl
+        dev-libs/gmp[>=4.1]
+        sys-libs/ncurses
+"
+
+
+BUGS_TO="mk.fraggod@gmail.com"
+REMOTE_IDS="freshmeat:${PN}"
+UPSTREAM_RELEASE_NOTES="http://www.haskell.org/${PN}/docs/${PV}/html/users_guide/release-${PV//./-}.html"
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --hates=build --hates=host )
