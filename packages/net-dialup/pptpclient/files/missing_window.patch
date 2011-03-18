@@ -1,0 +1,13 @@
+diff --git a/pqueue.h b/pqueue.h
+index 70bfdb0..aef4841 100644
+--- a/pqueue.h
++++ b/pqueue.h
+@@ -9,7 +9,7 @@
+ extern int packet_timeout_usecs;
+ 
+ /* assume packet is bad/spoofed if it's more than this many seqs ahead */
+-#define MISSING_WINDOW 300
++#define MISSING_WINDOW 6000
+ 
+ /* Packet queue structure: linked list of packets received out-of-order */
+ typedef struct pqueue {
