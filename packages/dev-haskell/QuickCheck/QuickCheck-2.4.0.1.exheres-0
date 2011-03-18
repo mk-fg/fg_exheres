@@ -1,0 +1,24 @@
+# Copyright 2011 Mike Kazantsev
+# Copyright 2008 Santiago M. Mola
+# Copyright 2009, 2010 Ingmar Vanhassel
+# Distributed under the terms of the GNU General Public License v2
+
+require hackage
+
+SUMMARY="An automatic, specification based testing utility for Haskell programs"
+
+HOMEPAGE="http://www.cs.chalmers.se/~koen/ ${HOMEPAGE}"
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    $(haskell_lib_dependencies "
+        dev-haskell/extensible-exceptions
+        dev-haskell/mtl
+    ")
+"
+
+BUGS_TO="mk.fraggod@gmail.com"

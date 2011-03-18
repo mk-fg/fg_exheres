@@ -17,6 +17,7 @@ MYOPTIONS=""
 DEPENDENCIES="
     $(haskell_lib_dependencies "
         dev-haskell/MissingH
+        dev-haskell/QuickCheck
         dev-haskell/pcre-light
         dev-haskell/utf8-string")
     build+run:
