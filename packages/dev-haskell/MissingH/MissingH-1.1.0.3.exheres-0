@@ -14,17 +14,13 @@ DEPENDENCIES="
     $(haskell_lib_dependencies "
         dev-haskell/array
         dev-haskell/containers
-        dev-haskell/directory
         dev-haskell/filepath
-        dev-haskell/haskell98
         dev-haskell/hslogger
         dev-haskell/HUnit
         dev-haskell/mtl
         dev-haskell/network
         dev-haskell/old-locale
         dev-haskell/parsec
-        dev-haskell/process
-        dev-haskell/random
         dev-haskell/regex-compat")
 "
 
