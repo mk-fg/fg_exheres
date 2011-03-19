@@ -1,0 +1,30 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://git.kitenet.net/moreutils"
+
+require scm-git zsh-completion
+
+SUMMARY="Growing collection of unix tools that nobody thought to write long ago when unix was young."
+
+HOMEPAGE="http://kitenet.net/~joey/code/moreutils/"
+DOWNLOADS=""
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-lang/perl
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_COMPILE_PARAMS=( DOCBOOK2XMAN=true )
+
+src_install() {
+    awk -F= '/^(BINS|PERLSCRIPTS)=/ {print $2}' Makefile | xargs dobin
+}
