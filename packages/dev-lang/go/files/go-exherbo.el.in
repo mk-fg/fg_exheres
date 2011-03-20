@@ -1,0 +1,2 @@
+(add-to-list 'load-path "@SITE_LISP@/go" t)
+(require 'go-mode-load)
