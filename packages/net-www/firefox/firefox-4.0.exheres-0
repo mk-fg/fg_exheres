@@ -1,0 +1,12 @@
+# Copyright 2011 Mike Kazantsev
+# Copyright 2007-2008 Alexander Færøy <eroyf@exherbo.org>
+# Copyright 2008 Bernd Steinhauser <berniyh@exherbo.org>
+# Copyright 2008 Ingmar Vanhassel <ingmar@exherbo.org>
+# Copyright 2009 Xavier Barrachina <xabarci@ega.upv.es>
+# Copyright 2010 Cecil Curry <leycec@gmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require firefox [ codename="Tumucumaque" ]
+
+SLOT="0"
+PLATFORMS="~amd64 ~x86"

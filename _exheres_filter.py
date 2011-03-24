@@ -10,6 +10,10 @@ if not re.match(r'^packages/([^/]+)/([^/]+)/([^/]+).exheres-0$', path):
 
 import itertools as it, operator as op, functools as ft
 
+import codecs
+sys.stdin = codecs.getreader('utf-8')(sys.stdin)
+sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
+
 mod = __import__('_hook_pre-commit')
 src, chk = it.tee(sys.stdin, 2)
 
@@ -39,4 +43,3 @@ elif action == 'smudge':
 
 else:
 	raise ValueError('Unsupported action: {}'.format(action))
-

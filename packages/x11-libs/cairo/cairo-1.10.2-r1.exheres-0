@@ -1,0 +1,74 @@
+# Copyright 2011 Mike Kazantsev
+# Copyright (c) 2008 Alexander Færøy <ahf@exherbo.org>
+# Copyright 2008 Saleem Abdulrasool <compnerd@compnerd.org>
+# Distributed under the terms of the GNU General Public License v2
+# Based in part upon 'cairo-1.6.4.ebuild' from Gentoo which is:
+#     Copyright 1999-2008 Gentoo Foundation
+
+require cairo
+
+DOWNLOADS="http://cairographics.org/releases/${PNV}.tar.gz"
+
+SLOT="0"
+PLATFORMS="~amd64 ~ppc64 ~x86"
+MYOPTIONS="X"
+
+DEPENDENCIES="
+    build:
+        dev-util/pkg-config[>=0.19]
+    build+run:
+        media-libs/libpng[>=1.2.8]
+        x11-dri/mesa
+        media-libs/freetype[>=2.1.9]
+        media-libs/fontconfig[>=2.2.95]
+        x11-libs/pixman:1[>=0.18.4]
+        dev-libs/glib:2
+        X? (
+            x11-libs/libX11
+            x11-libs/libxcb[>=1.1.92]
+            x11-libs/libXrender[>=0.6]
+        )
+"
+
+# TODO: experimental drm support fails to build, so disable it for now.
+#   build:
+#	   drm? ( x11-proto/xproto
+#			   x11-proto/xextproto[>=7.0.99.1]
+#			   x11-proto/renderproto )
+#   build+run:
+#	   X? ( drm? ( sys-fs/udev[>=136]
+#				   x11-server/xorg-server[>=1.6] ) )
+
+#   test:
+#	   app-text/ghostscript [[ note = [ required for ps ] ]]
+#	   app-text/libspectre [[ note = [ required for ps ] ]]
+#	   app-text/poppler[glib][>=0.13.3] [[ note = [ required for pdf ] ]]
+#	   gnome-desktop/librsvg[>=2.15.0] [[ note = [ required for svg ] ]]
+
+RESTRICT="test" # known to be broken upstream
+
+DEFAULT_SRC_INSTALL_EXTRA_DOCS=(
+    BIBLIOGRAPHY CODING_STYLE KNOWN_ISSUES PORTING_GUIDE RELEASING )
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --enable-png
+    --enable-gl
+    --disable-directfb
+    --disable-vg
+    --disable-egl
+    --enable-glx
+    --enable-ft
+    --enable-fc
+    --enable-ps
+    --enable-pdf
+    --enable-svg
+    --enable-gobject
+    --enable-tee
+    --disable-wgl
+    --disable-drm
+    --disable-drm-xr
+    --disable-xcb-drm
+    --disable-xlib-xcb )
+
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=(
+        'X xcb' 'X xcb-shm' 'X xlib' 'X xlib-xrender' )

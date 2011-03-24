@@ -7,6 +7,7 @@ import itertools as it, operator as op, functools as ft
 from datetime import datetime
 import os, sys, re
 from os.path import join, isfile
+from io import open
 
 git_dir = os.environ['GIT_DIR']
 base_dir = join(git_dir, '..')
@@ -78,7 +79,7 @@ def chk_wrapper(func, unwind=True):
 
 @chk_wrapper
 def chk_copyright( line, prior=False,
-		rx = re.compile( r'^# Copyright'
+		rx = re.compile( r'^# Copyright( \(c\))?'
 			r' (?P<dates>(?P<date>\d+)(-(?P<date_ext>\d+))?(,\s*\d+)*)'
 			r' (?P<author>.+)$' ) ):
 	match = rx.match(line)
@@ -341,7 +342,7 @@ def check_db(cdb):
 
 		print('Checking path: {}'.format(k))
 		err_count = 0
-		check_file(open(path), os.path.basename(path))
+		check_file(open(path, encoding='utf-8'), os.path.basename(path))
 		if err_count: errors += 1
 
 	return errors
