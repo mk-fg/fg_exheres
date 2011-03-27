@@ -1,0 +1,25 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Official mozilla firefox build."
+
+HOMEPAGE="http://www.mozilla.com/"
+DOWNLOADS="http://download.mozilla.org/?product=firefox-4.0&os=linux&lang=en-US -> firefox-4.0.tar.bz2"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="${WORKBASE}"
+
+src_install() {
+    edo mkdir -p "${IMAGE}"/opt/bin
+    edo mv firefox "${IMAGE}"/opt/
+    dosym ../firefox/firefox /opt/bin/firefox
+}
