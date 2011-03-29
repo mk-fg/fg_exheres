@@ -1,0 +1,14 @@
+# Copyright 2010-2011 Wulf C. Krueger <philantrop@exherbo.org>
+# Distributed under the terms of the GNU General Public License v2
+
+[Unit]
+Description=Squid Proxy Server
+After=network.target
+
+[Service]
+ExecStart=/usr/sbin/squid -NYC
+ExecReload=/usr/sbin/squid -k reconfigure
+ExecStop=/usr/sbin/squid -k shutdown
+
+[Install]
+WantedBy=multi-user.target
