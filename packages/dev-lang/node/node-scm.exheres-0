@@ -1,0 +1,37 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/joyent/node.git"
+
+require scm-git
+
+SUMMARY="Node.js is an event-driven I/O framework for the V8 JavaScript engine on Unix-like platforms."
+
+HOMEPAGE="http://nodejs.org/"
+
+LICENCES="as-is"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        sys-devel/scons
+    build+run:
+        dev-libs/libev
+        net-dns/c-ares
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_prepare() {
+    # To get rid of "node.cc:1507: undefined reference to `ev_rt_now'"
+    #  http://comments.gmane.org/gmane.comp.lang.javascript.nodejs/18924
+    sed -i '/EV_MULTIPLICITY=0/d' wscript
+}
+
+src_configure() {
+    # It's waf, not autotools
+    edo ./configure --prefix=/usr --shared-cares --shared-libev
+}
