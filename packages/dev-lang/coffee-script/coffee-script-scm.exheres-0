@@ -1,0 +1,32 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/jashkenas/coffee-script.git"
+
+require scm-git
+
+SUMMARY="Little language that compiles into JavaScript."
+
+HOMEPAGE="http://jashkenas.github.com/coffee-script/"
+
+LICENCES="as-is"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-lang/node
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    edo ./bin/cake --prefix "${IMAGE}"/usr install
+
+    edo rm "${IMAGE}"/usr/bin/{cake,coffee}
+    for bin in cake coffee
+    do dosym ../lib/coffee-script/bin/"${bin}" /usr/bin/"${bin}"
+    done
+}
