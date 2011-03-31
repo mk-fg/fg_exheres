@@ -1,0 +1,19 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/andymccurdy/redis-py.git"
+
+require distutils scm-git
+
+SUMMARY="This is the Python interface to the Redis key-value store."
+
+HOMEPAGE="https://github.com/andymccurdy/redis-py"
+
+LICENCES="as-is"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
