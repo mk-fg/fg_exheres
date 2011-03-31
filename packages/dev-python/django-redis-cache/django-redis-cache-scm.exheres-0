@@ -1,0 +1,23 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/sebleier/django-redis-cache.git"
+
+require distutils scm-git
+
+SUMMARY="A Redis cache backend for django."
+
+HOMEPAGE="https://github.com/sebleier/django-redis-cache"
+DOWNLOADS=""
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-python/redis-py
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
