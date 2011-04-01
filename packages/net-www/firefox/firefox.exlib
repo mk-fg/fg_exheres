@@ -23,8 +23,10 @@ UPSTREAM_RELEASE_NOTES="${HOMEPAGE}${MY_PV}/releasenotes/"
 
 LICENCES="MPL-1.1"
 MYOPTIONS="
+	dbus
 	gnome [[ description = [ Enable the GNOME component for desktop intergration ] ]]
 	libnotify [[ description = [ Show notifications with libnotify ( requires gnome option ) ] ]]
+	startup-notification
 	webm
 "
 
@@ -39,7 +41,6 @@ DEPENDENCIES="
 		dev-libs/xulrunner[~2.0][gnome=][libnotify=]
 		x11-libs/gtk+:2[>=2.10.0]
 		sys-sound/alsa-lib
-		webm? ( media-libs/libvpx )
 "
 
 ECONF_SOURCE="${WORKBASE}/mozilla-2.0"
@@ -53,7 +54,6 @@ MOZILLA_SRC_CONFIGURE_PARAMS=(
 	--disable-gnomeui
 	--disable-javaxpcom
 	--disable-necko-wifi
-	--enable-dbus
 	--enable-crypto
 	--enable-svg
 	--enable-system-cairo
@@ -61,14 +61,14 @@ MOZILLA_SRC_CONFIGURE_PARAMS=(
 	--enable-ogg
 	--enable-wave
 	--hates=docdir
-	# --with-system-libxul
+	--with-system-libxul
 	--with-libxul-sdk=/usr/$(get_libdir)/xulrunner-devel
-	# --with-system-bz2
-	# --with-system-jpeg
-	# --with-system-zlib
+	--with-system-bz2
+	--with-system-jpeg
+	--with-system-zlib
 	--without-system-png # System libpng would require APNG patches
 )
-MOZILLA_SRC_CONFIGURE_OPTION_ENABLES=( 'webm webm' libnotify )
+MOZILLA_SRC_CONFIGURE_OPTION_ENABLES=( dbus 'webm webm' libnotify startup-notification )
 MOZILLA_SRC_CONFIGURE_OPTION_WITHS=( 'webm system-libvpx' )
 
 src_install() {

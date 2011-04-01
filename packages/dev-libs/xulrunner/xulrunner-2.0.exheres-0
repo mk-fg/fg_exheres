@@ -8,3 +8,4 @@ require xulrunner
 SLOT="0"
 PLATFORMS="~x86"
 
+DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}/xulrunner-omnijar.patch" )

@@ -80,15 +80,15 @@ MOZILLA_SRC_CONFIGURE_PARAMS=(
 	--enable-raw
 	--enable-ogg
 	--enable-wave
-	# --enable-system-cairo
-	# --enable-system-hunspell
+	--enable-system-cairo
+	--enable-system-hunspell
 	--hates=docdir
-	# --with-system-bz2
-	# --with-system-jpeg
-	# --with-system-libevent
-	# --with-system-sqlite
-	# --with-system-zlib
-	# --with-system-bz2
+	--with-system-bz2
+	--with-system-jpeg
+	--with-system-libevent
+	--with-system-sqlite
+	--with-system-zlib
+	--with-system-bz2
 	--without-system-png # Requires patch for APNG support
 )
 MOZILLA_SRC_CONFIGURE_OPTION_ENABLES=(
