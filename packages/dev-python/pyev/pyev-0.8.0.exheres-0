@@ -1,0 +1,31 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require distutils
+
+MY_PNV="${PNV}-4.04"
+
+SUMMARY="Python libev interface."
+
+HOMEPAGE="http://code.google.com/p/pyev/"
+DOWNLOADS="http://pypi.python.org/packages/source/p/${PN}/${MY_PNV}.tar.gz"
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/libev
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+WORK=${WORKBASE}/${MY_PNV}
+
+
+src_compile() { :; }
+src_install() {
+    nonfatal distutils_src_install
+}
