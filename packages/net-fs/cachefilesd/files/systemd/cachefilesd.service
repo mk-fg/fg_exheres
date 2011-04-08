@@ -3,6 +3,7 @@ Description=FSCache cleanup daemon
 Wants=syslog.target
 
 [Service]
+IOSchedulingClass=3
 ExecStart=/sbin/cachefilesd -n
 
 [Install]
