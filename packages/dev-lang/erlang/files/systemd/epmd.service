@@ -6,4 +6,4 @@ Before=network.target
 ExecStart=/usr/bin/epmd
 
 [Install]
-WantedBy=network.target
+WantedBy=multi-user.target
