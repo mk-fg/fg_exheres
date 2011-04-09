@@ -1,6 +1,5 @@
 [Unit]
 Description=dnscache
-Requires=network.target
 After=network.target
 
 [Service]
