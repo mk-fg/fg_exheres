@@ -33,9 +33,7 @@ DEPENDENCIES="
         doc? (
                 !bootstrap? ( dev-haskell/haddock[>=0.8] )
         )
-        bootstrap? ( || (
-            dev-lang/ghc
-            dev-lang/ghc-bin ) )
+        bootstrap? ( dev-lang/ghc-bin )
     build+run:
         dev-lang/perl
         dev-libs/gmp
