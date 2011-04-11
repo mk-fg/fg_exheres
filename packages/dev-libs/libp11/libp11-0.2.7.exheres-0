@@ -29,5 +29,5 @@ DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( doc "doc api-doc" )
 
 src_install() {
     default
-    option doc || edo rmdir "${IMAGE}"/usr/share/doc/html{/api,}
+    option doc || rmdir "${IMAGE}"/usr/share/doc/html{/api,}
 }
