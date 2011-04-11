@@ -54,5 +54,5 @@ src_install() {
         newins "${FILES}"/tmpfiles.conf openct.conf
     fi
 
-    option doc || edo rmdir "${IMAGE}"/usr/share/doc/openct-0.6.20/html{/api,}
+    rmdir "${IMAGE}"/usr/share/doc/openct-0.6.20/html{/api,}
 }
