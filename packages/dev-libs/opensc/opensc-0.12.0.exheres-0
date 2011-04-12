@@ -3,6 +3,8 @@
 # Based upon 'opensc-11.13.ebuild' from Gentoo, which is:
 #  Copyright 1999-2010 Gentoo Foundation
 
+require autoprune
+
 SUMMARY="SmartCard library and applications."
 
 HOMEPAGE="http://www.opensc-project.org/opensc/"
@@ -44,9 +46,3 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
     --enable-zlib
     --disable-ctapi
     --disable-cardmod )
-
-src_install() {
-    default
-    edo rmdir "${IMAGE}"/usr/sbin
-    option doc || edo rmdir "${IMAGE}"/usr/share/doc/opensc-0.12.0/html
-}
