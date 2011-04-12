@@ -3,7 +3,7 @@
 # Based upon 'openct-0.6.20.ebuild' from Gentoo, which is:
 #  Copyright 1999-2010 Gentoo Foundation
 
-require multilib systemd-service
+require multilib autoprune systemd-service
 
 SUMMARY="Reader driver interface for various non-standard readers."
 
@@ -43,7 +43,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
     --with-udev="/$(get_libdir)/udev" )
 
 src_install() {
-    default
+    autoprune_src_install
     install_systemd_files
 
     insinto /etc/udev/rules.d/
@@ -53,6 +53,4 @@ src_install() {
         insinto /etc/tmpfiles.d
         newins "${FILES}"/tmpfiles.conf openct.conf
     fi
-
-    rmdir "${IMAGE}"/usr/share/doc/openct-0.6.20/html{/api,}
 }

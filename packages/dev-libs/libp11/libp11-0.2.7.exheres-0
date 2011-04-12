@@ -3,6 +3,8 @@
 # Based upon 'libp11-0.2.7.ebuild' from Gentoo, which is:
 #  Copyright 1999-2010 Gentoo Foundation
 
+require autoprune
+
 SUMMARY="Small layer on top of PKCS#11 API to make using PKCS#11 implementations easier."
 
 HOMEPAGE="http://www.opensc-project.org/libp11/"
@@ -26,8 +28,3 @@ REMOTE_IDS="freshmeat:${PN}"
 
 
 DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( doc "doc api-doc" )
-
-src_install() {
-    default
-    option doc || rmdir "${IMAGE}"/usr/share/doc/html{/api,}
-}
