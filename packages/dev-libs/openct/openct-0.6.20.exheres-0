@@ -3,7 +3,7 @@
 # Based upon 'openct-0.6.20.ebuild' from Gentoo, which is:
 #  Copyright 1999-2010 Gentoo Foundation
 
-require multilib autoprune systemd-service
+require autoprune systemd-service
 
 SUMMARY="Reader driver interface for various non-standard readers."
 
@@ -40,7 +40,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
     --enable-non-privileged\
     --with-daemon-user=openct\
     --with-daemon-groups=usb\
-    --with-udev="/$(get_libdir)/udev" )
+    --with-udev="/$LIBDIR/udev" )
 
 src_install() {
     autoprune_src_install

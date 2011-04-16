@@ -2,7 +2,7 @@
 # Copyright 2008, 2009 Ingmar Vanhassel <ingmar@exherbo.org>
 # Distributed under the terms of the GNU General Public License v2
 
-require multilib mozilla [ co_project=xulrunner supported_nspr="[>=4.8.7]" supported_nss="[>=3.12.9]" ]
+require mozilla [ co_project=xulrunner supported_nspr="[>=4.8.7]" supported_nss="[>=3.12.9]" ]
 
 SUMMARY="Mozilla runtime for XUL+XPCOM applications"
 DESCRIPTION="
@@ -109,6 +109,6 @@ src_install() {
 	edo rmdir ${IMAGE}/usr/lib/xulrunner/plugins
 
 	hereenvd 50xulrunner <<EOF
-LDPATH="/usr/$(get_libdir)/xulrunner"
+LDPATH="/usr/$LIBDIR/xulrunner"
 EOF
 }

@@ -1,7 +1,7 @@
 # Copyright 2009, 2011 Ingmar Vanhassel
 # Distributed under the terms of the GNU General Public License v2
 
-require multilib systemd-service [ systemd_files=[ apache.service ] ]
+require systemd-service [ systemd_files=[ apache.service ] ]
 
 export_exlib_phases src_prepare src_install
 
@@ -127,7 +127,7 @@ add-exherbo-layout() {
 	exec_prefix:   \${prefix}
 	bindir:		\${exec_prefix}/bin
 	sbindir:	   \${exec_prefix}/bin
-	libdir:		\${exec_prefix}/$(get_libdir)
+	libdir:		\${exec_prefix}/$LIBDIR
 	libexecdir:	\${exec_prefix}/libexec/apache2/modules
 	mandir:		\${datadir}/man
 	sysconfdir:	/etc+

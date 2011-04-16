@@ -1,6 +1,5 @@
 
 export_exlib_phases src_compile src_install
-require multilib
 
 EJ_MODULE=${PN/ejabberd-/}
 HOMEPAGE="https://forge.process-one.net/browse/ejabberd-modules/${EJ_MODULE}/trunk"
@@ -31,6 +30,6 @@ ejabberd-module_src_compile() {
 }
 
 ejabberd-module_src_install() {
-	insinto /usr/$(get_libdir)/ejabberd/ebin
+	insinto /usr/$LIBDIR/ejabberd/ebin
 	find -name '*.beam' | xargs -n1 doins
 }

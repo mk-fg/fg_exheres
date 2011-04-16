@@ -3,7 +3,7 @@
 # Based in part upon 'squid-3.0.9.ebuild' from Gentoo, which is:
 #	 Copyright 1999-2008 Gentoo Foundation
 
-require pam autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.10 ] ] multilib systemd-service
+require pam autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.10 ] ] systemd-service
 
 export_exlib_phases src_prepare src_configure src_test src_install
 
@@ -202,7 +202,7 @@ EOF
 
 	if ever at_least 3.1; then
 		edo rmdir "${IMAGE}"/usr/include
-		edo rmdir "${IMAGE}"/usr/$(get_libdir)
+		edo rmdir "${IMAGE}"/usr/$LIBDIR
 	fi
 	edo rm -r "${IMAGE}"/var
 	diropts -m0755 -o squid -g squid

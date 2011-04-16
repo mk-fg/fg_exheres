@@ -5,8 +5,6 @@
 # Based in part upon 'nss-3.12.ebuild' from Gentoo, which is:
 #	 Copyright 1999-2008 Gentoo Foundation.
 
-require multilib
-
 SUMMARY="Mozilla's Network Security Services library that implements PKI support"
 
 HOMEPAGE="http://www.mozilla.org/projects/security/pki/nss/"
@@ -67,25 +65,25 @@ src_install() {
         local ${v}=$(sed -n "s/^#define[[:space:]]*NSS_V${v}[[:space:]]*//p" lib/nss/nss.h)
     done
 
-    edo sed -e "s|@LIBDIR@|$(get_libdir)|" \
+    edo sed -e "s|@LIBDIR@|$LIBDIR|" \
             -e "s|@MAJOR_VERSION@|${MAJOR}|" \
             -e "s|@VERSION@|${MAJOR}.${MINOR}.${PATCH}|" \
             "${FILES}"/nss.pc.in > "${WORK}"/nss.pc
 
-    insinto /usr/$(get_libdir)/pkgconfig
+    insinto /usr/$LIBDIR/pkgconfig
     doins "${WORK}"/nss.pc
 
     dobin "${FILES}"/nss-config
 
     hereenvd 40nss <<EOF
-LDPATH="/usr/$(get_libdir)/nss"
+LDPATH="/usr/$LIBDIR/nss"
 EOF
 
     edo cd ../../dist
 
-    insinto /usr/$(get_libdir)/nss
+    insinto /usr/$LIBDIR/nss
     doins *.OBJ/lib/*.{chk,a}
-    exeinto /usr/$(get_libdir)/nss
+    exeinto /usr/$LIBDIR/nss
     doexe *.OBJ/lib/*.so
 
     insinto /usr/include/nss

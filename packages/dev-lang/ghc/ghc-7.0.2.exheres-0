@@ -5,7 +5,7 @@
 # Based in part upon 'ghc-6.8.2.ebuild' from Gentoo, which is:
 #     Copyright 1999-2008 Gentoo Foundation
 
-require flag-o-matic multilib alternatives
+require flag-o-matic alternatives
 
 SUMMARY="The Glorious Glasgow Haskell Compilation System"
 DESCRIPTION="
@@ -196,12 +196,12 @@ src_install() {
             -i "${IMAGE}"/usr/bin/runghc-${SLOT}
 
     # Used in ghc_pkg_prerm(), to unmerge ourselves cleanly
-    if [[ -d ${IMAGE}/usr/$(get_libdir)/${PNV}/package.conf.d ]] ; then
-        insinto /usr/$(get_libdir)/${PNV}/package.conf.d.shipped/
-        doins -r "${IMAGE}"/usr/$(get_libdir)/${PNV}/package.conf.d/*
+    if [[ -d ${IMAGE}/usr/$LIBDIR/${PNV}/package.conf.d ]] ; then
+        insinto /usr/$LIBDIR/${PNV}/package.conf.d.shipped/
+        doins -r "${IMAGE}"/usr/$LIBDIR/${PNV}/package.conf.d/*
     fi
-    if [[ -f ${IMAGE}/usr/$(get_libdir)/${PNV}/package.conf ]] ; then
-        edo cp -p "${IMAGE}/usr/$(get_libdir)/${PNV}/package.conf"{,.shipped}
+    if [[ -f ${IMAGE}/usr/$LIBDIR/${PNV}/package.conf ]] ; then
+        edo cp -p "${IMAGE}/usr/$LIBDIR/${PNV}/package.conf"{,.shipped}
     fi
 }
 
@@ -212,7 +212,7 @@ pkg_prerm() {
     # original one, so that it will be removed during uninstall.
     # Code below can go once we drop ghc[<6.12.1]
 
-    PKG="${ROOT}/usr/$(get_libdir)/${PNV}/package.conf"
+    PKG="${ROOT}/usr/$LIBDIR/${PNV}/package.conf"
 
     if [[ -f ${PKG}.shipped ]] ; then
         cp -p "${PKG}"{.shipped,}
@@ -225,7 +225,7 @@ pkg_postinst() {
     alternatives_pkg_postinst
     # FIXME: ${ROOT}
     local script
-    for script in /usr/$(get_libdir)/${PNV}/registration/*/register.sh ; do
+    for script in /usr/$LIBDIR/${PNV}/registration/*/register.sh ; do
         [[ -f ${script} ]] || continue
         # let's not kill the installation just for this...
         echo "sh ${script}"

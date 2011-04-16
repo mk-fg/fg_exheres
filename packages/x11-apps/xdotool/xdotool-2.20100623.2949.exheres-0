@@ -1,8 +1,6 @@
 # Copyright 2011 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-require multilib
-
 SUMMARY="Simulate keyboard input and mouse activity, move and resize windows."
 
 HOMEPAGE="http://www.semicomplete.com/projects/xdotool/"
@@ -23,7 +21,7 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 src_install() {
-    emake PREFIX="${IMAGE}usr" INSTALLMAN="${IMAGE}usr/share/man" INSTALLLIB="${IMAGE}usr/$(get_libdir)" install
+    emake PREFIX="${IMAGE}usr" INSTALLMAN="${IMAGE}usr/share/man" INSTALLLIB="${IMAGE}usr/$LIBDIR" install
 
     if option examples; then
         docinto examples

@@ -1,7 +1,7 @@
 # Copyright 2011 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-require gnome.org sourceforge multilib autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+require gnome.org sourceforge autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
 
 SUMMARY="Binding of the GTK and GDK libraries for the librep Lisp environment."
 

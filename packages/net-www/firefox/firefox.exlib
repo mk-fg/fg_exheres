@@ -10,7 +10,6 @@ exparam -v codename codename
 MY_PV="${MY_PV:-${PV/_beta/b}}"
 MY_PV="${MY_PV/_rc/rc}"
 
-require multilib
 require mozilla [ \
 	co_project=browser supported_nspr="[>=4.8.7]" \
 	provide_bindist=true codename="${codename}" ]
@@ -62,7 +61,7 @@ MOZILLA_SRC_CONFIGURE_PARAMS=(
 	--enable-wave
 	--hates=docdir
 	--with-system-libxul
-	--with-libxul-sdk=/usr/$(get_libdir)/xulrunner-devel
+	--with-libxul-sdk=/usr/$LIBDIR/xulrunner-devel
 	--with-system-bz2
 	--with-system-jpeg
 	--with-system-zlib
@@ -75,7 +74,7 @@ src_install() {
 	mozilla_src_install
 
 	hereenvd 50firefox <<EOF
-MOZ_PLUGIN_PATH="/usr/$(get_libdir)/mozilla/plugins:/usr/$(get_libdir)/nsbrowser/plugins:/opt/nsbrowser/plugins"
+MOZ_PLUGIN_PATH="/usr/$LIBDIR/mozilla/plugins:/usr/$LIBDIR/nsbrowser/plugins:/opt/nsbrowser/plugins"
 COLON_SEPARATED="MOZ_PLUGIN_PATH"
 EOF
 }
