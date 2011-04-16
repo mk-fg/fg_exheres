@@ -25,11 +25,9 @@ src_compile() {
     elisp-optional_src_compile
 
     edo cd src
-    esandbox disable_net
-    esandbox allow /etc
+    # Disables all tests, as they do insane stuff like test-writing into /
+    sed -i 's/gomake test/true \0/' run.bash
     GOROOT_FINAL="${GO_INSTALL_PATH}" edo ./all.bash
-    esandbox enable_net
-    esandbox disallow /etc
 }
 
 src_install() {
