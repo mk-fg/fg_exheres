@@ -1,10 +1,13 @@
 # Copyright 2011 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
+SCM_REPOSITORY="git://git.adiscon.com/git/libee.git"
+
+require scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+
 SUMMARY="An Event Expression Library inspired by CEE."
 
 HOMEPAGE="http://www.libee.org/"
-DOWNLOADS="http://www.libee.org/files/download/${PNV}.tar.gz"
 
 LICENCES="LGPL-2.1"
 SLOT="0"
@@ -22,3 +25,7 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 DEFAULT_SRC_COMPILE_PARAMS=( -j1 )
+
+src_prepare() {
+    edo autoreconf -vfi
+}
