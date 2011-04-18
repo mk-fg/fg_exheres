@@ -27,6 +27,7 @@ DEPENDENCIES="
     build+run:
         dev-libs/libee
         dev-libs/libestr
+        dev-libs/liblognorm
         sys-apps/systemd
         gnutls? ( dev-libs/gnutls )
         kerberos? ( app-crypt/heimdal )
@@ -45,24 +46,32 @@ UPSTREAM_DOCUMENTATION="${HOMEPAGE}/doc/manual.html [[ lang = en ]]"
 
 # TODO: libdbi, "snmp net-snmp"
 DEFAULT_SRC_CONFIGURE_PARAMS=(
-    --enable-imdiag
-    --enable-imptcp
-    --enable-imfile
     --enable-inet
     --enable-klog
     --enable-mail
-    --enable-omprog
-    --enable-omuxsock
     --enable-pthreads
     --enable-regexp
     --enable-rsyslogd
     --enable-rsyslogrt
     --enable-zlib
-    --disable-imtemplate
     --disable-libdbi
-    --disable-omtemplate
     --disable-oracle
     --disable-snmp
+
+    --enable-mmnormalize
+
+    --enable-imdiag
+    --enable-imptcp
+    --enable-imfile
+    --disable-imtemplate
+
+    --enable-pmlastmsg
+    --enable-pmrfc3164sd
+
+    --enable-omprog
+    --enable-omuxsock
+    --disable-omtemplate
+
     --with-systemdsystemunitdir=/lib/systemd/system
 
     # This is not a mistake and passing it to configure is correct.
