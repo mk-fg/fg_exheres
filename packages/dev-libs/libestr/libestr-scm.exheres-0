@@ -1,7 +1,9 @@
 # Copyright 2011 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-require sourceforge [ suffix=tar.gz ]
+SCM_REPOSITORY="git://git.adiscon.com/git/libestr.git"
+
+require scm-git sourceforge [ suffix=tar.gz ]
 
 SUMMARY="A library for some string essentials."
 
@@ -13,3 +15,8 @@ MYOPTIONS=""
 DEPENDENCIES=""
 
 BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_prepare() {
+    edo autoreconf -vfi
+}
