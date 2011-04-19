@@ -7,6 +7,9 @@
 [remote "origin"]
 	url = git@fraggod.net:fg_exheres.git
 	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
 
 [filter "exheres_syntax"]
 	clean = $GIT_DIR/../_exheres_filter.py clean %f
