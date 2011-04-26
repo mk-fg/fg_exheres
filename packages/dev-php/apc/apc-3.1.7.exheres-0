@@ -1,0 +1,30 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+MY_PN="APC"
+MY_PNV="${MY_PN}-${PV}"
+
+SUMMARY="Alternative PHP Cache is a free, open, and robust framework for caching and optimizing PHP intermediate code."
+
+HOMEPAGE="http://pecl.php.net/package/${MY_PN}"
+DOWNLOADS="http://pecl.php.net/get/${MY_PNV}.tgz"
+
+LICENCES="PHP"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-lang/php
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK=${WORKBASE}/${MY_PNV}
+DEFAULT_SRC_INSTALL_PARAMS=( INSTALL_ROOT=${IMAGE} )
+
+src_prepare() {
+    edo phpize
+}
