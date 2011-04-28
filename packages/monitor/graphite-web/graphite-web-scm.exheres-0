@@ -1,0 +1,43 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://bazaar.launchpad.net/~graphite-dev/graphite"
+SCM_CHECKOUT_TO="graphite"
+SCM_BRANCH="main"
+
+require distutils scm-bzr
+
+SUMMARY="Enterprise Scalable Realtime Graphing, web interface."
+
+HOMEPAGE="http://graphite.wikidot.com/"
+
+LICENCES="Apache-2.0"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-python/django
+        dev-python/pycairo
+    suggestion:
+        dev-python/python-memcached [[ description = [
+            For huge performance gains via in-memory django caching ] ]]
+"
+# x11-apps/bitmap - unsure what it's for
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    # Installs to /opt. Fine with me, since that's upstream.
+    distutils_src_install
+
+    rmdir -p "$IMAGE"/usr/lib/python2.7/site-packages
+
+    # Not sure if they're really necessary.
+    keepdir /opt/graphite/storage/rrd
+    keepdir /opt/graphite/storage/lists
+    keepdir /opt/graphite/storage/whisper
+    keepdir /opt/graphite/storage/log/webapp
+}

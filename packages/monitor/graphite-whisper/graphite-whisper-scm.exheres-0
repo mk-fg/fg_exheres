@@ -1,0 +1,24 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://bazaar.launchpad.net/~graphite-dev/graphite"
+SCM_CHECKOUT_TO="graphite"
+SCM_BRANCH="main"
+
+require distutils scm-bzr
+
+SUMMARY="Enterprise Scalable Realtime Graphing, data storage backend."
+
+HOMEPAGE="http://graphite.wikidot.com/"
+
+LICENCES="Apache-2.0"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="${WORK}/whisper"
