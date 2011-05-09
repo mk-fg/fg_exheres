@@ -20,6 +20,9 @@ MYOPTIONS="pcap"
 DEPENDENCIES="
     build+run:
         dev-db/sqlite[>=3.5.9]
+        net-libs/libnetfilter_conntrack
+        net-libs/libnetfilter_log
+        net-libs/libnfnetlink
         pcap? ( dev-libs/libpcap[>=0.9.8] )
     run:
         net-firewall/iptables[>=1.4.1]
