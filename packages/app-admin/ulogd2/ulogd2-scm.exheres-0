@@ -43,7 +43,7 @@ src_install() {
     install_systemd_files
 
     insinto /etc/logrotate.d
-    doins ulogd.logrotate
+    newins ulogd.logrotate ulogd
 
     insinto /usr/share/doc/${PNVR}
     doins -r contrib
