@@ -20,6 +20,7 @@ DEPENDENCIES="
     run:
         dev-python/django
         dev-python/pycairo
+        monitor/graphite-whisper
     suggestion:
         dev-python/python-memcached [[ description = [
             For huge performance gains via in-memory django caching ] ]]
@@ -33,7 +34,7 @@ src_install() {
     # Installs to /opt. Fine with me, since that's upstream.
     distutils_src_install
 
-    rmdir -p "$IMAGE"/usr/lib/python2.7/site-packages
+    rmdir -p "$IMAGE"/usr/${LIBDIR}/python*/site-packages
 
     # Not sure if they're really necessary.
     keepdir /opt/graphite/storage/rrd

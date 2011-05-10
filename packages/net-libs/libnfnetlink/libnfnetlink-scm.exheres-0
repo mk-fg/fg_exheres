@@ -1,0 +1,20 @@
+# Copyright 2011 Mike Kazantsev
+# Copyright 2009-2010 Nathan McSween
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://git.netfilter.org/${PN}.git"
+
+require scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+
+SUMMARY="Low-level library for netfilter related kernel/userspace communication."
+
+HOMEPAGE="http://www.netfilter.org/projects/${PN}/"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
