@@ -1,0 +1,23 @@
+# Copyright 2011 Mike Kazantsev
+# Copyright 2010 Joonas Sarajärvi <muepsj@gmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://git.nilfs.org/nilfs2-utils.git"
+
+require scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 1.10 ] ]
+
+SUMMARY="Userspace utilities for the NILFS2 filesystem."
+
+HOMEPAGE="http://www.nilfs.org"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        sys-apps/util-linux
+"
+
+BUGS_TO="mk.fraggod@gmail.com"

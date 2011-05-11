@@ -34,8 +34,8 @@ BUGS_TO="mk.fraggod@gmail.com"
 REMOTE_IDS="freshmeat:${PN}"
 
 
-DEFAULT_SRC_CONFIGURE_PARAMS=( --without-mysql --without-pgsql )
-DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( pcap )
+DEFAULT_SRC_CONFIGURE_PARAMS=( --without-mysql --without-pgsql --without-dbi )
+DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( 'pcap pcap=/usr' )
 
 src_install() {
     default
