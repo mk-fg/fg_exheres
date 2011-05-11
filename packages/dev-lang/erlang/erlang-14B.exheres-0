@@ -32,6 +32,7 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 WORK="${WORKBASE}/${MY_PNV}"
 DEFAULT_SRC_CONFIGURE_PARAMS=( --hates=docdir --enable-dynamic-ssl-lib )
+DEFAULT_SRC_COMPILE_PARAMS=( -j1 )
 
 src_install() {
     install_systemd_files
