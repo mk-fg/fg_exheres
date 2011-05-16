@@ -1,0 +1,71 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+## -- Abandon All Hope, Ye Who Enter Here
+# There are no /branches /trunk or /tags, so SVN_RAW_URI seem to be the only way
+# Note that all the sub-repos aren't used now - just binaries from the root
+
+SCM_NO_AUTOMATIC_FINALISE=1
+require scm-svn
+
+MY_REPOSITORY="http://svn.clozure.com/publicsvn/openmcl/release/1.6"
+MY_EXTERNALS="
+    compiler:source/compiler
+    contrib:contrib
+    doc:source/doc
+    examples:source/examples
+    level_0:source/level-0
+    level_1:source/level-1
+    lib:source/lib
+    library:source/library
+    lisp_kernel:source/lisp-kernel
+    objc_bridge:source/objc-bridge
+    scripts:source/scripts
+    tools:source/tools
+    xdump:source/xdump
+    x86_headers:x86-headers
+    x86_headers64:x86-headers64
+"
+
+SCM_REPOSITORY="${MY_REPOSITORY}/linuxx86/ccl"
+SCM_SVN_RAW_URI=true
+
+for SCM_THIS in ${MY_EXTERNALS}; do
+    MY_SUBPATH="${SCM_THIS##*:}"
+    SCM_THIS="${SCM_THIS%%:*}"
+    scm_set_var REPOSITORY "${MY_REPOSITORY}/${MY_SUBPATH}"
+    scm_set_var SVN_RAW_URI true
+    SCM_EXTERNAL_REFS+=" ${SCM_THIS//_/-}:${SCM_THIS}"
+    SCM_SECONDARY_REPOSITORIES+=" ${SCM_THIS}"
+done
+
+scm_finalise
+
+
+SUMMARY="Free Common Lisp implementation with a long history."
+
+HOMEPAGE="http://ccl.clozure.com/"
+
+LICENCES="LGPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    # No time to research it's build-system now, just bin-install
+    local bin=lx86cl
+    [[ "$(uname -m)" != i686 ]] && bin=${bin}64
+
+    exeinto /usr/libexec
+    doexe "$bin"
+    insinto /usr/libexec
+    doins "$bin".image
+
+    mkdir -p "$IMAGE"/usr/bin
+    dosym /usr/libexec/"$bin" /usr/bin/ccl
+}
