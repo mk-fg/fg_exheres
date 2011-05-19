@@ -1,0 +1,14 @@
+# Copyright 2011 Johannes Nixdorf <mixi@user-helfen-usern.de>
+# Distributed under the terms of the GNU General Public License v2
+
+[Unit]
+Description=bitlbee activation socket
+Conflicts=bitlbee.service
+
+[Socket]
+ListenStream=127.0.0.1:6667
+Accept=yes
+
+[Install]
+WantedBy=sockets.target
+

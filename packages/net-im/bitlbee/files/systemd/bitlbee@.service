@@ -1,0 +1,11 @@
+# Copyright 2011 Johannes Nixdorf <mixi@user-helfen-usern.de>
+# Distributed under the terms of the GNU General Public License v2
+
+[Unit]
+Description=BitlBee IRC-IM bridge
+After=network.target
+
+[Service]
+ExecStart=/usr/sbin/bitlbee -n -u bitlbee -I
+StandardInput=socket
+
