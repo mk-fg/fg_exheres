@@ -32,4 +32,6 @@ RESTRICT="test"
 BUGS_TO="mk.fraggod@gmail.com"
 
 
-DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}/${PV}_default_enc.patch" )
+src_prepare() {
+    edo sed -i 's~src = "ISO8859-1";~src = "CP1251";~' protocols/oscar/oscar.c
+}
