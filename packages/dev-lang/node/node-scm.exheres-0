@@ -33,5 +33,5 @@ src_prepare() {
 
 src_configure() {
     # It's waf, not autotools
-    edo ./configure --prefix=/usr --shared-cares --shared-libev
+    edo ./configure --prefix=/usr --shared-cares
 }
