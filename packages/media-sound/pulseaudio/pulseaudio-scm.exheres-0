@@ -1,0 +1,107 @@
+# Copyright 2011 Mike Kazantsev
+# Copyright 2009 Saleem Abdulrasool <compnerd@compnerd.org>
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://git.0pointer.de/pulseaudio.git"
+
+require scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+
+SUMMARY="A sound server for POSIX and Win32 systems"
+
+HOMEPAGE="http://www.pulseaudio.org/"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="
+    alsa avahi caps dbus gtk ipv6 samplerate
+    bluetooth [[ requires = [ dbus ] ]]
+    consolekit [[ requires = [ dbus ] ]]"
+
+DEPENDENCIES="
+    build:
+        dev-util/intltool[>=0.35.0]
+        dev-util/pkg-config[>=0.20]
+    build+run:
+        dev-libs/glib:2[>=2.4]
+        dev-libs/openssl[>=0.9]
+        group/audio
+        group/pulse
+        group/pulse-access
+        group/pulse-rt
+        media-libs/libsndfile[>=1.0.20]
+        media-libs/speex[>=1.2_beta]
+        sys-fs/udev[>=143][sound]
+        sys-libs/gdbm
+        user/pulse
+        alsa? ( sys-sound/alsa-lib[>=1.0.19] )
+        avahi? ( net-dns/avahi[>=0.6.0][dbus] )
+        bluetooth? ( net-wireless/bluez[>=3.0] )
+        caps? ( sys-libs/libcap )
+        consolekit? ( sys-auth/ConsoleKit )
+        dbus? ( sys-apps/dbus[>=1.0] )
+        gtk? ( x11-libs/gtk+:2[>=2.4] )
+        samplerate? ( media-libs/libsamplerate )
+    recommendation:
+        alsa? ( sys-sound/alsa-plugins[pulseaudio] )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+RESTRICT="test"
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+--disable-oss-output
+--disable-oss-wrapper
+--disable-solaris
+
+--localstatedir=/var
+--with-database=gdbm
+
+--disable-per-user-esound-socket
+
+--disable-gconf
+--disable-hal
+
+--enable-glib2
+--enable-udev
+--enable-manpages
+
+--enable-openssl
+
+# breaks sound output?
+--enable-x11
+
+# unpackaed dependencies
+--disable-asyncns
+--disable-jack
+--disable-lirc
+--disable-tcpwrap
+)
+
+DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( caps )
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( alsa avahi 'bluetooth bluez' dbus 'gtk gtk2' ipv6 samplerate )
+
+src_prepare() {
+    edo sed -i 's|\[ json >= 0\.9 \]|[ libjson >= 0.9 ]|' configure.ac
+    ./autogen.sh # eautoreconf seem to fail even w/ nonfatal
+}
+
+src_install() {
+    default
+
+    insinto /etc/security/limits.d/
+    doins "${FILES}/pulse-rt.conf"
+
+    keepdir /usr/libexec/pulse
+    diropts -o pulse -g pulse -m0755 ; keepdir /var/run/pulse
+
+    option avahi && edo sed -i -e '/module-zeroconf-publish/{ /^#/{ s/^#// } }' "${IMAGE}/etc/pulse/default.pa"
+    option !consolekit && edo sed -i -e '/module-console-kit/{ /^#/!{ s/^/#/ } }' "${IMAGE}/etc/pulse/default.pa"
+
+    if ! option alsa ; then
+        edo rmdir "${IMAGE}"/usr/share/pulseaudio/{alsa-mixer/{paths,profile-sets,},}
+        edo rmdir "${IMAGE}"/lib/{udev/{rules.d,},}
+    fi
+}
