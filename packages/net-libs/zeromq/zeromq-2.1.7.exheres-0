@@ -3,6 +3,6 @@
 
 SCM_TAG="v${PV}"
 
-require libzmq
+require zeromq
 
 PLATFORMS="~amd64 ~x86"

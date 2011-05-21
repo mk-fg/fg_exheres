@@ -2,6 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 SCM_REPOSITORY="http://projects.unbit.it/hg/uwsgi"
+MY_OPTS=( json ldap sqlite yaml zeromq )
 
 require scm-hg
 
@@ -12,12 +13,40 @@ HOMEPAGE="http://projects.unbit.it/uwsgi/"
 LICENCES="GPL-2"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
-MYOPTIONS=""
+MYOPTIONS="${MY_OPTS[@]}"
 
-DEPENDENCIES=""
+DEPENDENCIES="
+    build+run:
+        dev-libs/pcre
+        json? ( dev-libs/jansson )
+        ldap? ( net-directory/openldap )
+        sqlite? ( dev-db/sqlite:3 )
+        yaml? ( dev-libs/libyaml )
+        zeromq? ( || ( net-libs/zeromq net-libs/zmq ) )
+"
 
 BUGS_TO="mk.fraggod@gmail.com"
 
+
+src_configure() {
+    declare -A OPTS_DICT OPTS_VALS
+    OPTS_DICT=( [sqlite]=sqlite3 )
+    OPTS_VALS=( [yaml]=libyaml )
+
+    local opt opt_uwsgi
+    for opt in "${MY_OPTS[@]}"; do
+        opt_uwsgi=${OPTS_DICT[$opt]}
+        [[ -z "$opt_uwsgi" ]] && opt_uwsgi="$opt"
+        if option $opt; then
+            val=${OPTS_VALS[$opt]}
+            [[ -z "$val" ]] && val=true
+        else val=
+        fi
+        edo awk '$1=="'"$opt_uwsgi"'" {$NF="'"$val"'"; found=1}
+            {print} END {exit !found}' buildconf/default.ini >buildconf/default.ini.new
+        mv buildconf/default.ini{.new,}
+    done
+}
 
 src_install() {
     dobin uwsgi
