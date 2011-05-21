@@ -32,6 +32,10 @@ DEPENDENCIES="
 BUGS_TO="mk.fraggod@gmail.com"
 
 
+src_compile() {
+    make -j1
+}
+
 src_install() {
     default
     find "${IMAGE}/usr/share/doc" -depth -type d -empty -delete
