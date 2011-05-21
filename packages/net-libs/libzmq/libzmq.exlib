@@ -21,7 +21,7 @@ DEPENDENCIES="
 
 BUGS_TO="mk.fraggod@gmail.com"
 REMOTE_IDS="freshmeat:0mq"
-UPSTREAM_CHANGELOG="http://github.com/zeromq/zeromq2/blob/master/ChangeLog [[ lang = en ]]"
+UPSTREAM_CHANGELOG="http://github.com/zeromq/libzmq/blob/master/ChangeLog [[ lang = en ]]"
 UPSTREAM_DOCUMENTATION="${HOMEPAGE}docs:cookbook [[ lang = en description = [ Usage examples ] ]]"
 
 
