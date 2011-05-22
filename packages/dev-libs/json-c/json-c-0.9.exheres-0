@@ -1,0 +1,16 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="A JSON parser and printer library in C."
+
+HOMEPAGE="http://projects.snarc.org/libjson/"
+DOWNLOADS="mirror://gentoo/${PNV}.tar.gz"
+
+LICENCES="as-is"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
