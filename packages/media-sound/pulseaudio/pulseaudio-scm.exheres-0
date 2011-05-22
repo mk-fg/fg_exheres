@@ -24,6 +24,7 @@ DEPENDENCIES="
         dev-util/pkg-config[>=0.20]
     build+run:
         dev-libs/glib:2[>=2.4]
+        dev-libs/json-c[>=0.9]
         dev-libs/openssl[>=0.9]
         group/audio
         group/pulse
@@ -84,7 +85,6 @@ DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( caps )
 DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( alsa avahi 'bluetooth bluez' dbus 'gtk gtk2' ipv6 samplerate )
 
 src_prepare() {
-    edo sed -i 's|\[ json >= 0\.9 \]|[ libjson >= 0.9 ]|' configure.ac
     ./autogen.sh # eautoreconf seem to fail even w/ nonfatal
 }
 
