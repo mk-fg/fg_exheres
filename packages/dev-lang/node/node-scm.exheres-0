@@ -28,7 +28,8 @@ BUGS_TO="mk.fraggod@gmail.com"
 src_prepare() {
     # To get rid of "node.cc:1507: undefined reference to `ev_rt_now'"
     #  http://comments.gmane.org/gmane.comp.lang.javascript.nodejs/18924
-    sed -i '/EV_MULTIPLICITY=0/d' wscript
+    sed -i '/EV_MULTIPLICITY=0/d' wscript tools/wafadmin/Tools/node_addon.py
+    find -type f -exec sed -i 's/EV_MULTIPLICITY=0/EV_MULTIPLICITY=1/g' '{}' \;
 }
 
 src_configure() {
