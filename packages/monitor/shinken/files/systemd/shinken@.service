@@ -1,0 +1,10 @@
+[Unit]
+Description=Shinken
+
+[Service]
+WorkingDirectory=/var/lib/shinken
+SyslogIdentifier=shinken-%i
+ExecStart=/usr/bin/env shinken-%i -c /etc/shinken/%id.ini
+
+[Install]
+WantedBy=multi-user.target

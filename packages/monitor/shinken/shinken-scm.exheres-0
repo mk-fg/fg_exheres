@@ -1,0 +1,46 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/naparuba/shinken.git"
+
+require distutils scm-git systemd-service
+
+SUMMARY="An open source Nagios-like monitoring tool."
+
+HOMEPAGE="http://www.shinken-monitoring.org/"
+
+LICENCES="AGPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-python/Pyro
+        group/shinken
+        user/shinken
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    distutils_src_install
+    keepdir /etc/shinken/objects/discovery
+
+    for file in "$IMAGE"/usr/bin/shinken-*.py
+    do [[ $(sha1sum <"$file") = $(sha1sum <"${file%.py}") ]] && edo rm "$file"
+    done
+
+    mv "$IMAGE"/etc/shinken/{nagios.cfg,arbiterd.ini}
+    cat <<EOF >>"$IMAGE"/etc/shinken/arbiterd.ini
+
+# Shinken-specific configuration
+cfg_file=shinken-specific.cfg
+EOF
+
+    rm -rf "$IMAGE"/etc/{default,init.d,shinken/nagios-windows.cfg,shinken/*-windows.ini}
+    sed -i "s|$IMAGE|/|" "$IMAGE"/etc/shinken/*.{ini,cfg}
+
+    install_systemd_files
+}
