@@ -1,0 +1,32 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Curses interface for the daemon of the BitTorrent client Transmission."
+
+HOMEPAGE="https://github.com/fagga/transmission-remote-cli"
+DOWNLOADS="https://github.com/fagga/transmission-remote-cli/raw/master/transmission-remote-cli.py"
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-lang/python
+"
+
+# Possible suggestions:
+#  dev-python/geoip
+#  dev-python/adns
+# both seem to add totally useless functionality though.
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK=$WORKBASE
+
+src_install() {
+    newbin "${FETCHEDDIR}/${ARCHIVES}" "${PN}"
+    dosym "${PN}" /usr/bin/transmission-curses
+}
