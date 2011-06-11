@@ -1,0 +1,47 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Set of plugins for nagios (or compatible software) to perform checks."
+
+require sourceforge [ project=nagiosplug suffix=tar.gz pnv="${PV}/${PNV}" ]
+
+HOMEPAGE="http://nagiosplugins.org/"
+
+LICENCES="GPL-2"
+SLOT="0"
+MYOPTIONS="ipv6 postgresql"
+
+DEPENDENCIES="
+	build+run:
+		dev-lang/perl
+		dev-libs/openssl
+		group/shinken
+		user/shinken
+		postgresql? ( dev-db/postgresql )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+	--exec-prefix=/usr/libexec/nagios --libexecdir=/usr/libexec/nagios
+
+	--with-openssl=/usr
+	--with-nagios-user=shinken --with-nagios-group=shinken
+
+	# I just don't need these
+	--disable-perl-modules
+	--without-ldap --without-mysql )
+DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( ipv6 'postgresql pgsql=/usr' )
+
+
+src_configure() {
+	esandbox disable_net
+	default
+	esandbox enable_net
+}
+
+src_install() {
+	default
+	edo rmdir "$IMAGE"/usr/include
+}
