@@ -3,7 +3,7 @@
 
 SCM_REPOSITORY="https://net-snmp.svn.sourceforge.net/svnroot/net-snmp"
 
-require scm-svn
+require scm-svn systemd-service
 
 SUMMARY="Set of plugins for nagios (or compatible software) to perform checks."
 
@@ -20,6 +20,9 @@ DEPENDENCIES="
 		dev-util/elfutils
 		sys-libs/zlib
 		python? ( dev-python/setuptools )
+	run:
+		user/snmpd
+		group/snmpd
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
@@ -48,4 +51,5 @@ src_prepare() {
 src_install() {
 	default
 	keepdir /var/lib/net-snmp
+	install_systemd_files
 }

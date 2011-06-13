@@ -1,0 +1,8 @@
+[Unit]
+Description=snmpd
+
+[Service]
+ExecStart=/usr/sbin/snmpd -f -u snmpd -g snmpd
+
+[Install]
+WantedBy=multi-user.target
