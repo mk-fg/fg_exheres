@@ -3,6 +3,7 @@ Description=snmpd
 
 [Service]
 ExecStart=/usr/sbin/snmpd -f -u snmpd -g snmpd
+ExecReload=/bin/kill -HUP $MAINPID
 
 [Install]
 WantedBy=multi-user.target
