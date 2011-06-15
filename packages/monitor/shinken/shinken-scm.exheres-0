@@ -26,7 +26,6 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 src_install() {
     distutils_src_install
-    keepdir /etc/shinken/objects/discovery
 
     for file in "$IMAGE"/usr/bin/shinken-*.py
     do [[ $(sha1sum <"$file") = $(sha1sum <"${file%.py}") ]] && edo rm "$file"
@@ -41,6 +40,9 @@ EOF
 
     rm -rf "$IMAGE"/etc/{default,init.d,shinken/nagios-windows.cfg,shinken/*-windows.ini}
     sed -i "s|$IMAGE|/|" "$IMAGE"/etc/shinken/*.{ini,cfg}
+    keepdir /etc/shinken/objects/discovery
+
+    mv "$IMAGE"/{etc,usr/share/doc}/shinken
 
     install_systemd_files
 }
