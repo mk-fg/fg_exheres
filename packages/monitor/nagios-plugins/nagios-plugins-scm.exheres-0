@@ -1,0 +1,9 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://nagiosplug.git.sourceforge.net/gitroot/nagiosplug/nagiosplug"
+
+require nagios-plugins scm-git
+
+PLATFORMS="~amd64 ~x86"
+DOWNLOADS=""

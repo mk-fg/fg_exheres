@@ -18,7 +18,7 @@ DEPENDENCIES="
     $(haskell_lib_dependencies "
         dev-haskell/containers
         dev-haskell/mtl
-        dev-haskell/network[<2.3.0.2]
+        dev-haskell/network[<2.4.0]
         dev-haskell/old-locale
     ")
 "
