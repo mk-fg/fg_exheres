@@ -31,8 +31,8 @@ src_install() {
     do [[ $(sha1sum <"$file") = $(sha1sum <"${file%.py}") ]] && edo rm "$file"
     done
 
-    mv "$IMAGE"/etc/shinken/{nagios.cfg,arbiterd.ini}
-    cat <<EOF >>"$IMAGE"/etc/shinken/arbiterd.ini
+    edo mv "$IMAGE"/etc/shinken/{nagios.cfg,arbiterd.ini}
+    edo cat <<EOF >>"$IMAGE"/etc/shinken/arbiterd.ini
 
 # Shinken-specific configuration
 cfg_file=shinken-specific.cfg
@@ -40,9 +40,9 @@ EOF
 
     rm -rf "$IMAGE"/etc/{default,init.d,shinken/nagios-windows.cfg,shinken/*-windows.ini}
     sed -i "s|$IMAGE|/|" "$IMAGE"/etc/shinken/*.{ini,cfg}
-    keepdir /etc/shinken/objects/discovery
-
-    mv "$IMAGE"/{etc,usr/share/doc}/shinken
+    edo rmdir "$IMAGE"/etc/shinken/objects/discovery
+    edo mv "$IMAGE"/etc/shinken "$IMAGE"/usr/share/doc/"${PNV}"
+    edo rmdir "$IMAGE"/etc
 
     install_systemd_files
 }
