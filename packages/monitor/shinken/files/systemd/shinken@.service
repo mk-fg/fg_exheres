@@ -1,5 +1,5 @@
 [Unit]
-Description=Shinken
+Description=Shinken %i
 
 [Service]
 WorkingDirectory=/var/lib/shinken
