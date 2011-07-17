@@ -16,6 +16,7 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     $(haskell_lib_dependencies "
+        dev-haskell/HTTP
         dev-haskell/MissingH
         dev-haskell/QuickCheck
         dev-haskell/SHA
