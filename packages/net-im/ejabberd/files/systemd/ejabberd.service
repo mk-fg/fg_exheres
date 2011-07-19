@@ -1,6 +1,6 @@
 [Unit]
 Description=ejabberd
-After=network.target
+After=network.target epmd.service
 
 [Service]
 Type=forking

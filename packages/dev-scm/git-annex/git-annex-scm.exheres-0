@@ -16,10 +16,12 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     $(haskell_lib_dependencies "
+        dev-haskell/HTTP
         dev-haskell/MissingH
         dev-haskell/QuickCheck
         dev-haskell/SHA
         dev-haskell/dataenc
+        dev-haskell/monad-control
         dev-haskell/pcre-light
         dev-haskell/utf8-string")
     build+run:

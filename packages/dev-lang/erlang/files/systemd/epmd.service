@@ -1,5 +1,6 @@
 [Unit]
 Description=Erlang Portmapper Daemon
+Wants=network.target
 Before=network.target
 
 [Service]
