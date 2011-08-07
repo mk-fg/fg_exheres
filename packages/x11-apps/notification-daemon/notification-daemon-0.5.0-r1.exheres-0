@@ -38,7 +38,7 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 src_prepare() {
-    edo find -type f -exec sed -i 's|org\.freedesktop\.Notifications|org\.freedesktop\.NotificationCore|g' {} \;
+    edo find -type f -exec sed -i 's|org\.freedesktop\.Notifications|org.freedesktop.NotificationCore|g' {} \;
     edo mv data/org.freedesktop.Notification{s,Core}.service
     edo mv data/org.freedesktop.Notification{s,Core}.service.in
 }

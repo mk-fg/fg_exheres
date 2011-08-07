@@ -9,13 +9,9 @@ optz = dict( qlen = 10, tbf_size = 4,
 poll_interval = 60
 nid_gc_max_interval = 600
 
-dbus_name = 'org.freedesktop.Notifications'
-dbus_iface = 'org.freedesktop.Notifications'
-## Also there are these non-proxied interfaces:
-#	org.freedesktop.DBus.Introspectable
-#	org.freedesktop.DBus.Properties
-dbus_path = '/org/freedesktop/Notifications'
+dbus_src = 'org.freedesktop.Notifications'
 dbus_dst = 'org.freedesktop.NotificationCore'
+dbus_path = '/org/freedesktop/Notifications'
 
 urgency_levels = ['low', 'normal', 'critical']
 
@@ -103,7 +99,6 @@ import re
 
 DBusGMainLoop(set_as_default=True)
 bus = dbus.SessionBus()
-bus_name = dbus.service.BusName(dbus_name, bus)
 
 optz.filter_file = os.path.expanduser(optz.filter_file)
 
@@ -112,8 +107,8 @@ class NotifyProxy(dbus.service.Object):
 	_queue_lock = Lock()
 	_last_note = None # used to show last delayed notification as-is, if it's the only one
 	_id_stack, _id_stack_gc = deque(), 0 # used to keep id's of last displayed notes, so they can be closed
+	_dbus_method = ft.partial(dbus.service.method, dbus_src)
 	plugged, timeout_cleanup = False, True
-	ncore = property(ft.partial(bus.get_object, dbus_dst, dbus_path))
 
 	def __init__(self, *argz, **kwz):
 		tick_strangle_max = op.truediv(optz.tbf_max_delay, optz.tbf_tick)
@@ -125,14 +120,25 @@ class NotifyProxy(dbus.service.Object):
 		self._notify_buffer = RRQ(optz.qlen)
 
 
-	@dbus.service.method(dbus_iface, in_signature='', out_signature='ssss')
-	def GetServerInformation(self): return self.ncore.GetServerInformation()
+	@property
+	def ncore(self):
+		return dbus.Interface(
+			bus.get_object(dbus_dst, dbus_path),
+			dbus_interface=dbus_dst )
 
-	@dbus.service.method(dbus_iface, in_signature='', out_signature='as')
-	def GetCapabilities(self): return self.ncore.GetCapabilities()
+	def _fake_path(self, data):
+		return map( lambda xml: xml\
+			.replace(dbus_path, dbus_path)\
+			.replace(dbus_dst, dbus_src), data )
+
+	@_dbus_method(in_signature='', out_signature='ssss')
+	def GetServerInformation(self): return self._fake_path(self.ncore.GetServerInformation())
+
+	@_dbus_method(in_signature='', out_signature='as')
+	def GetCapabilities(self): return self._fake_path(self.ncore.GetCapabilities())
 
 
-	@dbus.service.method(dbus_iface, in_signature='u', out_signature='')
+	@_dbus_method(in_signature='u', out_signature='')
 	def CloseNotification(self, nid):
 		if not nid:
 			log.debug('Closing all notifications from displayed stack')
@@ -143,13 +149,13 @@ class NotifyProxy(dbus.service.Object):
 		else: return self.ncore.CloseNotification(nid)
 
 
-	@dbus.service.method(dbus_iface, in_signature='', out_signature='')
+	@_dbus_method(in_signature='', out_signature='')
 	def Flush(self):
 		log.debug('Manual flush of the notification buffer')
 		return self.flush_buffer()
 
 
-	@dbus.service.method(dbus_iface, in_signature='a{sb}', out_signature='')
+	@_dbus_method(in_signature='a{sb}', out_signature='')
 	def Set(self, params):
 		# Urgent-passthrough controls
 		if params.pop('urgent_toggle', None): params['urgent'] = not optz.urgency_check
@@ -263,7 +269,7 @@ class NotifyProxy(dbus.service.Object):
 		return nid
 
 
-	@dbus.service.method( dbus_iface,
+	@dbus.service.method( dbus_src,
 		in_signature='susssasa{sv}i', out_signature='u' )
 	def Notify(self, app_name, id, icon, summary, body, actions, hints, timeout):
 		try: urgency = int(hints[u'urgency'])
@@ -356,7 +362,7 @@ class NotifyProxy(dbus.service.Object):
 
 
 
-interceptor = NotifyProxy(bus, dbus_path)
+interceptor = NotifyProxy(bus, dbus_path, dbus.service.BusName(dbus_src, bus))
 signal.signal(signal.SIGALRM, interceptor.flush_buffer)
 
 loop = gobject.MainLoop()
