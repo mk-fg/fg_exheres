@@ -1,10 +1,13 @@
 # Copyright 2011 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
+SCM_REPOSITORY="git://github.com/fagga/transmission-remote-cli.git"
+
+require scm-git
+
 SUMMARY="Curses interface for the daemon of the BitTorrent client Transmission."
 
 HOMEPAGE="https://github.com/fagga/transmission-remote-cli"
-DOWNLOADS="https://github.com/fagga/transmission-remote-cli/raw/master/transmission-remote-cli.py"
 
 LICENCES="GPL-3"
 SLOT="0"
@@ -24,9 +27,7 @@ DEPENDENCIES="
 BUGS_TO="mk.fraggod@gmail.com"
 
 
-WORK=$WORKBASE
-
 src_install() {
-    newbin "${FETCHEDDIR}/${ARCHIVES}" "${PN}"
+    newbin "${PN}.py" "${PN}"
     dosym "${PN}" /usr/bin/transmission-curses
 }
