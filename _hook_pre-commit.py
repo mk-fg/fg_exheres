@@ -6,7 +6,7 @@ from __future__ import unicode_literals, print_function
 import itertools as it, operator as op, functools as ft
 from datetime import datetime
 import os, sys, re
-from os.path import join, isfile
+from os.path import join, isfile, dirname, basename
 from io import open
 
 git_dir = os.environ['GIT_DIR']
@@ -229,7 +229,7 @@ def _deps_grouper(tokens):
 
 
 @ft.partial(chk_wrapper, unwind=False)
-def check_file(src, exheres=None):
+def check_file(src, exheres=None, category=None):
 	author = chk_copyright(next(src))
 	if author != 'Mike Kazantsev':
 		raise ChkFullError('Forgot to add myself to a copyright')
@@ -243,7 +243,7 @@ def check_file(src, exheres=None):
 	chk_emptyline(src)
 
 	# some exlibs can define HOMEPAGE and DOWNLOADS
-	exlib_src = '-scm.' in exheres
+	exlib_src = '-scm.' in exheres or category == 'virtual'
 	exlib_meta = exlib_deps = False
 	for line in src:
 		if line.startswith('require'):
@@ -342,7 +342,8 @@ def check_db(cdb):
 
 		print('Checking path: {}'.format(k))
 		err_count = 0
-		check_file(open(path, encoding='utf-8'), os.path.basename(path))
+		check_file( open(path, encoding='utf-8'),
+			exheres=basename(path), category=basename(dirname(dirname(path))) )
 		if err_count: errors += 1
 
 	return errors

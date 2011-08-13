@@ -3,6 +3,7 @@
 from __future__ import unicode_literals, print_function
 
 import os, sys, re
+from os.path import dirname, basename
 action, path = sys.argv[1:]
 if not re.match(r'^packages/([^/]+)/([^/]+)/([^/]+).exheres-0$', path):
 	sys.stdout.write(sys.stdin.read())
@@ -30,7 +31,8 @@ filter_smudge = ft.partial(filter_base, src_seq=' '*4, dst_seq='\t')
 
 if action == 'clean':
 	mod.err_count = 0
-	mod.check_file(chk, os.path.basename(path))
+	mod.check_file( chk, exheres=basename(path),
+		category=basename(dirname(dirname(path))) )
 	filter_clean(src)
 	with mod.checker_db() as cdb:
 		cdb[path] = mod.err_count
