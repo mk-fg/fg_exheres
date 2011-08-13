@@ -1,0 +1,33 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="DE-free daemon for displaying notifications."
+
+HOMEPAGE="http://fraggod.net/"
+DOWNLOADS="http://fraggod.net/static/code/notification-thing.py"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-lang/python
+        dev-python/dbus-python
+        dev-python/fgc
+        dev-python/pygi
+        gnome-bindings/pygobject
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK=$WORKBASE
+
+src_install() {
+    exeinto /usr/libexec
+    newexe "${FETCHEDDIR}/${ARCHIVES}" "${PN}"
+    insinto /usr/share/dbus-1/services
+    doins "${FILES}/org.freedesktop.Notifications.service"
+}
