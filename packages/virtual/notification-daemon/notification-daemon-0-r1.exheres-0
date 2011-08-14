@@ -13,16 +13,16 @@ PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
 DEPENDENCIES="
-	run:
-		|| (
-			gnome-desktop/gnome-shell
-			kde/kdebase-runtime [[ description = [ with knotify ] ]]
-			x11-apps/notification-daemon
-			x11-apps/notification-thing
-			x11-apps/notify-osd
-			x11-wm/awesome[>=3.1] [[ description = [ with the naughty library ] ]]
-			xfce-extra/notification-daemon-xfce
-		)
+    run:
+        || (
+            gnome-desktop/gnome-shell
+            kde/kdebase-runtime [[ description = [ with knotify ] ]]
+            x11-apps/notification-daemon
+            x11-apps/notification-thing
+            x11-apps/notify-osd
+            x11-wm/awesome[>=3.1] [[ description = [ with the naughty library ] ]]
+            xfce-extra/notification-daemon-xfce
+        )
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
