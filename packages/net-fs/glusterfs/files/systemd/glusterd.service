@@ -1,0 +1,10 @@
+[Unit]
+Description=glusterd
+
+[Service]
+User=glusterd
+Group=glusterd
+ExecStart=/usr/sbin/glusterd --no-daemon
+
+[Install]
+WantedBy=multi-user.target
