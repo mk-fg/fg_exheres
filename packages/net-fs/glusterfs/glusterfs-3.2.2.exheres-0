@@ -14,6 +14,8 @@ PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
 DEPENDENCIES="
+    build:
+        sys-libs/libcap
     build+run:
         group/glusterd
         sys-fs/fuse
@@ -40,4 +42,8 @@ src_install() {
 
     keepdir /etc/glusterd /var/log/glusterfs # glusterd writes into the latter regardless of --log-file
     edo chown glusterd: "$IMAGE"/etc/glusterd "$IMAGE"/var/log/glusterfs
+}
+
+pkg_postinst() {
+    edo setcap 'cap_sys_admin=ei' /usr/sbin/glusterfsd
 }

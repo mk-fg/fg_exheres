@@ -4,6 +4,7 @@ Description=glusterd
 [Service]
 User=glusterd
 Group=glusterd
+Capabilities=cap_sys_admin=i
 ExecStart=/usr/sbin/glusterd --no-daemon
 
 [Install]
