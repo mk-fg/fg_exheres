@@ -17,9 +17,7 @@ DEPENDENCIES="
     build:
         sys-libs/libcap
     build+run:
-        group/glusterd
         sys-fs/fuse
-        user/glusterd
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
@@ -41,9 +39,4 @@ src_install() {
     edo rmdir "$IMAGE"/var/run
 
     keepdir /etc/glusterd /var/log/glusterfs # glusterd writes into the latter regardless of --log-file
-    edo chown glusterd: "$IMAGE"/etc/glusterd "$IMAGE"/var/log/glusterfs
-}
-
-pkg_postinst() {
-    edo setcap 'cap_sys_admin,cap_chown,cap_dac_override,cap_fowner,cap_setfcap=ei' /usr/sbin/glusterfsd
 }
