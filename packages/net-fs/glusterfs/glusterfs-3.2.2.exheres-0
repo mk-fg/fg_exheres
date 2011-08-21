@@ -45,5 +45,5 @@ src_install() {
 }
 
 pkg_postinst() {
-    edo setcap 'cap_sys_admin=ei' /usr/sbin/glusterfsd
+    edo setcap 'cap_sys_admin,cap_chown,cap_dac_override,cap_fowner,cap_setfcap=ei' /usr/sbin/glusterfsd
 }
