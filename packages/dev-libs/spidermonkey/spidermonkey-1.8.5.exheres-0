@@ -1,0 +1,63 @@
+# Copyright 2011 Mike Kazantsev
+# Copyright 2009 Richard Brown
+# Distributed under the terms of the GNU General Public License v2
+
+MY_PV=${PV//\./}
+
+SUMMARY="Mozilla's C implementation of JavaScript."
+
+HOMEPAGE="http://www.mozilla.org/js/spidermonkey/"
+DOWNLOADS="http://ftp.mozilla.org/pub/mozilla.org/js/js${MY_PV}-1.0.0.tar.gz"
+
+LICENCES="|| ( MPL-1.1 GPL-2 LGPL-2.1 )"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="X threads"
+
+DEPENDENCIES="
+    build:
+        app-arch/zip
+    build+run:
+        dev-libs/nspr
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+UPSTREAM_RELEASE_NOTES="https://developer.mozilla.org/en/SpiderMonkey/${PV}/ [[ lang = en ]]"
+
+
+WORK=${WORKBASE}/js-${PV}/js/src
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --hates=docdir
+
+    --enable-shared-js
+    --enable-methodjit
+    --enable-monoic
+    --enable-polyic
+    --enable-tracejit
+    --enable-ui-locale=en_US
+    --disable-profiling
+    --disable-readline
+    --disable-ctypes
+
+    --with-system-nspr
+    --without-android-ndk
+    --without-android-sdk
+    --without-symbian-sdk
+    --disable-windows-mobile-components )
+
+DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( 'X x' )
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( 'threads threadsafe' )
+
+src_install() {
+    default
+
+    local libjs=libmozjs${MY_PV}
+    edo cd "$IMAGE"/usr/"${LIBDIR}"
+    edo ln -sf "${libjs}".so.1.0 "${libjs}".so
+    edo ln -sf "${libjs}".so.1.0.0 "${libjs}".so.1.0
+    edo ln -sf "${libjs}".so libmozjs.so
+
+    edo cd "$IMAGE"/usr/include
+    edo ln -s js mozjs
+}
