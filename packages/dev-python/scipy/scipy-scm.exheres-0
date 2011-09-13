@@ -1,13 +1,9 @@
 # Copyright 2011 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="http://svn.scipy.org/svn/scipy"
-SCM_EXTERNAL_REFS="doc/sphinxext:sphinxext"
-SCM_sphinxext_REPOSITORY="http://svn.scipy.org/svn/numpy"
-SCM_sphinxext_SUBPATH="doc/sphinxext"
-SCM_SECONDARY_REPOSITORIES="sphinxext"
+SCM_REPOSITORY="git://github.com/scipy/scipy.git"
 
-require distutils scm-svn
+require distutils scm-git
 
 SUMMARY="Scientific algorithms library for Python."
 
