@@ -47,6 +47,7 @@ src_unpack() {
 }
 
 src_install() {
+    exdirectory --allow /opt
     insinto /opt/sancho
     doins -r distrib lib
 

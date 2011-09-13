@@ -23,6 +23,7 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 src_install() {
+    exdirectory --allow /opt
     insinto /opt/graphite/statsd
     doins stats.js
     newins config.js config.js.default
