@@ -23,7 +23,6 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 src_install() {
-    exdirectory --allow /opt
     insinto /opt/graphite/statsd
     doins stats.js
     newins config.js config.js.default
@@ -31,4 +30,9 @@ src_install() {
 
     # Examples
     dodoc python_example.py php-example.php StatsdClient.java
+}
+
+pkg_setup() {
+    exdirectory --allow /opt
+    default
 }

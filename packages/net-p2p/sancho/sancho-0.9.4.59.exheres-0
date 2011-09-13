@@ -47,7 +47,6 @@ src_unpack() {
 }
 
 src_install() {
-    exdirectory --allow /opt
     insinto /opt/sancho
     doins -r distrib lib
 
@@ -57,4 +56,9 @@ src_install() {
     # Fails when lauched with cwd != /opt/sancho
     exeinto /opt/bin
     newexe "${FILES}"/sancho.sh sancho
+}
+
+pkg_setup() {
+    exdirectory --allow /opt
+    default
 }
