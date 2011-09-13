@@ -32,11 +32,11 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 src_install() {
     # Installs to /opt. Fine with me, since that's upstream.
+    exdirectory --allow /opt
     distutils_src_install
 
     rmdir -p "$IMAGE"/usr/${LIBDIR}/python*/site-packages
 
-    # Not sure if they're really necessary.
     keepdir /opt/graphite/storage/rrd
     keepdir /opt/graphite/storage/lists
     keepdir /opt/graphite/storage/whisper
