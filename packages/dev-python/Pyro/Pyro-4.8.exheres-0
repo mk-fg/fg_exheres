@@ -1,0 +1,17 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require distutils pypi
+
+SUMMARY="Advanced and powerful Distributed Object Technology system."
+
+HOMEPAGE="http://irmen.home.xs4all.nl/pyro/"
+
+LICENCES="GPL-3"
+SLOT="4"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
