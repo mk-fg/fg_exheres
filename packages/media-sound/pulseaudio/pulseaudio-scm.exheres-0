@@ -14,7 +14,7 @@ LICENCES="GPL-2"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS="
-    alsa avahi caps dbus gtk ipv6 samplerate
+    alsa avahi caps dbus gtk ipv6 jack libsamplerate
     bluetooth [[ requires = [ dbus ] ]]
     consolekit [[ requires = [ dbus ] ]]"
 
@@ -22,6 +22,7 @@ DEPENDENCIES="
     build:
         dev-util/intltool[>=0.35.0]
         dev-util/pkg-config[>=0.20]
+
     build+run:
         dev-libs/glib:2[>=2.4]
         dev-libs/json-c[>=0.9]
@@ -35,6 +36,7 @@ DEPENDENCIES="
         sys-fs/udev[>=143][sound]
         sys-libs/gdbm
         user/pulse
+
         alsa? ( sys-sound/alsa-lib[>=1.0.19] )
         avahi? ( net-dns/avahi[>=0.6.0][dbus] )
         bluetooth? ( net-wireless/bluez[>=3.0] )
@@ -42,9 +44,17 @@ DEPENDENCIES="
         consolekit? ( sys-auth/ConsoleKit )
         dbus? ( sys-apps/dbus[>=1.0] )
         gtk? ( x11-libs/gtk+:2[>=2.4] )
-        samplerate? ( media-libs/libsamplerate )
+        jack? ( media-sound/jack-audio-connection-kit[>=0.100] )
+        libsamplerate? ( media-libs/libsamplerate )
+
     recommendation:
         alsa? ( sys-sound/alsa-plugins[pulseaudio] )
+
+    suggestion:
+        media-sound/padevchooser [[
+            description = [ Provides a tray icon with quick access to some features ] ]]
+        media-sound/paprefs [[ description = [ Provides a GTK based configuration dialog ] ]]
+        media-sound/pavucontrol [[ description = [ Provides a simple GTK based volume mixer tool ] ]]
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
@@ -66,23 +76,24 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
 --disable-hal
 
 --enable-glib2
---enable-udev
 --enable-manpages
-
 --enable-openssl
+--enable-udev
 
 # breaks sound output?
 --enable-x11
 
 # unpackaed dependencies
 --disable-asyncns
---disable-jack
 --disable-lirc
 --disable-tcpwrap
+
+--disable-solaris
 )
 
 DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( caps )
-DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( alsa avahi 'bluetooth bluez' dbus 'gtk gtk2' ipv6 samplerate )
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=(
+    alsa avahi 'bluetooth bluez' dbus 'gtk gtk2' ipv6 jack 'libsamplerate samplerate' )
 
 src_prepare() {
     ./autogen.sh # eautoreconf seem to fail even w/ nonfatal
@@ -90,18 +101,18 @@ src_prepare() {
 
 src_install() {
     default
+    edo rm -Rf "$IMAGE"/var/run
 
     insinto /etc/security/limits.d/
-    doins "${FILES}/pulse-rt.conf"
+    doins "$FILES"/pulse-rt.conf
 
     keepdir /usr/libexec/pulse
-    diropts -o pulse -g pulse -m0755 ; keepdir /var/run/pulse
 
-    option avahi && edo sed -i -e '/module-zeroconf-publish/{ /^#/{ s/^#// } }' "${IMAGE}/etc/pulse/default.pa"
-    option !consolekit && edo sed -i -e '/module-console-kit/{ /^#/!{ s/^/#/ } }' "${IMAGE}/etc/pulse/default.pa"
+    option avahi && edo sed -i -e '/module-zeroconf-publish/{ /^#/{ s/^#// } }' "$IMAGE"/etc/pulse/default.pa
+    option !consolekit && edo sed -i -e '/module-console-kit/{ /^#/!{ s/^/#/ } }' "$IMAGE"/etc/pulse/default.pa
 
-    if ! option alsa ; then
-        edo rmdir "${IMAGE}"/usr/share/pulseaudio/{alsa-mixer/{paths,profile-sets,},}
-        edo rmdir "${IMAGE}"/lib/{udev/{rules.d,},}
+    if option !alsa ; then
+        edo rmdir "$IMAGE"/usr/share/pulseaudio/{alsa-mixer/{paths,profile-sets,},}
+        edo rmdir "$IMAGE"/lib/{udev/{rules.d,},}
     fi
 }

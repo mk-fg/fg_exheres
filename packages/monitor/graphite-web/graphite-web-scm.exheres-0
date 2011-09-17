@@ -36,9 +36,13 @@ src_install() {
 
     rmdir -p "$IMAGE"/usr/${LIBDIR}/python*/site-packages
 
-    # Not sure if they're really necessary.
     keepdir /opt/graphite/storage/rrd
     keepdir /opt/graphite/storage/lists
     keepdir /opt/graphite/storage/whisper
     keepdir /opt/graphite/storage/log/webapp
+}
+
+pkg_setup() {
+    exdirectory --allow /opt
+    default
 }

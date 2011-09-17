@@ -31,3 +31,8 @@ src_install() {
     # Examples
     dodoc python_example.py php-example.php StatsdClient.java
 }
+
+pkg_setup() {
+    exdirectory --allow /opt
+    default
+}

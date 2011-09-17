@@ -16,8 +16,7 @@ DEPENDENCIES="
         dev-lang/python
         dev-python/dbus-python
         dev-python/fgc
-        dev-python/pygi
-        gnome-bindings/pygobject
+        gnome-bindings/pygobject[gobject-introspection]
 "
 
 BUGS_TO="mk.fraggod@gmail.com"

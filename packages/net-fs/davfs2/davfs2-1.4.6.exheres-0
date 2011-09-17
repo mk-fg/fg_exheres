@@ -11,7 +11,7 @@ DOWNLOADS="http://download.savannah.gnu.org/releases/${PN}/${PNV}.tar.gz"
 LICENCES="GPL-2"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
-MYOPTIONS=""
+MYOPTIONS="systemd"
 
 DEPENDENCIES="
     build+run:
@@ -36,7 +36,12 @@ src_install() {
     diropts -m1770 -gdavfs2
     keepdir /var/cache/davfs2
     diropts -m1775 -gdavfs2
-    keepdir /var/run/mount.davfs
+
+    edo rm -Rf /var/run
+    if option systemd; then
+        insinto /etc/tmpfiles.d
+        doins "$FILES"/systemd/davfs2.conf
+    fi
 
     edo rm -Rf "${IMAGE}"/usr/share/davfs2 # useless copy of /etc/davfs2
 }

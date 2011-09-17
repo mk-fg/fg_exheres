@@ -57,3 +57,8 @@ src_install() {
     exeinto /opt/bin
     newexe "${FILES}"/sancho.sh sancho
 }
+
+pkg_setup() {
+    exdirectory --allow /opt
+    default
+}
