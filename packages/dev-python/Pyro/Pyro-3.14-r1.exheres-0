@@ -8,7 +8,7 @@ SUMMARY="Advanced and powerful Distributed Object Technology system."
 HOMEPAGE="http://irmen.home.xs4all.nl/pyro3/"
 
 LICENCES="GPL-3"
-SLOT="3"
+SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
