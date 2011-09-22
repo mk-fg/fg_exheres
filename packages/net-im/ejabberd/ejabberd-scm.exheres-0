@@ -33,7 +33,6 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 WORK="${WORK}/src"
-DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}"/pgsql_pkey.patch )
 DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( pam 'postgresql odbc' )
 DEFAULT_SRC_CONFIGURE_PARAMS=(
     --localstatedir=/var --disable-eldap --enable-user=jabber
