@@ -21,6 +21,7 @@ DEPENDENCIES="
         dev-haskell/QuickCheck
         dev-haskell/SHA
         dev-haskell/dataenc
+        dev-haskell/json
         dev-haskell/monad-control
         dev-haskell/pcre-light
         dev-haskell/utf8-string")
