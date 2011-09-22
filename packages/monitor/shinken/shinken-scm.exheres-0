@@ -39,6 +39,7 @@ cfg_file=shinken-specific.cfg
 EOF
 
     rm -rf "$IMAGE"/etc/{default,init.d,shinken/nagios-windows.cfg,shinken/*-windows.ini}
+    rm -rf "$IMAGE"/var/{run,log,lib}
     sed -i "s|$IMAGE|/|" "$IMAGE"/etc/shinken/*.{ini,cfg}
     edo rmdir "$IMAGE"/etc/shinken/objects/discovery
     edo mv "$IMAGE"/etc/shinken "$IMAGE"/usr/share/doc/"${PNV}"
