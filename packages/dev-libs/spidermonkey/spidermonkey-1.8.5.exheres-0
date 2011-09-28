@@ -17,6 +17,7 @@ MYOPTIONS="X threads"
 DEPENDENCIES="
     build:
         app-arch/zip
+        dev-lang/python
     build+run:
         dev-libs/nspr
 "
