@@ -3,8 +3,6 @@ Description=mongoc
 
 [Service]
 EnvironmentFile=/etc/conf.d/mongodb.conf
-User=$MONGOC_USER
-Group=$MONGOC_GROUP
 ExecStart=/usr/bin/mongoc $MONGOC_OPTIONS
 
 [Install]

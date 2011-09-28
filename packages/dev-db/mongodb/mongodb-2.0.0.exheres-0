@@ -18,7 +18,7 @@ DEPENDENCIES="
     build:
         dev-libs/boost
     build+run:
-        dev-libs/spidermonkey[<1.8.5]
+        dev-libs/spidermonkey
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
@@ -28,13 +28,6 @@ WORK="${WORKBASE}/${PN}-src-r${PV}"
 
 SCONS_SRC_COMPILE_PARAMS=( --config=auto all )
 SCONS_SRC_INSTALL_PARAMS=( --prefix="${IMAGE}"/usr --full install )
-
-src_prepare() {
-    # Hack for linux-3.X compatibility on x86
-    if edo uname -m | grep -q '^i686$' && edo uname -r | grep -q '^3\.'
-    then grep -lr linux2 . | edo xargs sed -i 's/linux2/linux3/g'
-    fi
-}
 
 src_install() {
     scons_src_install

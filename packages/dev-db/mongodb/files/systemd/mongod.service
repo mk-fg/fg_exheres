@@ -3,8 +3,6 @@ Description=mongod
 
 [Service]
 EnvironmentFile=/etc/conf.d/mongodb.conf
-User=$MONGOD_USER
-Group=$MONGOD_GROUP
 ExecStart=/usr/bin/mongod $MONGOD_OPTIONS
 
 [Install]
