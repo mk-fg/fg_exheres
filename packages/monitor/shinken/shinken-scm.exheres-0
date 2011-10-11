@@ -43,6 +43,7 @@ EOF
     sed -i "s|$IMAGE|/|" "$IMAGE"/etc/shinken/*.{ini,cfg}
     edo rmdir "$IMAGE"/etc/shinken/objects/discovery
     edo mv "$IMAGE"/etc/shinken "$IMAGE"/usr/share/doc/"${PNV}"
+    edo find "$IMAGE"/usr/share/doc/"${PNV}" -type d -empty -delete
     edo rmdir "$IMAGE"/{etc,var}
 
     install_systemd_files
