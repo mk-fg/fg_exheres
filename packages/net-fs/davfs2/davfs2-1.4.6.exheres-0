@@ -37,11 +37,11 @@ src_install() {
     keepdir /var/cache/davfs2
     diropts -m1775 -gdavfs2
 
-    edo rm -Rf /var/run
+    edo rm -Rf "$IMAGE"/var/run
     if option systemd; then
         insinto /etc/tmpfiles.d
         doins "$FILES"/systemd/davfs2.conf
     fi
 
-    edo rm -Rf "${IMAGE}"/usr/share/davfs2 # useless copy of /etc/davfs2
+    edo rm -Rf "$IMAGE"/usr/share/davfs2 # useless copy of /etc/davfs2
 }
