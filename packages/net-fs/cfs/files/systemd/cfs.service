@@ -1,0 +1,8 @@
+[Unit]
+Description=cfs
+
+[Service]
+ExecStart=/usr/sbin/cfs -c /etc/cfs.yaml
+
+[Install]
+WantedBy=multi-user.target
