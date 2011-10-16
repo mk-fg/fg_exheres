@@ -34,8 +34,8 @@ src_install() {
     do doexe cfs_${bin}.py
     done
 
-    mkdir -p "$IMAGE"/usr/sbin
-    dosym /usr/${LIBDIR}/cfs/cfs_client.py /usr/sbin/cfs
+    mkdir -p "$IMAGE"/usr/{,s}bin
+    dosym /usr/${LIBDIR}/cfs/cfs_client.py /usr/bin/cfs
     dosym /usr/${LIBDIR}/cfs/cfs_node.py /usr/sbin/cfsd
 
     install_systemd_files
