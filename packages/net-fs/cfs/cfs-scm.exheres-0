@@ -29,13 +29,14 @@ src_install() {
     insinto /usr/${LIBDIR}/cfs
     doins cfs_lib.py cfs_node.yaml fuse.py
 
-    mkdir -p "$IMAGE"/usr/sbin
     exeinto /usr/${LIBDIR}/cfs
-    for bin in client node path_recode; do
-        file=cfs_${bin}.py
-        doexe $file
-        dosym /usr/${LIBDIR}/cfs/$file /usr/sbin/cfs_${bin}
+    for bin in client node path_recode
+    do doexe cfs_${bin}.py
     done
+
+    mkdir -p "$IMAGE"/usr/sbin
+    dosym /usr/${LIBDIR}/cfs/cfs_client.py /usr/sbin/cfs
+    dosym /usr/${LIBDIR}/cfs/cfs_node.py /usr/sbin/cfsd
 
     install_systemd_files
 }
