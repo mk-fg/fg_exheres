@@ -17,6 +17,7 @@ MYOPTIONS=""
 DEPENDENCIES="
     run:
         dev-lang/python:2.7
+        dev-python/PyYAML
         dev-python/gevent
         dev-python/xattr
         sys-fs/fuse
