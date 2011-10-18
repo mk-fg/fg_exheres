@@ -1,0 +1,8 @@
+[Unit]
+Description=cfsd
+
+[Service]
+ExecStart=/usr/sbin/cfsd -c /etc/cfsd.yaml
+
+[Install]
+WantedBy=multi-user.target
