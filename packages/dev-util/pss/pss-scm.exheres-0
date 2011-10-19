@@ -1,0 +1,23 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://bitbucket.org/eliben/pss"
+
+require scm-hg distutils
+
+SUMMARY="A tool for grepping through source code."
+
+HOMEPAGE="http://kitenet.net/~joey/code/moreutils/"
+DOWNLOADS=""
+
+LICENCES="public-domain"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-lang/python
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
