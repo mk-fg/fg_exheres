@@ -29,7 +29,7 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 src_install() {
     insinto /usr/${LIBDIR}/cfs
-    doins cfs_lib.py cfs_node.yaml fuse.py
+    doins cfs_lib.py fuse.py cfs_*.yaml
 
     exeinto /usr/${LIBDIR}/cfs
     for bin in client node path_recode
