@@ -25,6 +25,9 @@ DEPENDENCIES="
 BUGS_TO="mk.fraggod@gmail.com"
 
 
+# Neither systemd nor dracut support passing this, so...
+DEFAULT_SRC_PREPARE_PATCHES=( "$FILES"/allow_discards_by_default.patch )
+
 src_configure() {
     econf --prefix=/ \
         --includedir=/usr/include \
