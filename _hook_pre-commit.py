@@ -248,7 +248,8 @@ def check_file(src, exheres=None, category=None):
 	for line in src:
 		if line.startswith('require'):
 			for mod in line.split():
-				if mod in ('sourceforge', 'gnu', 'gnome-2', 'gnome.org', 'launchpad', 'hackage', 'pypi')\
+				if mod in ( 'sourceforge', 'googlecode', 'gnu',\
+						'gnome-2', 'gnome.org', 'launchpad', 'hackage', 'pypi' )\
 					or mod.startswith('scm-'): exlib_src = True
 				if mod == 'ejabberd-module': exlib_meta = True
 				if mod == 'hackage': exlib_deps = True
