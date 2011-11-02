@@ -4,7 +4,7 @@
 SUMMARY="DE-free daemon for displaying notifications."
 
 HOMEPAGE="http://fraggod.net/"
-DOWNLOADS="http://fraggod.net/static/code/notification-thing.py"
+DOWNLOADS="http://fraggod.net/static/code/notification-thing.py -> ${PNV}.py"
 
 LICENCES="GPL-2"
 SLOT="0"
