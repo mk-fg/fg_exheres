@@ -1,0 +1,60 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+MY_PV=${PV/-rc/~rc}
+
+LPV=${PV/-rc/.rc}
+LPV=${LPV/\.0\.rc/.rc}
+
+require launchpad [[ pv="$LPV" pnv="$PN-$MY_PV" ]]\
+    autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 1.10 ] ]
+
+SUMMARY="AppArmor LSM userspace library and tools."
+
+LICENCES="GPL-2 LGPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="pam python"
+# apache
+# perl is used in tools, so can't really be disabled, w/o them disabled as well
+# there's also ruby (don't care about it myself)
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+components=( libraries/libapparmor utils parser profiles )
+
+src_prepare() {
+    # So there won't be a dep on pdflatex
+    edo sed -i 's|docs:[[:space:]]\+\(.*\)[[:space:]]\+pdf\([[:space:]]\+\)\?|docs: \1 \2|' parser/Makefile
+
+    pushd libraries/libapparmor
+    autotools_src_prepare
+    popd
+}
+
+src_configure() {
+    pushd libraries/libapparmor
+    econf --with-perl $(option_with python)
+    popd
+}
+
+src_compile() {
+    for dir in ${components[@]}; do
+        pushd $dir
+        emake
+        popd
+    done
+}
+
+src_install() {
+    for dir in ${components[@]}; do
+        pushd $dir
+        emake DESTDIR="$IMAGE" install
+        popd
+    done
+
+    keepdir /var/lib/apparmor
+}
