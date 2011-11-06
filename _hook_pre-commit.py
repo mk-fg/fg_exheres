@@ -248,11 +248,11 @@ def check_file(src, exheres=None, category=None):
 	for line in src:
 		if line.startswith('require'):
 			for mod in line.split():
-				if mod in ( 'sourceforge', 'googlecode', 'gnu',\
+				if mod in ( 'perl-module', 'sourceforge', 'googlecode', 'gnu',\
 						'gnome-2', 'gnome.org', 'launchpad', 'hackage', 'pypi' )\
 					or mod.startswith('scm-'): exlib_src = True
-				if mod == 'ejabberd-module': exlib_meta = True
-				if mod == 'hackage': exlib_deps = True
+				if mod in ('ejabberd-module', 'perl-module'): exlib_meta = True
+				if mod in ('hackage', 'perl-module'): exlib_deps = True
 				# No further checks if exheres is just an extension of ad-hoc exlib
 				if exheres and exheres.startswith(mod):
 					chk_emptyline(src)

@@ -6,7 +6,7 @@ MY_PV=${PV/-rc/~rc}
 LPV=${PV/-rc/.rc}
 LPV=${LPV/\.0\.rc/.rc}
 
-require launchpad [[ pv="$LPV" pnv="$PN-$MY_PV" ]]\
+require perl-module launchpad [[ pv="$LPV" pnv="$PN-$MY_PV" ]]\
     autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 1.10 ] ]
 
 SUMMARY="AppArmor LSM userspace library and tools."
@@ -19,7 +19,20 @@ MYOPTIONS="pam python"
 # perl is used in tools, so can't really be disabled, w/o them disabled as well
 # there's also ruby (don't care about it myself)
 
-DEPENDENCIES=""
+DEPENDENCIES="
+    build+run:
+        dev-lang/perl
+        dev-lang/swig
+        sys-devel/bison
+        sys-devel/flex
+        pam? ( sys-libs/pam )
+        python? ( dev-lang/python )
+    run:
+        dev-perl/File-Tail
+        dev-perl/Locale-gettext
+        dev-perl/RPC-XML
+        dev-perl/TermReadKey
+"
 
 BUGS_TO="mk.fraggod@gmail.com"
 
@@ -55,6 +68,16 @@ src_install() {
         emake DESTDIR="$IMAGE" install
         popd
     done
+    edo sed -i '/^\#\!\/usr\/bin\/perl$/ s:/perl:/perl -X:' "$IMAGE"/usr/sbin/aa-*
 
     keepdir /var/lib/apparmor
+
+    # Looks like a bug in package
+    perlinfo
+    insinto "$VENDOR_LIB"
+    doins libraries/libapparmor/swig/perl/LibAppArmor.pm
+}
+
+src_test() {
+    : # to clobber invalid one from perl-module
 }
