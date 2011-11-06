@@ -16,17 +16,14 @@ LICENCES="GPL-3"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS="
-    X alsa dbus freetype gif gpm gtk jpeg otf png svg tiff tiff xpm
-    ( freetype gif gtk jpeg otf png svg tiff tiff xpm ) [[ requires = X ]]
-    gconf [[
-        description = [ Allows emacs to determine the system font ]
-        requires = X
-    ]]
+    X alsa dbus freetype gpm gtk otf svg tiff xpm
+    ( freetype gtk imagemagick jpeg otf png svg tiff tiff xpm ) [[ requires = X ]]
     otf [[
         description = [ Support for OpenType fonts ]
         requires = freetype
     ]]
 "
+# gconf
 
 DEPENDENCIES="
     build:
@@ -36,22 +33,23 @@ DEPENDENCIES="
         gtk? ( dev-util/pkg-config )
         svg? ( dev-util/pkg-config )
     build+run:
+        dev-libs/libxml2
         net-libs/liblockfile
         sys-libs/ncurses
         alsa? ( sys-sound/alsa-lib[>=1.0.0] )
         X? (
+            media-libs/giflib
+            media-libs/jpeg
+            media-libs/libpng
             x11-libs/libXmu
             x11-libs/libXt
             x11-data/xbitmaps
-            gif? ( media-libs/giflib )
             gtk? (
               dev-libs/glib:2[>=2.6]
-              x11-libs/gtk+:2[>=2.6]
+              x11-libs/gtk+:3
               x11-libs/libXft[>=0.13.0]
             )
-            jpeg? ( media-libs/jpeg )
             otf? ( dev-libs/libotf )
-            png? ( media-libs/libpng )
             svg? ( gnome-desktop/librsvg:2[>=2.11.0] )
             tiff? ( media-libs/tiff )
             xpm? ( x11-libs/libXpm )
@@ -62,8 +60,8 @@ DEPENDENCIES="
             media-libs/freetype:2
             x11-libs/libXft[>=0.13.0]
         )
-        gconf? ( gnome-platform/GConf:2 )
         gpm? ( sys-libs/gpm )
+        imagemagick? ( media-gfx/ImageMagick )
    suggestion:
         app-spell/aspell [[ description = [ For ispell and flyspell mode ] ]]
 "
@@ -77,17 +75,33 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
     --without-kerberos5
     --without-hesiod
     --without-m17n-flt
+    --without-xaw3d
     --without-xim
+    --without-ns # NeXTstep
+    --without-selinux
+
+    # No idea how these work
+    --without-gconf
+    --without-gsettings
+
+    # Obsolete mail features
+    --without-pop
+    --without-mmdf
+
+    --with-xml2
+
+    # Not sure how these will work wih -X
+    --with-gif --with-jpeg --with-png
 )
 
 DEFAULT_SRC_CONFIGURE_OPTION_WITHS=(
     'X x'
     'alsa sound'
     'freetype xft'
-    'gtk x-toolkit gtk' 'gtk toolkit-scroll-bars'
+    'gtk x-toolkit=gtk3' 'gtk toolkit-scroll-bars'
     'otf libotf'
     'svg rsvg'
-    'dbus' 'gconf' 'gif' 'gpm' 'jpeg' 'png' 'tiff' 'xpm'
+    dbus gpm tiff xpm imagemagick
 )
 
 src_prepare() {
