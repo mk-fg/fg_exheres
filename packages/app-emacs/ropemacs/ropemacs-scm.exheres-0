@@ -16,6 +16,9 @@ SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
-DEPENDENCIES=""
+DEPENDENCIES="
+    build+run:
+        app-editors/emacs
+"
 
 BUGS_TO="mk.fraggod@gmail.com"
