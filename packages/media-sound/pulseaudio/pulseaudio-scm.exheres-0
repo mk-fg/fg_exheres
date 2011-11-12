@@ -14,7 +14,7 @@ LICENCES="GPL-2"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS="
-    alsa avahi caps dbus gtk ipv6 jack libsamplerate
+    avahi caps dbus gtk ipv6 jack libsamplerate
     bluetooth [[ requires = [ dbus ] ]]
     consolekit [[ requires = [ dbus ] ]]"
 
@@ -35,9 +35,9 @@ DEPENDENCIES="
         media-libs/speex[>=1.2_beta]
         sys-fs/udev[>=143][sound]
         sys-libs/gdbm
+        sys-sound/alsa-lib[>=1.0.19]
         user/pulse
 
-        alsa? ( sys-sound/alsa-lib[>=1.0.19] )
         avahi? ( net-dns/avahi[>=0.6.0][dbus] )
         bluetooth? ( net-wireless/bluez[>=3.0] )
         caps? ( sys-libs/libcap )
@@ -48,7 +48,7 @@ DEPENDENCIES="
         libsamplerate? ( media-libs/libsamplerate )
 
     recommendation:
-        alsa? ( sys-sound/alsa-plugins[pulseaudio] )
+        sys-sound/alsa-plugins[pulseaudio]
 
     suggestion:
         media-sound/padevchooser [[
@@ -63,37 +63,43 @@ BUGS_TO="mk.fraggod@gmail.com"
 RESTRICT="test"
 
 DEFAULT_SRC_CONFIGURE_PARAMS=(
---disable-oss-output
---disable-oss-wrapper
---disable-solaris
+    --enable-alsa
+    --disable-oss-output
+    --disable-oss-wrapper
 
---localstatedir=/var
---with-database=gdbm
+    --disable-static-bins
+    --disable-solaris
+  --disable-atomic-arm-linux-helpers
+  --disable-atomic-arm-memory-barrier
 
---disable-per-user-esound-socket
+    --localstatedir=/var
+    --with-database=gdbm
+    --enable-nls
+    --disable-per-user-esound-socket
 
---disable-gconf
---disable-hal
+    --disable-gconf
+    --disable-hal
+    --disable-hal-compat
 
---enable-glib2
---enable-manpages
---enable-openssl
---enable-udev
+    --enable-glib2
+    --enable-manpages
+    --enable-openssl
+    --enable-udev
 
-# breaks sound output?
---enable-x11
+    # breaks sound output?
+    --enable-x11
 
-# unpackaed dependencies
---disable-asyncns
---disable-lirc
---disable-tcpwrap
-
---disable-solaris
+    # unpackaged dependencies
+    --disable-asyncns
+    --disable-lirc
+    --disable-tcpwrap
+    --disable-orc
+    --disable-webrtc-aec
 )
 
 DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( caps )
 DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=(
-    alsa avahi 'bluetooth bluez' dbus 'gtk gtk2' ipv6 jack 'libsamplerate samplerate' )
+    avahi 'bluetooth bluez' dbus 'gtk gtk2' ipv6 jack 'libsamplerate samplerate' )
 
 src_prepare() {
     ./autogen.sh # eautoreconf seem to fail even w/ nonfatal
@@ -110,9 +116,4 @@ src_install() {
 
     option avahi && edo sed -i -e '/module-zeroconf-publish/{ /^#/{ s/^#// } }' "$IMAGE"/etc/pulse/default.pa
     option !consolekit && edo sed -i -e '/module-console-kit/{ /^#/!{ s/^/#/ } }' "$IMAGE"/etc/pulse/default.pa
-
-    if option !alsa ; then
-        edo rmdir "$IMAGE"/usr/share/pulseaudio/{alsa-mixer/{paths,profile-sets,},}
-        edo rmdir "$IMAGE"/lib/{udev/{rules.d,},}
-    fi
 }
