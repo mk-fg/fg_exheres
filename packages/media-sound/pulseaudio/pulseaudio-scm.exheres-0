@@ -2,7 +2,7 @@
 # Copyright 2009 Saleem Abdulrasool <compnerd@compnerd.org>
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="git://git.0pointer.de/pulseaudio.git"
+SCM_REPOSITORY="git://anongit.freedesktop.org/pulseaudio/pulseaudio"
 
 require scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
 
