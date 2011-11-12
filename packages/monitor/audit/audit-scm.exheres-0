@@ -1,0 +1,44 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://svn.fedorahosted.org/svn/audit"
+
+require scm-svn\
+    autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 1.10 ] ]
+
+SUMMARY="Userspace components for linux system call auditing subsystem."
+
+HOMEPAGE="http://people.redhat.com/sgrubb/audit/"
+
+LICENCES="GPL-2 LGPL-2.1"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="apparmor caps python"
+
+DEPENDENCIES="
+    build+run:
+        apparmor? ( sys-apps/apparmor )
+        caps? ( sys-libs/libcap-ng )
+        python? ( dev-lang/python )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( apparmor 'caps libcap-ng=yes' python )
+DEFAULT_SRC_CONFIGURE_PARAMS=( --without-libwrap --without-prelude ) # had no need for these
+
+src_prepare() {
+    # z/OS plugin drags in openldap, and who needs z/OS, anyway?
+    edo sed -i 's: audisp/plugins/zos-remote/Makefile::' configure.ac
+    edo sed -i 's: zos-remote::' audisp/plugins/Makefile.am
+
+    autotools_src_prepare
+}
+
+src_install() {
+    default
+
+    # RH-specific stuff
+    cd "$IMAGE"/etc
+    rm -Rf sysconfig rc.d
+}
