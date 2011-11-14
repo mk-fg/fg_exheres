@@ -1,0 +1,28 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Simple utility designed to allow administrator to view the logfiles which are produced upon hosts under their control."
+
+HOMEPAGE="http://logcheck.org/"
+DOWNLOADS="http://ftp.debian.org/debian/pool/main/l/${PN}/${PN}_${PV}.tar.gz"
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        monitor/logcheck
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    default
+
+    keepdir /etc/logcheck/cracking.ignore.d
+    keepdir /var/lib/logcheck
+    rmdir -p "$IMAGE"/var/lock/logcheck
+}
