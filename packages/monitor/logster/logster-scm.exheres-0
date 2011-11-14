@@ -1,0 +1,39 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/etsy/logster.git"
+
+require scm-git
+
+SUMMARY="Parse log files, generate metrics for Graphite and Ganglia."
+
+HOMEPAGE="https://github.com/etsy/logster"
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        monitor/logcheck
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_compile() {
+    : # tries to install to real / here
+}
+
+src_install() {
+    dobin logster
+
+    insinto /usr/share/logster
+    doins logster_helper.py
+    doins parsers/*
+
+    keepdir /var/log/logster
+
+    emagicdocs
+}
