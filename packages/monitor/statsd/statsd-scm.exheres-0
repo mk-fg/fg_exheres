@@ -1,38 +1,20 @@
 # Copyright 2011 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="git://github.com/etsy/statsd.git"
+SCM_REPOSITORY="git://github.com/jsocol/pystatsd.git"
 
-require scm-git
+require pypi
 
-SUMMARY="A network daemon for aggregating statistics (counters and timers), rolling them up, then sending them to graphite."
+SUMMARY="Python client for statsd."
 
-HOMEPAGE="https://github.com/etsy/statsd"
+HOMEPAGE+="https://github.com/jsocol/pystatsd"
+DOWNLOADS=""
 
-LICENCES="MIT"
+LICENCES="BSD-2"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
-DEPENDENCIES="
-    build+run:
-        dev-lang/node
-"
+DEPENDENCIES=""
 
 BUGS_TO="mk.fraggod@gmail.com"
-
-
-src_install() {
-    insinto /opt/graphite/statsd
-    doins stats.js
-    newins config.js config.js.default
-    newins exampleConfig.js config.js.example
-
-    # Examples
-    dodoc python_example.py php-example.php StatsdClient.java
-}
-
-pkg_setup() {
-    exdirectory --allow /opt
-    default
-}
