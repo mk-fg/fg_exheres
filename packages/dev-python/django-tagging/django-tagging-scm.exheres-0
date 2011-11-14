@@ -1,0 +1,22 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://django-tagging.googlecode.com/svn"
+
+require scm-svn distutils
+
+SUMMARY="A generic tagging application for Django projects."
+
+HOMEPAGE="http://code.google.com/p/django-tagging/"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-python/django
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
