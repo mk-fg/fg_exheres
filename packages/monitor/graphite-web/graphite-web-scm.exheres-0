@@ -19,6 +19,7 @@ MYOPTIONS=""
 DEPENDENCIES="
     run:
         dev-python/django
+        dev-python/django-tagging
         dev-python/pycairo
         monitor/graphite-whisper
     suggestion:
