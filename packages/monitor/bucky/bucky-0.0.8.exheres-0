@@ -1,7 +1,7 @@
 # Copyright 2011 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-require distutils pypi
+require distutils pypi systemd-service
 
 SUMMARY="CollectD and StatsD adapter for Graphite."
 
@@ -13,3 +13,9 @@ MYOPTIONS=""
 DEPENDENCIES=""
 
 BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    distutils_src_install
+    install_systemd_files
+}

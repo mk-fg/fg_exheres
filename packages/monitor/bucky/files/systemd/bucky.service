@@ -1,0 +1,11 @@
+[Unit]
+Description=bucky metrics collector
+After=network.target
+
+[Service]
+User=nobody
+Group=nogroup
+ExecStart=/usr/bin/bucky --disable-collectd
+
+[Install]
+WantedBy=multi-user.target
