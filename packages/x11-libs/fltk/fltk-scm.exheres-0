@@ -17,10 +17,9 @@ MYOPTIONS="cairo debug gl jpeg png shared threads xdbe xft xinerama xshm zlib"
 
 DEPENDENCIES="
     build+run:
-        X? (
-            x11-proto/xproto
-             x11-libs/libX11
-             x11-libs/libXi )
+        x11-libs/libX11
+        x11-libs/libXi
+        x11-proto/xproto
         cairo? ( x11-libs/cairo )
         gl? (
             x11-proto/glproto
