@@ -16,7 +16,6 @@ PLATFORMS="~amd64 ~x86"
 MYOPTIONS="
     debug
     network
-    unixsock
 
     in_apache
     in_bind
@@ -30,11 +29,13 @@ MYOPTIONS="
     in_libvirt
     in_memcache
     in_mysql
+    in_netlink
     in_nginx
     in_nut
     in_pinba
     in_ping
     in_postgresql
+    in_sensors
     in_snmp
 
     out_amqp
@@ -62,6 +63,7 @@ DEPENDENCIES="
         in_libvirt? ( dev-libs/libxml2 virtualization-lib/libvirt )
         in_memcache? ( net/memcached )
         in_mysql? ( dev-db/mysql )
+        in_netlink? ( dev-libs/libnetlink )
         in_nginx? ( net-misc/curl )
         in_nut? ( sys-power/nut )
         in_pinba? ( dev-libs/protobuf )
@@ -84,9 +86,6 @@ DEPENDENCIES="
     suggestion:
         in_apache? ( www-servers/apache )
         in_bind? ( net-dns/bind )
-        in_mbmon? ( monitor/mbmon )
-        in_openvpn? ( net-misc/openvpn )
-        in_powerdns? ( net-dns/powerdns )
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
@@ -95,8 +94,8 @@ BUGS_TO="mk.fraggod@gmail.com"
 DEFAULT_SRC_CONFIGURE_PARAMS=(
     ## Generic stuff / features
     --enable-daemon
-    --enable-getifaddrs
     --enable-unixsock
+    --disable-getifaddrs
     --disable-java # ( libjvm? )
 
     ## Plugins
@@ -121,6 +120,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
     --disable-lpar
     --disable-madwifi
     --disable-multimeter
+    --disable-routeros
     --disable-tape
     --disable-teamspeak2
     --disable-uuid
@@ -147,25 +147,21 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
     --enable-irq
     --enable-load
     --enable-logfile
-    --enable-lpar
     --enable-madwifi
     --enable-mbmon
     --enable-memory
     --enable-multimeter
-    --enable-netlink
     --enable-nfs
     --enable-ntpd
     --enable-openvpn
     --enable-powerdns
     --enable-processes
     --enable-protocols
-    --enable-routeros
     --enable-serial
     --enable-swap
     --enable-syslog
     --enable-table
     --enable-tail
-    --enable-tape
     --enable-tcpconns
     --enable-ted
     --enable-thermal
@@ -192,6 +188,7 @@ DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=(
     'in_libvirt libvirt'
     'in_memcache memcachec' 'in_memcache memcached'
     'in_mysql mysql'
+    'in_netlink netlink'
     'in_nginx nginx'
     'in_nut nut'
     'in_pinba pinba'
