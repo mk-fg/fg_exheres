@@ -1,0 +1,206 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/octo/collectd.git"
+
+require scm-git\
+    autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+
+SUMMARY="Daemon which collects system performance statistics periodically."
+
+HOMEPAGE="http://collectd.org/"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="
+    debug
+    network
+    unixsock
+
+    in_apache
+    in_bind
+    in_curl
+    in_curl_json
+    in_curl_xml
+    in_dbi
+    in_dns
+    in_hddtemp
+    in_iptables
+    in_libvirt
+    in_memcache
+    in_mysql
+    in_nginx
+    in_nut
+    in_pinba
+    in_ping
+    in_postgresql
+    in_snmp
+
+    out_amqp
+    out_libnotify
+    out_email
+    out_rrdtool
+    out_http
+
+    perl
+    python
+"
+
+
+DEPENDENCIES="
+    build+run:
+        in_apache? ( net-misc/curl )
+        in_bind? ( dev-libs/libxml2 net-misc/curl )
+        in_curl? ( net-misc/curl )
+        in_curl_json? ( dev-db/couchdb dev-libs/yajl net-misc/curl )
+        in_curl_xml? ( dev-libs/libxml2 net-misc/curl )
+        in_dbi? ( dev-db/libdbi )
+        in_dns? ( dev-libs/libpcap )
+        in_hddtemp? ( hardware-monitoring/hddtemp )
+        in_iptables? ( net-firewall/iptables )
+        in_libvirt? ( dev-libs/libxml2 virtualization-lib/libvirt )
+        in_memcache? ( net/memcached )
+        in_mysql? ( dev-db/mysql )
+        in_nginx? ( net-misc/curl )
+        in_nut? ( sys-power/nut )
+        in_pinba? ( dev-libs/protobuf )
+        in_ping? ( net-libs/liboping )
+        in_postgresql? ( dev-db/postgresql )
+        in_sensors? ( sys-apps/lm_sensors )
+        in_snmp? ( monitor/net-snmp )
+
+        network? ( dev-libs/libgcrypt )
+
+        out_amqp? ( net-misc/rabbitmq-server )
+        out_libnotify? ( x11-libs/libnotify )
+        out_email? ( net-libs/libesmtp )
+        out_rrdtool? ( net-analyzer/rrdtool )
+        out_http? ( net-misc/curl )
+
+        perl? ( dev-lang/perl )
+        python? ( dev-lang/python )
+
+    suggestion:
+        in_apache? ( www-servers/apache )
+        in_bind? ( net-dns/bind )
+        in_mbmon? ( monitor/mbmon )
+        in_openvpn? ( net-misc/openvpn )
+        in_powerdns? ( net-dns/powerdns )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    ## Generic stuff / features
+    --enable-daemon
+    --enable-getifaddrs
+    --enable-unixsock
+    --disable-java # ( libjvm? )
+
+    ## Plugins
+
+    # Hard-disabled
+    --disable-gmond # ( libganglia )
+    --disable-modbus # ( libmodbus )
+    --disable-ipmi # ( openipmi )
+    --disable-ipvs # ( KERNEL_DIR ) - ip virtual server
+    --disable-netapp # ( libnetapp )
+    --disable-olsrd # ( olsrd )
+    --disable-onewire # ( libowfs )
+    --disable-oracle
+    --disable-redis # ( dev-db/credis )
+    --disable-write_redis # ( dev-db/credis )
+    --disable-tokyotyrant # ( dev-db/tokyocabinet dev-db/tokyotyrant )
+    --disable-varnish # ( libvarnishapi )
+    --disable-xmms # ( xmms1 )
+    # extra-weird stuff
+    --disable-ascent
+    --disable-apple_sensors
+    --disable-lpar
+    --disable-madwifi
+    --disable-multimeter
+    --disable-tape
+    --disable-teamspeak2
+    --disable-uuid
+    --disable-vserver
+    --disable-zfs_arc
+
+    # Free ones (no deps)
+    --enable-apcups
+    --enable-battery
+    --enable-conntrack
+    --enable-contextswitch
+    --enable-cpufreq
+    --enable-cpu
+    --enable-csv
+    --enable-df
+    --enable-disk
+    --enable-dns
+    --enable-email
+    --enable-entropy
+    --enable-exec
+    --enable-filecount
+    --enable-fscache
+    --enable-interface
+    --enable-irq
+    --enable-load
+    --enable-logfile
+    --enable-lpar
+    --enable-madwifi
+    --enable-mbmon
+    --enable-memory
+    --enable-multimeter
+    --enable-netlink
+    --enable-nfs
+    --enable-ntpd
+    --enable-openvpn
+    --enable-powerdns
+    --enable-processes
+    --enable-protocols
+    --enable-routeros
+    --enable-serial
+    --enable-swap
+    --enable-syslog
+    --enable-table
+    --enable-tail
+    --enable-tape
+    --enable-tcpconns
+    --enable-ted
+    --enable-thermal
+    --enable-threshold
+    --enable-uptime
+    --enable-users
+    --enable-uuid
+    --enable-vmem
+    --enable-vserver
+    --enable-wireless
+)
+
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=(
+    ## Generic stuff / features
+    debug perl python
+
+    ## Plugins
+    'in_apache apache'
+    'in_bind bind'
+    'in_curl curl' 'in_curl_json curl_json' 'in_curl_xml curl_xml'
+    'in_dbi dbi'
+    'in_hddtemp hddtemp'
+    'in_iptables iptables'
+    'in_libvirt libvirt'
+    'in_memcache memcachec' 'in_memcache memcached'
+    'in_mysql mysql'
+    'in_nginx nginx'
+    'in_nut nut'
+    'in_pinba pinba'
+    'in_ping ping'
+    'in_postgresql postgresql'
+    'in_sensors sensors'
+    'in_snmp snmp'
+
+    'out_libnotify notify_desktop'
+    'out_email notify_email'
+    'out_rrdtool rrdcached' 'out_rrdtool rrdtool'
+)

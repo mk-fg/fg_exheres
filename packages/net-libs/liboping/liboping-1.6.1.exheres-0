@@ -1,0 +1,16 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="C library to generate ICMP echo requests."
+
+HOMEPAGE="http://verplant.org/${PN}/"
+DOWNLOADS="${HOMEPAGE}/files/${PNV}.tar.gz"
+
+LICENCES="LGPL-2.1"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"

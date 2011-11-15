@@ -177,8 +177,12 @@ def chk_ordering( vardef,
 			.split(None, 1)[0].endswith('?') else '\x00{}'.format(token),
 		rx = re.compile(r'(' r'(~?\S+)' r'(\s+\([^)]+\))?' r'(\s+\[\[.+?\]\])?' r'(\n)?' r')', re.DOTALL),
 		**grouper_kwz ):
+	tokens = rx.findall(vardef)
+	if len(tokens) > 10:
+		print('Too long list of tokens, ignoring')
+		return
 	token_groups = token_grouper(it.ifilter( lambda t: t != '||',
-		it.imap(lambda m: m[1] + m[4], rx.findall(vardef)) ), **grouper_kwz)
+		it.imap(lambda m: m[1] + m[4], tokens) ), **grouper_kwz)
 	tokens = map( lambda t: '\0' if t is None else t,
 		it.imap(op.itemgetter(0), token_groups) )
 	if tokens != sorted(tokens):
