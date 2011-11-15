@@ -27,7 +27,7 @@ MYOPTIONS="
     in_hddtemp
     in_iptables
     in_libvirt
-    in_memcache
+    in_memcached
     in_mysql
     in_netlink
     in_nginx
@@ -61,7 +61,7 @@ DEPENDENCIES="
         in_hddtemp? ( hardware-monitoring/hddtemp )
         in_iptables? ( net-firewall/iptables )
         in_libvirt? ( dev-libs/libxml2 virtualization-lib/libvirt )
-        in_memcache? ( net/memcached )
+        in_memcached? ( net/memcached )
         in_mysql? ( dev-db/mysql )
         in_netlink? ( dev-libs/libnetlink )
         in_nginx? ( net-misc/curl )
@@ -107,6 +107,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
     --disable-modbus # ( libmodbus )
     --disable-ipmi # ( openipmi )
     --disable-ipvs # ( KERNEL_DIR ) - ip virtual server
+    --disable-memcachec # ( memcachec )
     --disable-netapp # ( libnetapp )
     --disable-olsrd # ( olsrd )
     --disable-onewire # ( libowfs )
@@ -188,7 +189,7 @@ DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=(
     'in_hddtemp hddtemp'
     'in_iptables iptables'
     'in_libvirt libvirt'
-    'in_memcache memcachec' 'in_memcache memcached'
+    'in_memcached memcached'
     'in_mysql mysql'
     'in_netlink netlink'
     'in_nginx nginx'
