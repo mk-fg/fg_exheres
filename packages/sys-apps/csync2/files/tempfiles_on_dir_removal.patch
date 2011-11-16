@@ -1,0 +1,242 @@
+diff --git a/daemon.c b/daemon.c
+index 2c054ed..ad6b1d8 100644
+--- a/daemon.c
++++ b/daemon.c
+@@ -103,15 +103,16 @@ void csync_file_flush(const char *filename)
+ 		url_encode(filename));
+ }
+ 
+-int csync_file_backup(const char *filename)
++int csync_file_backup(const char *prefixed_filename)
+ {
+ 	static char error_buffer[1024];
+ 	const struct csync_group *g = NULL;
+ 	struct stat buf;
+ 	int rc;
+-	while ( (g=csync_find_next(g, filename)) ) {
++	while ( (g=csync_find_next(g, prefixed_filename)) ) {
+ 	  if (g->backup_directory && g->backup_generations > 1) {
+-	    
++	    char *filename = prefixsubst(prefixed_filename);
++
+ 	    int bak_dir_len = strlen(g->backup_directory);
+ 	    int filename_len = strlen(filename);
+ 	    char backup_filename[bak_dir_len + filename_len + 10];
+@@ -119,7 +120,7 @@ int csync_file_backup(const char *filename)
+ 	    int fd_in, fd_out, i;
+ 	    int lastSlash = 0;
+ 	    mode_t mode;
+-	    csync_debug(1, "backup\n");
++	    csync_debug(1, "backup %s \n", filename);
+ 	    // Skip generation of directories
+ 	    rc =  stat(filename, &buf);
+ 	    if (S_ISDIR(buf.st_mode)) {
+@@ -428,6 +429,30 @@ void set_peername_from_env(address_t *p, const char *env)
+ 	freeaddrinfo(result);
+ }
+ 
++static int setup_tag(char *tag[32], char *line) {
++  int i = 0;
++  char *save_ptr;
++  tag[0] = strtok_r(line, "\t \r\n", &save_ptr);
++  while ( tag[i] && i < 31 )
++    tag[++i] = strtok_r(line, "\t \r\n", &save_ptr);
++  while ( i < 32 )
++    tag[i++] = "";
++  
++  if ( !tag[0][0] ) 
++    return 1;
++  
++  for (i=0; i<32; i++)
++    tag[i] = strdup(url_decode(tag[i]));
++
++  return 0;
++}
++
++static void destroy_tag(char *tag[32]) {
++  int i = 0;
++  for (i=0; i<32; i++)
++    free(tag[i]);
++}
++
+ void csync_daemon_session()
+ {
+ 	struct stat sb;
+@@ -456,17 +481,9 @@ void csync_daemon_session()
+ 
+ 	while ( conn_gets(line, 4096) ) {
+ 		int cmdnr;
+-
+-		tag[i=0] = strtok(line, "\t \r\n");
+-		while ( tag[i] && i < 31 )
+-			tag[++i] = strtok(0, "\t \r\n");
+-		while ( i < 32 )
+-			tag[i++] = "";
+-
+-		if ( !tag[0][0] ) continue;
+-
+-		for (i=0; i<32; i++)
+-			tag[i] = strdup(url_decode(tag[i]));
++		
++		if (setup_tag(tag, line))
++		  continue;
+ 
+ 		for (cmdnr=0; cmdtab[cmdnr].text; cmdnr++)
+ 			if ( !strcasecmp(cmdtab[cmdnr].text, tag[0]) ) break;
+@@ -756,7 +773,6 @@ abort_cmd:
+ 			conn_printf("OK (cmd_finished).\n");
+ 
+ next_cmd:
+-		for (i=0; i<32; i++)
+-			free(tag[i]);
++		destroy_tag(tag);
+ 	}
+ }
+diff --git a/rsync.c b/rsync.c
+index 86482ee..e8dff32 100644
+--- a/rsync.c
++++ b/rsync.c
+@@ -185,22 +185,20 @@ static FILE *open_temp_file(char *fnametmp, const char *fname)
+ #ifdef _SVID_SOURCE
+ static FILE *paranoid_tmpfile()
+ {
+-	char *name;
++  //char *name;
+ 	FILE *f;
+ 	int fd;
++	char *template = "csync2.XXXXXX";
++	char *name =  strdup(template);
++	fd = mkstemp(name);
+ 
+-	name = tempnam(csync_tempdir, "csync2");
+-	if (!name)
+-		csync_fatal("ERROR: tempnam() didn't return a valid filename!\n");
+-
+-	f = NULL;
+-	fd = open(name, O_CREAT | O_EXCL | O_RDWR, S_IWUSR | S_IRUSR);
++	//fd = open(name, O_CREAT | O_EXCL | O_RDWR, S_IWUSR | S_IRUSR); */
+ 	if (fd >= 0) {
+ 		f = fdopen(fd, "wb+");
+ 		unlink(name);
+ 	}
+ 	if (fd < 0 || !f)
+-		csync_fatal("ERROR: Could not open result from tempnam(%s)!\n", name);
++	  csync_fatal("ERROR: Could not open result from tempnam(%s)!\n", name);
+ 
+ 	csync_debug(3, "Tempfilename is %s\n", name);
+ 	free(name);
+@@ -305,28 +303,25 @@ int csync_rs_check(const char *filename, int isreg)
+ 
+ 	csync_debug(3, "Opening basis_file and sig_file..\n");
+ 
+-	sig_file = open_temp_file(tmpfname, prefixsubst(filename));
+-	if ( !sig_file ) goto io_error;
+-	if (unlink(tmpfname) < 0) goto io_error;
+-
+-	basis_file = fopen(prefixsubst(filename), "rb");
+-	if ( !basis_file ) {  /* ?? why a tmp file? */
+-		basis_file = open_temp_file(tmpfname, prefixsubst(filename));
+-		if ( !basis_file ) goto io_error;
+-		if (unlink(tmpfname) < 0) goto io_error;
+-	}
++	/* sig_file = open_temp_file(tmpfname, prefixsubst(filename)); */
++	sig_file = paranoid_tmpfile();
++	/* if ( !sig_file ) goto io_error; */
++	unlink(tmpfname);
+ 
+ 	if ( isreg ) {
++	        basis_file = fopen(prefixsubst(filename), "rb");
++		if ( !basis_file ) 
++		   basis_file = fopen("/dev/null", "rb");
+ 		csync_debug(3, "Running rs_sig_file() from librsync....\n");
++		if (basis_file)
+ 		result = rs_sig_file(basis_file, sig_file,
+ 				RS_DEFAULT_BLOCK_LEN, RS_DEFAULT_STRONG_LEN, &stats);
+ 		if (result != RS_DONE) {
+ 			csync_debug(0, "Internal error from rsync library!\n");
+ 			goto error;
+ 		}
++		fclose(basis_file);
+ 	}
+-
+-	fclose(basis_file);
+ 	basis_file = 0;
+ 
+ 	{
+@@ -336,14 +331,19 @@ int csync_rs_check(const char *filename, int isreg)
+ 			csync_fatal("Format-error while receiving data.\n");
+ 	}
+ 
+-	fflush(sig_file);
+-	if ( size != ftell(sig_file) ) {
+-		csync_debug(2, "Signature size differs: local=%d, peer=%d\n",
+-				ftell(sig_file), size);
+-		found_diff = 1;
++	if (sig_file) {
++	  fflush(sig_file);
++	  if ( size != ftell(sig_file) ) {
++	    csync_debug(2, "Signature size differs: local=%d, peer=%d\n",
++			ftell(sig_file), size);
++	    found_diff = 1;
++	  }
++	  rewind(sig_file);
++	}
++	else {
++	  csync_debug(2, "Signature size differs: local don't exist, peer=%d\n", size);
++	  found_diff = 1;
+ 	}
+-	rewind(sig_file);
+-
+ 	csync_debug(3, "Receiving %ld bytes ..\n", size);
+ 
+ 	while ( size > 0 ) {
+@@ -354,16 +354,17 @@ int csync_rs_check(const char *filename, int isreg)
+ 			csync_fatal("Read-error while receiving data.\n");
+ 		chunk = rc;
+ 
+-		if ( fread(buffer2, chunk, 1, sig_file) != 1 ) {
+-			csync_debug(2, "Found EOF in local sig file.\n");
+-			found_diff = 1;
+-		}
+-		if ( memcmp(buffer1, buffer2, chunk) ) {
+-			csync_debug(2, "Found diff in sig at -%d:-%d\n",
+-					size, size-chunk);
+-			found_diff = 1;
++		if (sig_file) {
++		  if ( fread(buffer2, chunk, 1, sig_file) != 1 ) {
++		    csync_debug(2, "Found EOF in local sig file.\n");
++		    found_diff = 1;
++		  }
++		  if ( memcmp(buffer1, buffer2, chunk) ) {
++		    csync_debug(2, "Found diff in sig at -%d:-%d\n",
++				size, size-chunk);
++		    found_diff = 1;
++		  }
+ 		}
+-
+ 		size -= chunk;
+ 		csync_debug(3, "Got %d bytes, %ld bytes left ..\n",
+ 				chunk, size);
+@@ -371,7 +372,8 @@ int csync_rs_check(const char *filename, int isreg)
+ 
+ 	csync_debug(3, "File has been checked successfully (%s).\n",
+ 		found_diff ? "difference found" : "files are equal");
+-	fclose(sig_file);
++	if (sig_file)
++	  fclose(sig_file);
+ 	return found_diff;
+ 
+ io_error:
+@@ -398,8 +400,10 @@ void csync_rs_sig(const char *filename)
+ 	csync_debug(3, "Opening basis_file and sig_file..\n");
+ 
+ 	sig_file = open_temp_file(tmpfname, prefixsubst(filename));
+-	if ( !sig_file ) goto io_error;
+-	if (unlink(tmpfname) < 0) goto io_error;
++	if ( !sig_file ) 
++	  goto io_error;
++	if (unlink(tmpfname) < 0) 
++	  goto io_error;
+ 
+ 	basis_file = fopen(prefixsubst(filename), "rb");
+ 	if ( !basis_file ) basis_file = fopen("/dev/null", "rb");
