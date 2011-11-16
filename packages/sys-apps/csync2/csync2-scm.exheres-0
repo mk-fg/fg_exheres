@@ -28,9 +28,7 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 DEFAULT_SRC_CONFIGURE_PARAMS=( --localstatedir=/var
     --disable-mysql --disable-postgres --disable-sqlite --enable-gnutls --enable-sqlite3 )
-DEFAULT_SRC_PREPARE_PATCHES=(
-    -p0 "$FILES"/sqlite_or_true.patch
-    -p1 "$FILES"/tempfiles_on_dir_removal.patch )
+DEFAULT_SRC_PREPARE_PATCHES=( -p0 "$FILES"/sqlite_or_true.patch )
 
 src_install() {
     default
