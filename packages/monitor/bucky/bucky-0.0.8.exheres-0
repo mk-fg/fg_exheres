@@ -17,5 +17,12 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 src_install() {
     distutils_src_install
+
+    if option systemd; then
+        # Create empty configuration file
+        cd "$IMAGE"
+        mkdir etc
+        touch etc/bucky_conf.py
+    fi
     install_systemd_files
 }
