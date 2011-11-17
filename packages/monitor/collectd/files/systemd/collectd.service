@@ -1,0 +1,9 @@
+[Unit]
+Description=collectd
+After=collectd.service
+
+[Service]
+ExecStart=/usr/sbin/collectd -f
+
+[Install]
+WantedBy=multi-user.target

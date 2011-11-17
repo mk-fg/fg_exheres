@@ -3,7 +3,7 @@
 
 SCM_REPOSITORY="git://github.com/octo/collectd.git"
 
-require scm-git\
+require scm-git systemd-service\
     autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
 
 SUMMARY="Daemon which collects system performance statistics periodically."
@@ -219,6 +219,8 @@ DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=(
 
 src_install() {
     default
+    install_systemd_files
+
     keepdir /var/lib/collectd
     edo rmdir "$IMAGE"/var/{run,log}
 }
