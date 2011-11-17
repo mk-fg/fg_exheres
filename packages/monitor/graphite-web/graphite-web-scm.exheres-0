@@ -21,6 +21,7 @@ DEPENDENCIES="
         dev-python/django
         dev-python/django-tagging
         dev-python/pycairo
+        dev-python/simplejson
         monitor/graphite-whisper
     suggestion:
         dev-python/python-memcached [[ description = [
