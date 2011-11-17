@@ -1,9 +1,13 @@
 # Copyright 2011 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-require distutils pypi systemd-service
+SCM_REPOSITORY="git://github.com/mk-fg/bucky.git"
+
+require scm-git distutils pypi systemd-service
 
 SUMMARY="CollectD and StatsD adapter for Graphite."
+
+DOWNLOADS=""
 
 LICENCES="Apache-2.0"
 SLOT="0"
