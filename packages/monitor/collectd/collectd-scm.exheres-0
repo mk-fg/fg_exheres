@@ -100,6 +100,18 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
     --disable-getifaddrs
     --disable-java # ( libjvm? )
 
+    --enable-match_empty_counter
+    --enable-match_hashed
+    --enable-match_regex
+    --enable-match_timediff
+    --enable-match_value
+
+    --enable-target_notification
+    --enable-target_replace
+    --enable-target_scale
+    --enable-target_set
+    --enable-target_v5upgrade
+
     ## Plugins
 
     # Hard-disabled
