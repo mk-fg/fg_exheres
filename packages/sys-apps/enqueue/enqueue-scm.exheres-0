@@ -1,0 +1,23 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/yaniv-aknin/Enqueue.git"
+
+require distutils scm-git
+
+SUMMARY="Shell utility that facilitates the creation and runtime modification of shell command line queues."
+
+HOMEPAGE="https://github.com/yaniv-aknin/Enqueue"
+DOWNLOADS=""
+
+LICENCES="as-is"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-python/twisted
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
