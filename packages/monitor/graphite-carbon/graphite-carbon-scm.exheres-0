@@ -5,7 +5,7 @@ SCM_REPOSITORY="http://bazaar.launchpad.net/~graphite-dev/graphite"
 SCM_CHECKOUT_TO="graphite"
 SCM_BRANCH="main"
 
-require distutils scm-bzr
+require distutils scm-bzr systemd-service
 
 SUMMARY="Enterprise Scalable Realtime Graphing, data receiver interface."
 
@@ -37,6 +37,8 @@ src_install() {
     keepdir /opt/graphite/storage/lists
     keepdir /opt/graphite/storage/whisper
     keepdir /opt/graphite/storage/log
+
+    install_systemd_files
 }
 
 pkg_setup() {
