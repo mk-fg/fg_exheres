@@ -1,0 +1,14 @@
+[Unit]
+Description=graphite carbon aggregator
+After=network.target
+
+[Service]
+Type=forking
+User=graphite
+GuessMainPID=false
+PIDFile=/opt/graphite/storage/carbon-aggregator-%i.pid
+ExecStart=/opt/graphite/bin/carbon-aggregator.py --pidfile=/opt/graphite/storage/carbon-aggregator-%i.pid --instance=%i start
+ExecStop=/opt/graphite/bin/carbon-aggregator.py --pidfile=/opt/graphite/storage/carbon-aggregator-%i.pid --instance=%i stop
+
+[Install]
+WantedBy=multi-user.target
