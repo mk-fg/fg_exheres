@@ -6,7 +6,7 @@ After=network.target
 Type=forking
 User=graphite
 GuessMainPID=false
-PIDFile=/var/lib/graphite/carbon-cache-%i.pid
+PIDFile=/opt/graphite/storage/carbon-cache-%i.pid
 ExecStart=/opt/graphite/bin/carbon-cache.py --pidfile=/opt/graphite/storage/carbon-cache-%i.pid --instance=%i start
 ExecStop=/opt/graphite/bin/carbon-cache.py --pidfile=/opt/graphite/storage/carbon-cache-%i.pid --instance=%i stop
 

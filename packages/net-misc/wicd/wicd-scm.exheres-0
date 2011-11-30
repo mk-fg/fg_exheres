@@ -1,0 +1,57 @@
+# Copyright 2011 Mike Kazantsev
+# Copyright 2009 Mike Kelly
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://bazaar.launchpad.net/~wicd-devel/wicd"
+SCM_BRANCH="experimental"
+
+require distutils scm-bzr systemd-service
+
+SUMMARY="Wired and wireless network manager."
+
+HOMEPAGE="http://wicd.sourceforge.net/"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="
+    curses [[ description = [ Build a text mode client ] ]]
+"
+
+DEPENDENCIES="
+    build+run:
+        dev-lang/python[>=2.4&<3.0]
+        gnome-bindings/pygtk[>=2.10]
+        dev-python/dbus-python
+        gnome-bindings/pygobject
+        curses? (
+            dev-python/urwid[>=0.9.8.3]
+        )
+    run:
+        || (
+            net-misc/dhcpcd
+            net-misc/dhcp
+        )
+        net-wireless/wireless_tools
+        sys-apps/net-tools
+    suggestion:
+        sys-power/pm-utils[>=1.2.4] [[ description = [ For suspend/resume integration ] ]]
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_configure() {
+    edo python setup.py configure --distro=gentoo
+}
+
+src_install() {
+    distutils_src_install
+
+    keepdir /etc/wicd/scripts/{pre,post}{,dis}connect
+    keepdir /var/lib/wicd/configurations
+    keepdir /var/log/wicd
+
+    edo rm -Rf "$IMAGE"/etc/init.d
+    install_systemd_files
+}

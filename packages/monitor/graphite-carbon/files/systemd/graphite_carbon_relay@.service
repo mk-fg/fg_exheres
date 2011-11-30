@@ -1,0 +1,14 @@
+[Unit]
+Description=graphite carbon relay
+After=network.target
+
+[Service]
+Type=forking
+User=graphite
+GuessMainPID=false
+PIDFile=/opt/graphite/storage/carbon-relay-%i.pid
+ExecStart=/opt/graphite/bin/carbon-relay.py --pidfile=/opt/graphite/storage/carbon-relay-%i.pid --instance=%i start
+ExecStop=/opt/graphite/bin/carbon-relay.py --pidfile=/opt/graphite/storage/carbon-relay-%i.pid --instance=%i stop
+
+[Install]
+WantedBy=multi-user.target
