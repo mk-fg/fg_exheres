@@ -1,0 +1,30 @@
+# Copyright 2011 Mike Kazantsev
+# Copyright 2009 Jan Meier
+# Distributed under the terms of the GNU General Public License v2
+
+MY_PNV=${PNV^}
+
+require distutils
+
+SUMMARY="The Web framework for perfectionists with deadlines"
+
+HOMEPAGE="http://www.djangoproject.com"
+DOWNLOADS="http://media.djangoproject.com/releases/$(ever range -2)/${MY_PNV}.tar.gz"
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        dev-python/setuptools
+    suggestion:
+        dev-python/mysql-python [[ description = [ To use mysql database as object storage backend ] ]]
+        dev-python/psycopg2 [[ description = [ To use postgresql database as object storage backend ] ]]
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK=${WORKBASE}/${MY_PNV}
