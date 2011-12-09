@@ -1,0 +1,70 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="A set of claws-mail plugins I use"
+
+HOMEPAGE="http://www.claws-mail.org/"
+DOWNLOADS="
+    http://www.claws-mail.org/downloads/plugins/acpi_notifier-1.0.25.tar.gz
+    http://www.claws-mail.org/downloads/plugins/cachesaver-0.10.9.tar.gz
+    http://www.claws-mail.org/downloads/plugins/fetchinfo-plugin-0.4.24.tar.gz
+    http://www.claws-mail.org/downloads/plugins/rssyl-0.31.tar.gz
+    http://www.claws-mail.org/downloads/plugins/python_plugin-0.8.tar.gz"
+
+LICENCES="GPL-2 GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        dev-util/pkg-config
+    build+run:
+        dev-lang/python[>=2.5]
+        dev-libs/libxml2
+        mail-client/claws-mail[>=3.7.4]
+        net-misc/curl
+        sys-devel/gettext[>=0.12.1]
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="${WORKBASE}"
+
+src_configure() {
+    for path in acpi_notifier* cachesaver* fetchinfo* rssyl* python*; do
+        optz=
+        [[ "${path%%-*}" == rssyl ]] && optz=--enable-nls
+
+        edo pushd "$path"
+        econf $optz
+        edo popd
+    done
+}
+
+src_compile() {
+    for path in acpi_notifier* cachesaver* fetchinfo* rssyl* python*; do
+        edo pushd "$path"
+        emake
+        edo popd
+    done
+}
+
+src_install() {
+    for path in acpi_notifier* cachesaver* fetchinfo* rssyl* python*; do
+        edo pushd "$path"
+        einstall
+        edo popd
+    done
+    rm -f "${IMAGE}"/usr/lib*/claws-mail/plugins/*.{a,la}
+    find "${IMAGE}" -exec rmdir -p {} \; 2>/dev/null
+}
+
+pkg_postinst() {
+    # for acpi-notifier
+    for procfile in $(echo /proc/acpi/{asus/mled,ibm/led,acer/mailled}) /proc/driver/acerhk/led
+    do [[ -f $procfile ]] &&\
+        elog "Make sure ${procfile} is writable by users of this plugin."
+    done
+}

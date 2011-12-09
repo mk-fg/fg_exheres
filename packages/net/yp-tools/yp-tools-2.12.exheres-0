@@ -1,0 +1,17 @@
+# Copyright 2011 Mike Kazantsev
+# Copyright 2009 Saleem Abdulrasool <compnerd@compnerd.org>
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Tools for working with NIS"
+
+HOMEPAGE="http://www.linux-nis.org/nis/yp-tools/"
+DOWNLOADS="mirror://kernel/linux/utils/net/NIS/${PNV}.tar.bz2"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
