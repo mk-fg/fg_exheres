@@ -21,10 +21,16 @@ DEPENDENCIES="
 BUGS_TO="mk.fraggod@gmail.com"
 
 
+src_prepare() {
+    edo sed -i '/^strip /d' make_static_dispatcher.sh
+    edo sed -i 's/install -D -s/install -D/' Makefile
+}
+
 src_install() {
     default
 
     cd "$WORKBASE"/usb-modeswitch-data-*
     emake DESTDIR="$IMAGE" install
+    keepdir /etc/usb_modeswitch.d /var/lib/usb_modeswitch
     emagicdocs
 }
