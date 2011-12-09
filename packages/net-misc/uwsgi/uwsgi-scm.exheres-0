@@ -3,7 +3,7 @@
 
 SCM_REPOSITORY="http://projects.unbit.it/hg/uwsgi"
 
-require scm-hg distutils
+require scm-hg distutils systemd-service
 
 SUMMARY="Fast, self-healing and developer/sysadmin-friendly application container server coded in pure C."
 
@@ -32,4 +32,11 @@ BUGS_TO="mk.fraggod@gmail.com"
 src_prepare() {
     edo test -f buildconf/default.ini
     edo cat "$FILES"/build_profile.ini >buildconf/default.ini
+}
+
+src_install() {
+    distutils_src_install
+
+    option systemd && keepdir /etc/uwsgi
+    install_systemd_files
 }
