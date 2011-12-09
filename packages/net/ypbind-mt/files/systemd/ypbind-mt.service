@@ -6,6 +6,7 @@ Before=network.target
 
 [Service]
 Type=forking
+GuessMainPID=false
 StandardOutput=syslog
 ExecStart=/usr/sbin/ypbind
 
