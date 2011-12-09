@@ -36,8 +36,3 @@ src_configure() {
     # It's waf, not autotools
     edo ./configure --prefix=/usr --shared-cares
 }
-
-src_install() {
-    default
-    edo rmdir "$IMAGE"/usr/include/node/ev
-}
