@@ -1,0 +1,30 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://puddletag.hg.sourceforge.net:8000/hgroot/puddletag/puddletag"
+
+require distutils scm-hg
+
+SUMMARY="Puddletag is a audio tag editor for GNU/Linux similar to Windows program Mp3tag."
+
+HOMEPAGE="http://puddletag.sourceforge.net/"
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-python/PyQt4
+        dev-python/configobj
+        dev-python/mutagen
+        dev-python/pyparsing
+        dev-python/python-musicbrainz2
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+REMOTE_IDS="sourceforge:puddletag"
+
+
+WORK=${WORK}/source
