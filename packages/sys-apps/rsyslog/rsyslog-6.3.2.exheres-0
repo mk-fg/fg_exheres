@@ -73,9 +73,15 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
     --enable-omuxsock
     --disable-omtemplate
 
-    --with-systemdsystemunitdir=/lib/systemd/system )
+    --with-systemdsystemunitdir=/lib/systemd/system
+
+    # This is not a mistake and passing it to configure is correct.
+    # Java is not being used at all yet, however the tests depend on it.
+    HAVE_JAVAC=yes )
 
 DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=(
+    "build_options:recommended_tests testbench"
+    "build_options:recommended_tests extended-tests"
     debug
     "debug diagtools"
     gnutls
