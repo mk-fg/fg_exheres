@@ -1,0 +1,17 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require distutils pypi
+
+SUMMARY="A Python Programming Environment."
+
+HOMEPAGE="http://guppy-pe.sourceforge.net/"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
