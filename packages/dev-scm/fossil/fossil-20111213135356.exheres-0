@@ -27,16 +27,15 @@ DEPENDENCIES="
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
-UPSTREAM_CHANGELOG="${HOMEPAGE}fossil/timeline [[ lang = en ]]"
-UPSTREAM_DOCUMENTATION="${HOMEPAGE}fossil/doc/tip/www/quickstart.wiki [[ lang = en description = [ QuickStart ] ]]"
 
 
-DEFAULT_SRC_PREPARE_PATCHES=( "$FILES/ssl_no_cert_questions.patch" )
-DEFAULT_SRC_INSTALL_EXTRA_DOCS=( ci cvs2fossil )
-
-PALUDIS_SYNCERS_DIR="/usr/libexec/paludis/syncers"
+src_configure() {
+    # It's "autosetup", not "autoconf"
+    # --with-tcl is disabled by default
+    ./configure --prefix=/usr --with-openssl=/usr --json
+}
 
 src_install() {
-    dobin fossil
-    emagicdocs
+    mkdir -p "$IMAGE"/usr/bin
+    default
 }
