@@ -1,0 +1,25 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="wxWidgets GUI for PostgreSQL."
+
+HOMEPAGE="http://www.pgadmin.org/"
+DOWNLOADS="mirror://postgresql/pgadmin3/release/v${PV}/src/${PNV}.tar.gz"
+
+LICENCES="Artistic"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-db/postgresql
+        dev-libs/libxml2:=[>=2.5]
+        dev-libs/libxslt[>=1.1]
+        x11-libs/wxGTK:2.8
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --with-wx-version=2.8 --without-debug )
