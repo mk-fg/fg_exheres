@@ -1,0 +1,42 @@
+# Copyright 2011 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+# SCM is 4+ years ahead of releases atm
+SCM_REPOSITORY="git://${PN}.git.sourceforge.net/gitroot/${PN}/${PN}"
+
+require sourceforge scm-git\
+    autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 1.10 ] ]
+
+SUMMARY="Control your monitor by software using the DDC/CI protocol."
+
+HOMEPAGE="http://ddccontrol.sourceforge.net/"
+DOWNLOADS=""
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        dev-perl/XML-Parser
+        dev-util/intltool
+    build+run:
+        dev-libs/libxml2
+        sys-apps/pciutils
+        sys-devel/gettext
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --without-x --disable-doc
+    --disable-gnome --disable-gnome-applet
+    --enable-nls --enable-ddcpci )
+
+src_prepare() {
+    sed -i 's:^gettextize.*:autopoint -f:' ./autogen.sh
+    echo 'AM_GNU_GETTEXT_VERSION([0.18.1])' >>configure.ac
+    edo ./autogen.sh
+}
