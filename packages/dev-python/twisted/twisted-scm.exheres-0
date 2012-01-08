@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 SCM_REPOSITORY="git://github.com/powdahound/twisted.git"
@@ -17,8 +17,11 @@ MYOPTIONS=""
 DEPENDENCIES="
     build+run:
         !net-twisted/twisted
+    recommendation:
+        dev-python/pyasn1 [[ note = [ for using ssh keys with twisted.conch ] ]]
+        dev-python/pycrypto [[ note = [ for twisted.conch ] ]]
+        dev-python/pyopenssl [[ note = [ enables SSL support ] ]]
     run:
-        dev-python/pyopenssl[>=0.5.1]
         dev-python/zopeinterface[>=3.0.1]
 "
 
