@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2012 Mike Kazantsev
 # Copyright 2009 Saleem Abdulrasool <compnerd@compnerd.org>
 # Distributed under the terms of the GNU General Public License v2
 
@@ -33,7 +33,7 @@ DEPENDENCIES="
         group/pulse-rt
         media-libs/libsndfile[>=1.0.20]
         media-libs/speex[>=1.2_beta]
-        sys-fs/udev[>=143][sound]
+        sys-fs/udev[>=143]
         sys-libs/gdbm
         sys-sound/alsa-lib[>=1.0.19]
         user/pulse
