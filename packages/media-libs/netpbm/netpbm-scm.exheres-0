@@ -1,0 +1,80 @@
+# Copyright 2012 Mike Kazantsev
+# Copyright 2010, 2011 Johannes Nixdorf <mixi@user-helfen-usern.de>
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://netpbm.svn.sourceforge.net/svnroot/netpbm/advanced/"
+SCM_SVN_RAW_URI=true
+
+require scm-svn
+
+SUMMARY="A whole bunch of utilities for primitive manipulation of graphic images."
+
+HOMEPAGE="http://netpbm.sourceforge.net/"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="X jpeg png tiff"
+
+DEPENDENCIES="
+    build:
+        sys-devel/flex
+    build+run:
+        sys-libs/zlib
+        X? ( x11-libs/libX11 )
+        jpeg? ( media-libs/jpeg )
+        png? ( media-libs/libpng )
+        tiff? ( media-libs/tiff )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_configure() {
+    config=config.mk
+    CONFIG=$(<${config}.in)
+
+    CONFIG+="
+    CC = ${CC}
+    CFLAGS = ${CFLAGS}
+    LDFLAGS = ${LDFLAGS}
+    NETPBMLIBTYPE = unixshared
+    NETPBMLIBSUFFIX = so
+    LDRELOC = ld --reloc
+    LINKER_CAN_DO_EXPLICIT_LIBRARY = N
+    CFLAGS_SHLIB = ${CFLAGS} -fPIC
+    ZLIB = libz.so
+    LINKERISCOMPILER = Y
+    STRIPFLAG =
+    SYMLINK = ln -sf
+    "
+
+    echo "$CONFIG" > ${config}
+}
+
+src_compile() {
+    JPEGLIB="NONE"; PNGLIB="NONE"; TIFFLIB="NONE"; X11LIB="NONE"
+    option jpeg && JPEGLIB="libjpeg.so"
+    option png && PNGLIB="libpng.so"
+    option tiff && TIFFLIB="libtiff.so"
+    option X && X11LIB="libX11.so"
+
+    emake -j1 JPEGLIB=${JPEGLIB} PNGLIB=${PNGLIB} TIFFLIB=${TIFFLIB} X11LIB=${X11LIB}
+}
+
+src_install() {
+    emake -j1 package pkgdir="${IMAGE}/usr"
+
+    edo rm -f "${IMAGE}/usr/bin/"{doc.url,manweb}
+    edo rm -r "${IMAGE}/usr/man/web"
+    edo rm -r "${IMAGE}/usr/link"
+    edo rm -r "${IMAGE}/usr/"{README,VERSION,config_template,pkginfo}
+    dodir /usr/share
+    edo mv "${IMAGE}/usr/man" "${IMAGE}/usr/share/"
+    edo mv "${IMAGE}/usr/misc" "${IMAGE}/usr/share/netpbm"
+    [[ ${LIBDIR} != "lib" ]] && edo mv "${IMAGE}/usr/lib" "${IMAGE}/usr/${LIBDIR}"
+
+    edo ln -s libnetpbm.so.${PV%.*} "${IMAGE}/usr/${LIBDIR}/libnetpbm.so"
+
+    emagicdocs
+}
