@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 # Based upon 'openct-0.6.20.ebuild' from Gentoo, which is:
 #  Copyright 1999-2010 Gentoo Foundation
@@ -50,7 +50,9 @@ src_install() {
     newins etc/openct.udev 70-openct.rules
 
     if option systemd; then
-        insinto /etc/tmpfiles.d
-        newins "${FILES}"/tmpfiles.conf openct.conf
+        insinto /$LIBDIR/tmpfiles.d
+        hereins openct.conf <<EOF
+d /var/run/openct 0750 openct openct -
+EOF
     fi
 }

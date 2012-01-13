@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 # Based upon 'davfs2-1.4.5.ebuild' from Gentoo, which is:
 #  Copyright 1999-2010 Gentoo Foundation
@@ -39,8 +39,10 @@ src_install() {
 
     edo rm -Rf "$IMAGE"/var/run
     if option systemd; then
-        insinto /etc/tmpfiles.d
-        doins "$FILES"/systemd/davfs2.conf
+        insinto /$LIBDIR/tmpfiles.d
+        hereins davfs2.conf <<EOF
+d /var/run/mount.davfs 0755 root root -
+EOF
     fi
 
     edo rm -Rf "$IMAGE"/usr/share/davfs2 # useless copy of /etc/davfs2
