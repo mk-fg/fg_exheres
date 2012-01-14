@@ -1,13 +1,10 @@
 # Copyright 2011-2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="git://github.com/joyent/node.git"
-
-require scm-git
-
 SUMMARY="Node.js is an event-driven I/O framework for the V8 JavaScript engine on Unix-like platforms."
 
 HOMEPAGE="http://nodejs.org/"
+DOWNLOADS="http://nodejs.org/dist/v${PV}/${PN}-v${PV}.tar.gz"
 
 LICENCES="as-is"
 SLOT="0"
@@ -16,7 +13,7 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     build:
-        sys-devel/scons
+        dev-lang/python
     build+run:
         dev-libs/libev
         net-dns/c-ares
@@ -25,7 +22,14 @@ DEPENDENCIES="
 BUGS_TO="mk.fraggod@gmail.com"
 
 
+WORK=${WORKBASE}/${PN}-v${PV}
+
 src_configure() {
     # It's a creepy mix of waf and it's own js crap, not autotools
-    edo ./configure --prefix=/usr --shared-cares
+    edo ./configure --prefix=/usr --shared-cares --destdir="$IMAGE"
+}
+
+src_install() {
+    default
+    find "$IMAGE" -xdev -type d -empty -delete
 }
