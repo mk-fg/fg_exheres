@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 SCM_REPOSITORY="git://github.com/joyent/node.git"
@@ -25,14 +25,7 @@ DEPENDENCIES="
 BUGS_TO="mk.fraggod@gmail.com"
 
 
-src_prepare() {
-    # To get rid of "node.cc:1507: undefined reference to `ev_rt_now'"
-    #  http://comments.gmane.org/gmane.comp.lang.javascript.nodejs/18924
-    sed -i '/EV_MULTIPLICITY=0/d' wscript tools/wafadmin/Tools/node_addon.py
-    find -type f -exec sed -i 's/EV_MULTIPLICITY=0/EV_MULTIPLICITY=1/g' '{}' \;
-}
-
 src_configure() {
-    # It's waf, not autotools
+    # It's a creepy mix of waf and it's own js crap, not autotools
     edo ./configure --prefix=/usr --shared-cares
 }
