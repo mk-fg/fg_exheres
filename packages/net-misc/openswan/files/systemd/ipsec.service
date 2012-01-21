@@ -1,0 +1,13 @@
+[Unit]
+Description=IPsec (openswan)
+Before=network.target
+
+[Service]
+Type=forking
+StandardOutput=syslog
+Environment=IPSECsyslog=daemon.error
+ExecStart=/usr/sbin/ipsec _realsetup start
+ExecStop=/usr/sbin/ipsec _realsetup stop
+
+[Install]
+WantedBy=network.target

@@ -1,0 +1,108 @@
+# Copyright 2012 Mike Kazantsev
+# Copyright 2011 Wulf C. Krueger <philantrop@exherbo.org>
+# Copyright 2009 Xavier Barrachina <xabarci@ega.upv.es>
+# Distributed under the terms of the GNU General Public License v2
+
+require multilib systemd-service [ systemd_files=[ ipsec.service ] ]
+
+SUMMARY="A set of tools for doing L2TP/IPsec on Linux operating systems"
+
+HOMEPAGE="http://www.${PN}.org/"
+DOWNLOADS="${HOMEPAGE}/download/${PNV}.tar.gz"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS="
+    baselayout
+    caps [[ description = [ support for dropping unneeded capabilities in pluto daemon ] ]]
+    curl [[ description = [ libcurl support for fetching CRLs ] ]]
+    ldap [[ description = [ LDAP support for fetching CRLs ] ]]
+    networkmanager [[ description = [ Enable support for NetworkManager (plugin) ] ]]
+    nss [[ description = [ Support for NSS crypto library ] ]]
+"
+
+DEPENDENCIES="
+    build:
+        app-text/docbook-xml-dtd:4.1.2
+        app-text/xmlto
+    build+run:
+        dev-libs/gmp
+        caps? ( sys-libs/libcap-ng )
+        curl? ( net-misc/curl )
+        ldap? ( net-directory/openldap )
+        networkmanager? ( net-apps/NetworkManager  )
+        nss? (
+            dev-libs/nspr
+            dev-libs/nss
+        )
+    suggestion:
+        net-misc/openl2tp
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+# The tests require UML and seem to be broken as well.
+RESTRICT="test"
+UPSTREAM_CHANGELOG="${HOMEPAGE}/download/CHANGES [[ lang = en ]]"
+UPSTREAM_DOCUMENTATION="${HOMEPAGE}/docs/ [[ lang = en ]]"
+
+
+pkg_pretend() {
+    if [[ -f "${ROOT}"/etc/tmpfiles.d/ipsec.conf ]] ; then
+        ewarn "The configuration file /etc/tmpfiles.d/ipsec.conf has been moved to"
+        ewarn "/${LIBDIR}/tmpfiles.d/ipsec.conf and can be safely removed after upgrade"
+        ewarn "if you did not make any changes to it."
+    fi
+}
+
+src_compile() {
+    export CFLAGS+=" $(pkg-config --cflags nspr)"
+    export CFLAGS+=" $(pkg-config --cflags nss)"
+    export LDFLAGS+=" $(pkg-config --libs nspr)"
+    export LDFLAGS+=" $(pkg-config --libs nss)"
+
+    args+=(
+        FINALDOCDIR=/usr/share/doc/${PNVR}/html
+        FINALEXAMPLECONFDIR=/usr/share/doc/${PNVR}
+        FINALLIBDIR=/usr/${LIBDIR}/ipsec
+        FINALLIBEXECDIR=/usr/${LIBDIR}/ipsec
+        INC_USRLOCAL=/usr
+        INC_MANDIR=share/man
+        HAVE_OPENSSL=true
+        HAVE_THREADS=true
+        USE_XAUTHPAM=true
+        WERROR=""
+    )
+    option caps && args+=( USE_LIBCAP_NG=true )
+    option curl && args+=( USE_LIBCURL=true )
+    option ldap && args+=( USE_LDAP=true )
+    option nss && args+=( USE_LIBNSS=true )
+    ! option networkmanager && args+=( USE_NM=false )
+
+    emake "${args[@]}" programs
+}
+
+src_install() {
+    emake -j1 "${args[@]}" DESTDIR="${IMAGE}" install
+
+    # Fix permissions of docs and /etc.
+    edo chmod -R a-x "${IMAGE}"/usr/share/{doc/${PNVR},man} "${IMAGE}"/etc/ipsec.d/
+
+    option baselayout && newinitd "${FILES}"/ipsec-init.d ipsec
+
+    install_systemd_files
+    if option systemd; then
+        insinto /${LIBDIR}/tmpfiles.d
+        hereins ipsec.conf <<EOF
+d /var/run/pluto 0755 root root
+EOF
+        edo rmdir "${IMAGE}"/var{/run{/pluto,},}
+    fi
+
+    keepdir /etc/ipsec.d/{aacerts,cacerts,certs,crls,ocspcerts,private}
+
+    # Remove an empty directory and a broken symlink.
+    edo rm -r "${IMAGE}"/etc/rc.d
+    edo rm "${IMAGE}"/usr/${LIBDIR}/ipsec/setup
+}
