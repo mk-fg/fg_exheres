@@ -1,0 +1,23 @@
+# Copyright 2012 Mike Kazantsev
+# Copyright 2009 Jan Meier
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://git.kernel.org/pub/scm/network/ethtool/ethtool.git"
+
+require scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+
+SUMMARY="Standard Linux utility for controlling network drivers and hardware"
+
+HOMEPAGE="http://www.kernel.org/pub/software/network/ethtool/"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS="--hates=docdir"
