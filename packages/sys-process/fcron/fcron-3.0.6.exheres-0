@@ -1,7 +1,10 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 # Based upon 'fcron-3.0.6-r1.ebuild' from Gentoo, which is:
 #  Copyright 1999-2010 Gentoo Foundation
+
+MY_PNV="${PNV/_/-}"
+WORK="${WORKBASE}/${MY_PNV}"
 
 require pam systemd-service
 
@@ -30,9 +33,6 @@ UPSTREAM_DOCUMENTATION="
     ${HOMEPAGE}doc/en/index.html [[ lang = en ]]
     ${HOMEPAGE}doc/fr/index.html [[ lang = fr ]]"
 
-
-MY_PNV="${PNV/_/-}"
-WORK="${WORKBASE}/${MY_PNV}"
 
 src_prepare() {
     # respect LDFLAGS
