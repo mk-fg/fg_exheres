@@ -38,6 +38,12 @@ DEPENDENCIES="
         sys-sound/alsa-lib[>=1.0.19]
         user/pulse
 
+        x11-libs/libICE
+        x11-libs/libSM
+        x11-libs/libX11
+        x11-libs/libXtst
+        x11-libs/libxcb
+
         avahi? ( net-dns/avahi[>=0.6.0][dbus] )
         bluetooth? ( net-wireless/bluez[>=3.0] )
         caps? ( sys-libs/libcap )
