@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 SCM_REPOSITORY=":pserver:anonymous@ziproxy.cvs.sourceforge.net:/cvsroot/ziproxy"
@@ -42,7 +42,9 @@ src_fetch_extra() {
 src_install() {
     default
     edo rm -Rf etc/ziproxy/{,sasl/}CVS
+    install_systemd_files
+
+    find etc/ziproxy -type f -exec mv {} {}.default \;
     insinto /etc
     doins -r etc/ziproxy
-    install_systemd_files
 }
