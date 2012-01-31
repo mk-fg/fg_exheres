@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Copyright 2009 Timothy Redaelli <timothy@redaelli.eu>
 # Distributed under the terms of the GNU General Public License v2
 # Based in part upon 'nginx-0.7.43.ebuild' and 'nginx-0.8.54.ebuild', which are:
@@ -75,8 +75,8 @@ src_configure() {
         --with-ld-opt="-L${ROOT}usr/lib"
         --sbin-path=/usr/sbin/nginx
         --conf-path=/etc/${PN}/nginx.conf
-        --pid-path=/var/run/${PN}.pid
-        --lock-path=/var/lock/${PN}.lock
+        --pid-path=/run/${PN}.pid
+        --lock-path=/run/lock/${PN}.lock
         --error-log-path=/var/log/${PN}/error_log
         --http-log-path=/var/log/${PN}/access_log
         --with-ipv6

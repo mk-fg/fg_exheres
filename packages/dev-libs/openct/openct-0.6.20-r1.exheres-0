@@ -52,7 +52,7 @@ src_install() {
     if option systemd; then
         insinto /$LIBDIR/tmpfiles.d
         hereins openct.conf <<EOF
-d /var/run/openct 0750 openct openct -
+d /run/openct 0750 openct openct -
 EOF
     fi
 }

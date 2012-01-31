@@ -4,9 +4,9 @@ After=network.target
 
 [Service]
 Type=forking
-PIDFile=/var/run/ziproxy.pid
-ExecStart=/usr/bin/ziproxy -d --pid-file=/var/run/ziproxy.pid
-ExecStop=/usr/bin/ziproxy -k --pid-file=/var/run/ziproxy.pid
+PIDFile=/run/ziproxy.pid
+ExecStart=/usr/bin/ziproxy -d --pid-file=/run/ziproxy.pid
+ExecStop=/usr/bin/ziproxy -k --pid-file=/run/ziproxy.pid
 
 [Install]
 WantedBy=multi-user.target

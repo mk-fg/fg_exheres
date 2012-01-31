@@ -140,7 +140,7 @@ squid_src_configure() {
 		--with-filedescriptors=8192 \
 		--with-large-files \
 		--with-logdir=/var/log/squid \
-		--with-pidfile=/var/run/squid.pid \
+		--with-pidfile=/run/squid.pid \
 		$(option_enable caps) \
 		$(option_enable icap-client) \
 		$(option_enable snmp) \
@@ -208,4 +208,3 @@ EOF
 	diropts -m0755 -o squid -g squid
 	keepdir /var/cache/squid /var/log/squid
 }
-

@@ -37,11 +37,11 @@ src_install() {
     keepdir /var/cache/davfs2
     diropts -m1775 -gdavfs2
 
-    edo rm -Rf "$IMAGE"/var/run
+    edo rm -Rf "$IMAGE"/run
     if option systemd; then
         insinto /$LIBDIR/tmpfiles.d
         hereins davfs2.conf <<EOF
-d /var/run/mount.davfs 0755 root root -
+d /run/mount.davfs 0755 root root -
 EOF
     fi
 
