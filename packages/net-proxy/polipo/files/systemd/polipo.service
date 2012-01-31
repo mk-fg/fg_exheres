@@ -3,7 +3,7 @@ Description=polipo
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/polipo -c /etc/polipo.conf
+ExecStart=/usr/bin/polipo -c /etc/polipo/config
 
 [Install]
 WantedBy=multi-user.target
