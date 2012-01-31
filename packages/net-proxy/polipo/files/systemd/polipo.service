@@ -1,0 +1,9 @@
+[Unit]
+Description=polipo
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/polipo -c /etc/polipo.conf
+
+[Install]
+WantedBy=multi-user.target

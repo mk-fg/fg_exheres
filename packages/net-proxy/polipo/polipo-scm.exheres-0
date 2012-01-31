@@ -1,0 +1,41 @@
+# Copyright 2012 Mike Kazantsev
+# Copyright 2009 Nestor Ovroy <novroy@riseup.net>
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://git.wifi.pps.jussieu.fr/polipo"
+
+require scm-git systemd-service
+
+SUMMARY="Small and fast caching web proxy (a web cache, an HTTP proxy, a proxy server)."
+
+HOMEPAGE="http://www.pps.jussieu.fr/~jch/software/polipo/"
+# DOWNLOADS="http://freehaven.net/~chrisd/polipo/${PNV}.tar.gz"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_COMPILE_PARAMS=(
+    PREFIX=/usr
+    CDEBUGFLAGS="${CFLAGS}"
+)
+
+DEFAULT_SRC_INSTALL_PARAMS=(
+    PREFIX=/usr
+    MANDIR=/usr/share/man
+    INFODIR=/usr/share/info
+    TARGET="${IMAGE}"
+)
+
+DEFAULT_SRC_INSTALL_EXTRA_DOCS=( config.sample )
+
+src_install() {
+    default
+    install_systemd_files
+}
