@@ -1,10 +1,10 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 SUMMARY="Use the X Screensaver extension to print user's idle time to stdout."
 
 HOMEPAGE="http://www.dtek.chalmers.se/~henoch/text/xprintidle.html"
-DOWNLOADS="http://www.dtek.chalmers.se/~henoch/text/xprintidle/${PNV}.tar.gz"
+DOWNLOADS="http://ftp.debian.org/debian/pool/main/x/xprintidle/${PN}_${PV}.orig.tar.gz"
 
 LICENCES="GPL-2"
 SLOT="0"
