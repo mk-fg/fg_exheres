@@ -1,0 +1,27 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/apenwarr/git-subtree.git"
+
+require scm-git
+
+SUMMARY="Merges and splits subtrees from your project into subprojects and back."
+
+HOMEPAGE="https://github.com/apenwarr/git-subtree/"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-scm/git
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_compile() {
+    :
+}
