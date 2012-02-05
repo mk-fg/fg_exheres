@@ -4,12 +4,15 @@
 	bare = false
 	logallrefupdates = true
 
-[remote "origin"]
+[remote "fg_core"]
 	url = git@fraggod.net:fg_exheres.git
 	fetch = +refs/heads/*:refs/remotes/origin/*
-[branch "master"]
-	remote = origin
-	merge = refs/heads/master
+[remote "github"]
+	url = git@github.com:mk-fg/fg_exheres.git
+	fetch = +refs/heads/*:refs/remotes/github/*
+[remote "origin"]
+	url = git@fraggod.net:fg_exheres.git
+	url = git@github.com:mk-fg/fg_exheres.git
 
 [filter "exheres_syntax"]
 	clean = $GIT_DIR/../_exheres_filter.py clean %f
