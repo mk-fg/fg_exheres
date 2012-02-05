@@ -1,10 +1,13 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/mk-fg/notification-thing.git"
+
+require scm-git
 
 SUMMARY="DE-free daemon for displaying notifications."
 
-HOMEPAGE="http://fraggod.net/"
-DOWNLOADS="http://fraggod.net/static/code/notification-thing.py -> ${PNV}.py"
+HOMEPAGE="https://github.com/mk-fg/notification-thing"
 
 LICENCES="GPL-2"
 SLOT="0"
@@ -22,11 +25,9 @@ DEPENDENCIES="
 BUGS_TO="mk.fraggod@gmail.com"
 
 
-WORK=$WORKBASE
-
 src_install() {
     exeinto /usr/libexec
-    newexe "${FETCHEDDIR}/${ARCHIVES}" "${PN}"
+    newexe "${PN}.py" "$PN"
     insinto /usr/share/dbus-1/services
-    doins "${FILES}/org.freedesktop.Notifications.service"
+    doins org.freedesktop.Notifications.service
 }
