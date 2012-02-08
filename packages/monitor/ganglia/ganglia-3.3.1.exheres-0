@@ -1,0 +1,39 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Scalable distributed monitoring system."
+
+HOMEPAGE="http://ganglia.sourceforge.net/"
+DOWNLOADS="mirror://sourceforge/ganglia/${PNV}.tar.gz"
+
+LICENCES="BSD-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="python"
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/apr
+        dev-libs/confuse
+        dev-libs/expat
+        dev-libs/pcre
+        python? ( dev-lang/python )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --hates=docdir
+    --enable-gexec
+    --enable-status
+    --enable-sflow
+    --enable-memcheck=no
+    --without-gmetad # needs more deps, not needed to feed graphite
+)
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( python )
+
+src_prepare() {
+    edo sed -i 's:enable_memcheck="yes":enable_memcheck="no":' configure{,.in}
+    edo sed -i 's:rpcgen gm_protocol.x:rpcgen -Y /usr/bin gm_protocol.x:' lib/Makefile.*
+}
