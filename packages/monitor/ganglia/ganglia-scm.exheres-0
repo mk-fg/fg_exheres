@@ -1,10 +1,15 @@
 # Copyright 2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
+SCM_REPOSITORY="git://github.com/ganglia/monitor-core.git"
+SCM_EXTERNAL_REFS="web:"
+
+require scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+
 SUMMARY="Scalable distributed monitoring system."
 
 HOMEPAGE="http://ganglia.sourceforge.net/"
-DOWNLOADS="mirror://sourceforge/ganglia/${PNV}.tar.gz"
+# DOWNLOADS="mirror://sourceforge/ganglia/${PNV}.tar.gz"
 
 LICENCES="BSD-2"
 SLOT="0"
@@ -28,12 +33,16 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
     --enable-gexec
     --enable-status
     --enable-sflow
-    --enable-memcheck=no
+    --disable-memcheck
     --without-gmetad # needs more deps, not needed to feed graphite
 )
 DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( python )
 
 src_prepare() {
-    edo sed -i 's:enable_memcheck="yes":enable_memcheck="no":' configure{,.in}
+    edo sed -i 's:enable_memcheck="yes":enable_memcheck="no":' configure.in
     edo sed -i 's:rpcgen gm_protocol.x:rpcgen -Y /usr/bin gm_protocol.x:' lib/Makefile.*
+    autotools_src_prepare
+
+    cd libmetrics
+    edo ./bootstrap
 }
