@@ -49,5 +49,7 @@ src_prepare() {
 
 src_install() {
     default
+
+    edo rm -Rf "$IMAGE"/etc/conf.d # another solution is to define /etc/ganglia as confdir
     install_systemd_files
 }
