@@ -1,0 +1,9 @@
+[Unit]
+Description=gmond
+After=network.target
+
+[Service]
+ExecStart=/usr/sbin/gmond -f
+
+[Install]
+WantedBy=multi-user.target
