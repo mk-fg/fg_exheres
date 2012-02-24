@@ -1,0 +1,19 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/pika/pika.git"
+
+require distutils scm-git
+
+SUMMARY="AMQP 0-9-1 client library for Python."
+
+HOMEPAGE="http://pika.github.com/"
+
+LICENCES="|| ( MPL-1.1 GPL-3 )"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
