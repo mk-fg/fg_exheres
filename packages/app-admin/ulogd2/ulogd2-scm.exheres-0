@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Copyright 2008-2010 Wulf C. Krueger <philantrop@exherbo.org>
 # Distributed under the terms of the GNU General Public License v2
 # Based in part upon 'ulogd-1.24.ebuild' from Gentoo, which is:
@@ -20,6 +20,7 @@ MYOPTIONS="pcap"
 DEPENDENCIES="
     build+run:
         dev-db/sqlite[>=3.5.9]
+        net-libs/libmnl
         net-libs/libnetfilter_conntrack
         net-libs/libnetfilter_log
         net-libs/libnfnetlink
