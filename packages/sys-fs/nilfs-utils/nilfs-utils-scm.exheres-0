@@ -1,8 +1,8 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Copyright 2010 Joonas Sarajärvi <muepsj@gmail.com>
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="http://git.nilfs.org/nilfs2-utils.git"
+SCM_REPOSITORY="git://github.com/nilfs-dev/nilfs-utils.git"
 
 require scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 1.10 ] ]
 
