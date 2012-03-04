@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 SCM_REPOSITORY="http://bazaar.launchpad.net/~graphite-dev/graphite"
@@ -21,6 +21,7 @@ DEPENDENCIES="
         dev-python/django
         dev-python/django-tagging
         dev-python/pycairo
+        dev-python/pytz
         dev-python/simplejson
         monitor/graphite-whisper
     suggestion:
