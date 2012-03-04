@@ -1,12 +1,13 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-require distutils
+SCM_REPOSITORY="git://github.com/mk-fg/feedjack.git"
+
+require scm-git distutils
 
 SUMMARY="Feed aggregator written in Python using the Django web development framework."
 
-HOMEPAGE="http://fraggod.net/code/fossil/feedjack"
-DOWNLOADS=""
+HOMEPAGE="https://github.com/mk-fg/feedjack"
 
 LICENCES="BSD-3"
 SLOT="0"
@@ -14,25 +15,9 @@ PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
 DEPENDENCIES="
-    build:
-        dev-scm/fossil
     run:
         dev-python/django
         dev-python/feedparser
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
-
-
-WORK=$WORKBASE
-FOSSIL="${FETCHEDDIR}/${PN}".fossil
-
-src_fetch_extra() {
-    edo rm -f "$FOSSIL"
-    edo fossil clone "$HOMEPAGE" "$FOSSIL"
-}
-
-src_unpack() {
-    edo cp "$FOSSIL" .
-    edo fossil open "$(basename "$FOSSIL")"
-}
