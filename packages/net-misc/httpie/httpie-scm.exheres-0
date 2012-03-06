@@ -1,0 +1,23 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/jkbr/httpie.git"
+
+require scm-git distutils
+
+SUMMARY="CLI, cURL-like tool for humans.."
+
+HOMEPAGE="https://github.com/jkbr/httpie"
+
+LICENCES="as-is"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-python/Pygments
+        dev-python/requests
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
