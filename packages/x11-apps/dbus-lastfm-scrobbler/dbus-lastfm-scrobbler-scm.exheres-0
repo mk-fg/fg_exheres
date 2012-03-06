@@ -18,6 +18,7 @@ DEPENDENCIES="
     build+run:
         dev-lang/python
         dev-python/dbus-python
+        dev-python/pylast
         gnome-bindings/pygobject
 "
 
