@@ -1,0 +1,20 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/btimby/fulltext.git"
+
+require scm-git distutils
+
+SUMMARY="Python library for extracting text from various file formats."
+
+HOMEPAGE="https://github.com/btimby/fulltext"
+DOWNLOADS=""
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
