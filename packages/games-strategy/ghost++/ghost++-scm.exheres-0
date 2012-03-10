@@ -1,0 +1,84 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://ghostplusplus.googlecode.com/svn/"
+
+require scm-svn
+
+SUMMARY="Warcraft III tool to host custom and official maps on Battle.Net."
+
+HOMEPAGE="http://www.codelain.com/"
+
+LICENCES="Apache-2.0"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-db/sqlite:3
+        dev-libs/boost
+        dev-libs/gmp
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_prepare() {
+    # Don't need mysql support
+    edo sed -i\
+        -e 's/DFLAGS = -DGHOST_MYSQL/DFLAGS =/'\
+        -e '/^LFLAGS/s/-lmysql[^ ]\+ //'\
+        -e 's/\<ghostdbmysql\.[^ ]\>//g'\
+        ghost/Makefile
+    # edo sed -i '/^LFLAGS/s/-lmysql[^ ]\+ //' update_dota_elo/Makefile
+    # edo sed -i '/^LFLAGS/s/-lmysql[^ ]\+ //' update_w3mmd_elo/Makefile
+}
+
+src_compile() {
+    for p in\
+        bncsutil/src/bncsutil\
+        StormLib/stormlib\
+        ghost
+        # update_dota_elo
+        # update_w3mmd_elo
+    do
+        edo pushd "$p"
+        emake
+        edo popd
+    done
+}
+
+src_install() {
+    edo pushd bncsutil/src/bncsutil
+    insinto /usr/include/bncsutil
+    doins *.h
+    insinto /usr/$LIBDIR
+    doins libbncsutil.so
+    edo popd
+
+    edo pushd StormLib/stormlib
+    insinto /usr/include/StormLib
+    doins Storm{Lib,Port}.h
+    insinto /usr/$LIBDIR
+    doins libStorm.so
+    edo popd
+
+    exeinto /opt/ghost++
+    doexe ghost/ghost++
+    # doexe update_dota_elo/update_dota_elo
+    # doexe update_w3mmd_elo/update_w3mmd_elo
+
+    insinto /opt/ghost++
+    doins default.cfg gameloaded.txt gameover.txt ipblacklist.txt ip-to-country.csv
+    doins language_*.cfg
+    newins language.cfg language_english.cfg
+    dosym language_english.cfg /opt/ghost++/language.cfg
+
+    emagicdocs
+}
+
+pkg_setup() {
+    exdirectory --allow /opt
+    default
+}
