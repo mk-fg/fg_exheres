@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 SCM_REPOSITORY="git://github.com/ask/python-github2.git"
@@ -15,6 +15,9 @@ SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
-DEPENDENCIES=""
+DEPENDENCIES="
+    run:
+        dev-python/httplib2
+"
 
 BUGS_TO="mk.fraggod@gmail.com"
