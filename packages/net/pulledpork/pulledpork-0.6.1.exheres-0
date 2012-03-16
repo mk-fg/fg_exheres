@@ -1,0 +1,28 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Little hack which accepts both https and ssh connection on the same port."
+
+HOMEPAGE="http://www.rutschle.net/tech/sslh.shtml"
+DOWNLOADS="https://pulledpork.googlecode.com/files/${PNV}.tar.gz"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-perl/Archive-Tar
+        dev-perl/Crypt-SSLeay
+        dev-perl/libwww-perl
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    newbin pulledpork.pl pulledpork
+    dodoc {contrib,doc,etc}/*
+    emagicdocs
+}

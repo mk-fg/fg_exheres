@@ -1,0 +1,85 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Open source network intrusion prevention and detection system."
+
+HOMEPAGE="http://www.snort.org/"
+DOWNLOADS="http://www.snort.org/dl/snort-current/${PNV}.tar.gz"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="mysql odbc postgresql"
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/libdnet
+        dev-libs/libpcap
+        dev-libs/pcre
+        net-libs/daq
+        mysql? ( dev-db/mysql )
+        odbc? ( dev-db/unixODBC )
+        postgresql? ( dev-db/postgresql )
+    recommendation:
+        net/pulledpork
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --enable-shared
+    --enable-dynamicplugin
+    --enable-control-socket
+    --enable-dlclose
+    --enable-ipv6
+    --enable-zlib
+    --enable-gre
+    --enable-mpls
+    --enable-targetbased
+    --enable-decoder-preprocessor-rules
+    --enable-ppm
+    --enable-perfprofiling
+    --enable-linux-smp-stats
+    --enable-inline-init-failopen
+    --enable-pthread
+    --enable-active-response
+    --enable-normalizer
+    --enable-reload
+    --enable-reload-error-restart
+    --enable-paf
+    --enable-react
+    --enable-flexresp3
+    --enable-shared-rep
+    --enable-large-pcap
+
+    --disable-so-with-static-lib
+    --disable-static-daq
+    --disable-build-dynamic-examples
+    --disable-prelude
+    --disable-debug-msgs
+    --disable-debug
+    --disable-gdb
+    --disable-profile
+    --disable-ppm-test
+    --disable-sourcefire
+    --disable-corefiles
+    --disable-aruba
+    --disable-intel-soft-cpm
+    --disable-rzb-saac
+    --without-oracle
+)
+
+DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( mysql odbc postgresql )
+
+src_install() {
+    default
+
+    [[ $LIBDIR != lib ]]\
+        && edo mv "$IMAGE"{/usr/lib/*,/usr/$LIBDIR/}\
+        && edo rmdir "$IMAGE"/usr/lib
+
+    edo mkdir -p "$IMAGE"/usr/share/snort
+    edo mv "$IMAGE"/usr/{src/snort_dynamicsrc,share/snort/dynamicsrc}
+    edo rmdir "$IMAGE"/usr/src
+}

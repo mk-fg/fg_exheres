@@ -1,0 +1,17 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require perl-module [ module_author=NANIS ]
+
+SUMMARY="OpenSSL support for LWP."
+
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/openssl
+        dev-perl/libwww-perl
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
