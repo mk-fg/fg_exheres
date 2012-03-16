@@ -15,6 +15,7 @@ DEPENDENCIES="
     run:
         dev-perl/Archive-Tar
         dev-perl/Crypt-SSLeay
+        dev-perl/Switch
         dev-perl/libwww-perl
 "
 
