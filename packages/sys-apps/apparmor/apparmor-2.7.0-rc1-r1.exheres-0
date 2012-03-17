@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 MY_PV=${PV/-rc/~rc}
@@ -69,6 +69,10 @@ src_install() {
         popd
     done
     edo sed -i '/^\#\!\/usr\/bin\/perl$/ s:/perl:/perl -X:' "$IMAGE"/usr/sbin/aa-*
+
+    # SUSE init.d stuff
+    edo rm -r "$IMAGE"/lib/apparmor
+    edo rmdir "$IMAGE"/lib
 
     keepdir /var/lib/apparmor
 
