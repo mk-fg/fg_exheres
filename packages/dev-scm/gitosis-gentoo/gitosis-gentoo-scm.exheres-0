@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Copyright 2009 Ingmar Vanhassel
 # Distributed under the terms of the GNU General Public License v2
 
@@ -27,8 +27,6 @@ DEPENDENCIES="
       dev-python/setuptools[>=0.6_rc5]
     build+run:
         dev-scm/git
-        group/git
-        user/git
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
@@ -36,7 +34,5 @@ BUGS_TO="mk.fraggod@gmail.com"
 src_install() {
     distutils_src_install
     dodoc example.conf gitweb.conf lighttpd-gitweb.conf TODO.rst
-
-    keepdir /var/git/
-    edo chown git:git "${IMAGE}"/var/git/
+    keepdir /var/git
 }
