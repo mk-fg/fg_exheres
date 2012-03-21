@@ -1,8 +1,0 @@
-# Copyright 2011 Mike Kazantsev
-# Distributed under the terms of the GNU General Public License v2
-
-SCM_TAG="v${PV}"
-
-require zeromq
-
-PLATFORMS="~amd64 ~x86"
