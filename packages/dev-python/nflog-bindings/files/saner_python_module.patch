@@ -1,0 +1,157 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 30ec441..d0600d7 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -26,7 +26,6 @@ SET( LIB_SUFFIX "" CACHE STRING "The library directory suffix. 32bit empty strin
+ SET( LIB_INSTALL_DIR  "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}" )
+ 
+ ADD_SUBDIRECTORY(python)
+-ADD_SUBDIRECTORY(perl)
+ 
+ CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/nflog_version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/nflog_version.h)
+ 
+diff --git a/nflog_common.c b/nflog_common.c
+index 6ee3fff..96e5faf 100644
+--- a/nflog_common.c
++++ b/nflog_common.c
+@@ -33,7 +33,7 @@ void log_close(struct log *self)
+ int log_bind(struct log *self, int af_family)
+ {
+ 	if (nflog_bind_pf(self->_h, af_family)) {
+-		raise_swig_error("error during nflog_bind_pf()"); 
++		raise_swig_error("error during nflog_bind_pf()");
+ 		return -1;
+ 	}
+ 	return 0;
+@@ -42,7 +42,7 @@ int log_bind(struct log *self, int af_family)
+ int log_unbind(struct log *self, int af_family)
+ {
+ 	if (nflog_unbind_pf(self->_h, af_family)) {
+-		raise_swig_error("error during nflog_unbind_pf()"); 
++		raise_swig_error("error during nflog_unbind_pf()");
+ 		return -1;
+ 	}
+ 	return 0;
+@@ -53,19 +53,19 @@ int log_create_queue(struct log *self, int queue_num)
+ 	int ret;
+ 
+ 	if (self->_cb == NULL) {
+-		raise_swig_error("Error: no callback set"); 
++		raise_swig_error("Error: no callback set");
+ 		return -1;
+ 	}
+ 
+ 	self->_gh = nflog_bind_group(self->_h, queue_num);
+ 	if (self->_gh == NULL) {
+-		raise_swig_error("error during nflog_bind_group()"); 
++		raise_swig_error("error during nflog_bind_group()");
+ 		return -1;
+ 	}
+ 
+ 	ret = nflog_callback_register(self->_gh, &swig_nflog_callback, (void*)self->_cb);
+ 	if (ret != 0) {
+-		raise_swig_error("error during nflog_callback_register()"); 
++		raise_swig_error("error during nflog_callback_register()");
+ 		return -1;
+ 	}
+ 
+@@ -77,7 +77,7 @@ int log_fast_open(struct log *self, int queue_num, int af_family)
+ 	int ret;
+ 
+ 	if (self->_cb == NULL) {
+-		raise_swig_error("Error: no callback set"); 
++		raise_swig_error("Error: no callback set");
+ 		return -1;
+ 	}
+ 
+@@ -118,7 +118,6 @@ int log_try_run(struct log *self)
+ 	int rv;
+ 	char buf[4096];
+ 
+-	printf("setting copy_packet mode\n");
+ 	if (nflog_set_mode(self->_gh, NFULNL_COPY_PACKET, 0xffff) < 0) {
+ 		raise_swig_error("can't set packet_copy mode\n");
+ 		exit(1);
+@@ -130,7 +129,6 @@ int log_try_run(struct log *self)
+ 		nflog_handle_packet(self->_h, buf, rv);
+ 	}
+ 
+-	printf("exiting try_run\n");
+ 	return 0;
+ }
+ 
+@@ -148,4 +146,3 @@ int log_payload_get_outdev(struct log_payload *self)
+ {
+ 	return nflog_get_outdev(self->nfad);
+ }
+-
+diff --git a/python/nflog_python.i b/python/nflog_python.i
+index c9719e4..7b02636 100644
+--- a/python/nflog_python.i
++++ b/python/nflog_python.i
+@@ -26,7 +26,7 @@ int  swig_nflog_callback(struct nflog_g_handle *gh, struct nfgenmsg *nfmsg,
+         struct timeval tv1, tv2, diff;
+ 
+         if (data == NULL) {
+-                fprintf(stderr,"No callback set !\n");
++                fprintf(stderr, "No callback set\n");
+                 return -1;
+         }
+ 
+@@ -40,10 +40,6 @@ int  swig_nflog_callback(struct nflog_g_handle *gh, struct nfgenmsg *nfmsg,
+         ret = nflog_get_payload(nfad, &payload_data);
+         payload_len = ret;
+ 
+-        gettimeofday(&tv1, NULL);
+-
+-        /*printf("callback called\n");
+-        printf("callback argument: %p\n",data);*/
+ 
+         {
+                 PyObject *func, *arglist, *payload_obj;
+@@ -60,9 +56,7 @@ int  swig_nflog_callback(struct nflog_g_handle *gh, struct nfgenmsg *nfmsg,
+                 p->nfad = nfad;
+                 payload_obj = SWIG_NewPointerObj((void*) p, SWIGTYPE_p_log_payload, 1);
+                 arglist = Py_BuildValue("(i,O)",42,payload_obj);
+-                /*printf("will call python object\n");*/
+                 result = PyEval_CallObject(func,arglist);
+-                /*printf("result: %p\n", result);*/
+                 free(p);
+                 Py_DECREF(arglist);
+                 if (result) {
+@@ -70,26 +64,20 @@ int  swig_nflog_callback(struct nflog_g_handle *gh, struct nfgenmsg *nfmsg,
+                 }
+                 result = PyErr_Occurred();
+                 if (result) {
+-                        printf("callback failure !\n");
+-                        PyErr_Print();
++                        fprintf(stderr, "Callback error\n");
++                        SWIG_PYTHON_THREAD_END_ALLOW;
++                        return -1;
+                 }
+                 SWIG_PYTHON_THREAD_END_ALLOW;
+         }
+ 
+-        gettimeofday(&tv2, NULL);
+-
+-        timeval_subtract(&diff, &tv2, &tv1);
+-        printf("python callback call: %d sec %d usec\n",
+-                (int)diff.tv_sec,
+-                (int)diff.tv_usec);
+-
+         return 0;
+ }
+ 
+ void raise_swig_error(const char *errstr)
+ {
+         fprintf(stderr,"ERROR %s\n",errstr);
+-        SWIG_Error(SWIG_RuntimeError, errstr); 
++        SWIG_Error(SWIG_RuntimeError, errstr);
+ }
+ %}
+ 
+@@ -114,4 +102,3 @@ const char* get_data(void) {
+         return self->data;
+ }
+ };
+-

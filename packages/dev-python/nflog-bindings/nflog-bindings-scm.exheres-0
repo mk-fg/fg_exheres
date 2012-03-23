@@ -27,5 +27,5 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 src_prepare() {
-    edo sed -i '/perl/d' CMakeLists.txt
+    expatch -p1 "$FILES"/saner_python_module.patch
 }
