@@ -20,3 +20,9 @@ DEPENDENCIES="
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    distutils_src_install
+    dodoc txstatsd.conf-example LICENSE
+}
