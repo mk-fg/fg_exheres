@@ -25,3 +25,8 @@ BUGS_TO="mk.fraggod@gmail.com"
 src_compile() {
     :
 }
+
+src_install() {
+    emake DESTDIR="$IMAGE" prefix=/usr install
+    emagicdocs
+}
