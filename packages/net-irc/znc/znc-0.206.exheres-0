@@ -3,13 +3,16 @@
 # Copyright 2009 Jonathan Dahan <jedahan@gmail.com>
 # Distributed under the terms of the GNU General Public License v2
 
+MODPYTHON_PNV="${PNV}"
+[[ "$PV" == '0.206' ]] && MODPYTHON_PNV="${PN}-0.204"
+
 require sourceforge [ suffix=tar.gz ]
 
 SUMMARY="Advanced IRC Bouncer / Proxy"
 
 DOWNLOADS="
     http://znc.in/releases/${PNV}.tar.gz
-    python? ( http://people.znc.in/~darthgandalf/znc/modpython/modpython-${PNV}.tar.bz2 )
+    python? ( http://people.znc.in/~darthgandalf/znc/modpython/modpython-${MODPYTHON_PNV}.tar.bz2 )
 "
 
 LICENCES="GPL-2"
