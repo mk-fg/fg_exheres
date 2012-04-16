@@ -1,9 +1,9 @@
 # Copyright 2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="http://bazaar.launchpad.net/~txstatsd-dev/txstatsd"
+SCM_REPOSITORY="https://github.com/mk-fg/txstatsd"
 
-require distutils scm-bzr
+require distutils scm-git
 
 SUMMARY="Python/twisted-based implementation of etsy statsd."
 
