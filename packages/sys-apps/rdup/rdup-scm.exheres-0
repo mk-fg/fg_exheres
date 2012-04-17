@@ -1,0 +1,25 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://www.miek.nl/git/rdup.git"
+
+require scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+
+SUMMARY="The only backup program that doesn't make backups."
+
+HOMEPAGE="http://www.miek.nl/projects/rdup/"
+DOWNLOADS=""
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        app-arch/libarchive
+        dev-libs/nettle
+        dev-libs/pcre
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
