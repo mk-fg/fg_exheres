@@ -1,7 +1,7 @@
 # Copyright 2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="http://www.miek.nl/git/rdup.git"
+SCM_REPOSITORY="git://github.com/miekg/rdup.git"
 
 require scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
 
