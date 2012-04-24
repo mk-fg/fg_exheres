@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 SCM_REPOSITORY="http://projects.unbit.it/hg/uwsgi"
@@ -24,6 +24,9 @@ DEPENDENCIES="
         sys-apps/util-linux
         sys-libs/libcap
         sys-libs/zlib
+    recommendation:
+        app-admin/mime-support [[ note = [ not strictly required,
+            but needed for autodetection and uwsgi complains about its abscence ] ]]
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
