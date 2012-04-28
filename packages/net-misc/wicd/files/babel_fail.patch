@@ -1,0 +1,12 @@
+diff --git a/setup.py b/setup.py
+index 60a822b..ae73e09 100755
+--- a/setup.py
++++ b/setup.py
+@@ -605,6 +605,7 @@ try:
+     print 'Language support for',
+     for pofile in glob('po/*.po'):
+         language = pofile.replace('po/', '').replace('.po', '')
++        if not os.path.exists('translations/' + language + '/LC_MESSAGES/wicd.mo'): continue
+         print language,
+         data.append((wpath.translations + language + '/LC_MESSAGES/',
+                     ['translations/' + language + '/LC_MESSAGES/wicd.mo']))

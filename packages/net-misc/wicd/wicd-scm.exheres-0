@@ -21,7 +21,6 @@ MYOPTIONS="
 DEPENDENCIES="
     build+run:
         dev-lang/python[>=2.4&<3.0]
-        dev-python/babel
         dev-python/dbus-python
         gnome-bindings/pygobject
         gnome-bindings/pygtk[>=2.10]
@@ -43,6 +42,8 @@ DEPENDENCIES="
 
 BUGS_TO="mk.fraggod@gmail.com"
 
+
+DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}/babel_fail.patch" )
 
 src_configure() {
     edo python setup.py configure\
