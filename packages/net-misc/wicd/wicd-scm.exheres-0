@@ -21,9 +21,10 @@ MYOPTIONS="
 DEPENDENCIES="
     build+run:
         dev-lang/python[>=2.4&<3.0]
-        gnome-bindings/pygtk[>=2.10]
+        dev-python/babel
         dev-python/dbus-python
         gnome-bindings/pygobject
+        gnome-bindings/pygtk[>=2.10]
         curses? (
             dev-python/urwid[>=0.9.8.3]
         )
