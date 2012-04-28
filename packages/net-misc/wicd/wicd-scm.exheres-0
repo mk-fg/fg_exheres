@@ -1,11 +1,11 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Copyright 2009 Mike Kelly
 # Distributed under the terms of the GNU General Public License v2
 
 SCM_REPOSITORY="http://bazaar.launchpad.net/~wicd-devel/wicd"
 SCM_BRANCH="experimental"
 
-require distutils scm-bzr systemd-service
+require distutils scm-bzr
 
 SUMMARY="Wired and wireless network manager."
 
@@ -35,6 +35,8 @@ DEPENDENCIES="
         net-wireless/wireless_tools
         sys-apps/net-tools
     suggestion:
+        dev-python/notify-python [[ description = [ make Wicd show notifications ] ]]
+        net-wireless/wpa_supplicant [[ description = [ Provides wireless driver backend for Wicd ] ]]
         sys-power/pm-utils[>=1.2.4] [[ description = [ For suspend/resume integration ] ]]
 "
 
@@ -42,7 +44,12 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 src_configure() {
-    edo python setup.py configure --distro=gentoo
+    edo python setup.py configure\
+        --distro=gentoo\
+        --python="${PYTHON}"\
+        --lib="/usr/${LIBDIR}"\
+        --pmutils="/usr/${LIBDIR}/pm-utils/sleep.d"\
+        --systemd="${SYSTEMDSYSTEMUNITDIR}"
 }
 
 src_install() {
@@ -53,5 +60,5 @@ src_install() {
     keepdir /var/log/wicd
 
     edo rm -Rf "$IMAGE"/etc/init.d
-    install_systemd_files
+    find "$IMAGE" -type d -empty -delete
 }
