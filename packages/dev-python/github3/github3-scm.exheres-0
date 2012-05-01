@@ -1,0 +1,24 @@
+# Copyright 2011-2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/copitux/python-github3.git"
+SCM_BRANCH="develop"
+
+require pypi distutils scm-git
+
+SUMMARY="Github API v3 library for Python."
+
+HOMEPAGE+=" http://github.com/copitux/python-github3"
+DOWNLOADS=""
+
+LICENCES="ISC"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-python/requests
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
