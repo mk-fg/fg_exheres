@@ -2,7 +2,7 @@
 # Copyright 2009 Nestor Ovroy <novroy@riseup.net>
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="git://git.wifi.pps.jussieu.fr/polipo"
+SCM_REPOSITORY="git://github.com/jech/polipo.git"
 
 require scm-git systemd-service
 
