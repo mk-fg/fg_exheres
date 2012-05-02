@@ -1,0 +1,51 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/firnsy/barnyard2.git"
+
+require scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+
+SUMMARY="Log processing tool for Snort IDS."
+
+DOWNLOADS=""
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="mysql odbc postgresql"
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/libpcap
+        mysql? ( dev-db/mysql )
+        odbc? ( dev-db/unixODBC )
+        postgresql? ( dev-db/postgresql )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --disable-64bit-gcc
+    --enable-ipv6
+    --enable-gre
+    --disable-mpls
+    --disable-prelude
+    --disable-debug
+    --disable-mysql-ssl-support
+    --disable-aruba
+    --disable-bro
+    --without-oracle
+    --without-broccoli
+    --without-tcl
+)
+
+DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( mysql odbc postgresql )
+
+src_prepare() {
+    edo ./autogen.sh
+    edo sed -i\
+            -e "s:\$(sysconfdir):${IMAGE}\$(sysconfdir):g"\
+            -e "s:install -m:mkdir ${IMAGE}/etc \&\& install -m:"\
+        etc/Makefile.in
+}
