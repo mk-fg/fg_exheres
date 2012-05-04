@@ -1,0 +1,21 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/mk-fg/nflog-zmq-pcap-pipe.git"
+
+require distutils scm-git
+
+SUMMARY="Tool to collect nflog and pipe it to a pcap over network"
+
+LICENCES="WTFPL"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-python/pyzmq
+        net-libs/libnetfilter_log
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
