@@ -58,7 +58,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
     --disable-oracle
     --disable-libdbi
     --disable-snmp
-    --disable-elasticsearch
+    # --disable-elasticsearch
     --enable-rsyslogd
     --enable-rsyslogrt
     --disable-extended-tests
@@ -66,8 +66,8 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
     --enable-mail
     --enable-imdiag
     --enable-mmnormalize
-    --enable-mmjsonparse
-    --enable-mmaudit
+    # --enable-mmjsonparse
+    # --enable-mmaudit
     --disable-rfc3195 # needs liblogging
     --disable-testbench
     --enable-imfile
@@ -91,7 +91,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
     --disable-mmsnmptrapd
     --disable-omhdfs
     --disable-ommongodb
-    --disable-omhiredis
+    # --disable-omhiredis
 
     --with-systemdsystemunitdir=${SYSTEMDSYSTEMUNITDIR} )
 
