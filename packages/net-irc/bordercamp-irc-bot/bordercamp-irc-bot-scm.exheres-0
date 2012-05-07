@@ -1,0 +1,24 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/mk-fg/${PN}.git"
+
+require scm-git distutils
+
+SUMMARY="Python/twisted IRC bot, mainly for monitoring/notification purposes."
+
+DOWNLOADS=""
+
+LICENCES="WTFPL"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-python/PyYAML
+        dev-python/twisted
+        dev-python/xattr
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
