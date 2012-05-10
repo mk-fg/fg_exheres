@@ -30,3 +30,9 @@ To use this repository on exherbo, put the following into `/etc/paludis/reposito
 And then run `cave sync x-fg_exheres` to do the initial clone.
 
 That's it, you should be able to use it now.
+
+See [paludis
+docs](http://paludis.exherbo.org/configuration/repositories/index.html) (and "e"
+repo format
+[here](http://paludis.exherbo.org/configuration/repositories/e.html)) for more
+general info on using repositories.
