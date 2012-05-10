@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 SCM_REPOSITORY="git://git.tuxfamily.org/gitroot/librep/gtk.git"
@@ -18,9 +18,10 @@ DEPENDENCIES="
     build:
         dev-util/pkg-config
     build+run:
-        dev-libs/glib[>=2.6]
-        dev-libs/librep[>=0.90.5]
-        x11-libs/gtk+[>=2.21]
+        dev-libs/glib
+        dev-libs/librep
+        x11-libs/gdk-pixbuf
+        x11-libs/gtk+:2
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
