@@ -21,7 +21,16 @@ in .git/config).
 Installation
 --------------------
 
-To use this repository on exherbo, put the following into `/etc/paludis/repositories/fg_exheres.conf`:
+Afaik, repository is only useable on [exherbo linux](http://exherbo.org).
+Here's how you can install it there alongside more official repos.
+
+First, install all repo-dependencies:
+
+	curl https://raw.github.com/mk-fg/fg_exheres/master/metadata/layout.conf |
+		awk '$1=="masters" {for (i=4;i<=NF;i++) print "repository/" $i}' |
+		xargs cave resolve -zx1
+
+Then put the following into `/etc/paludis/repositories/fg_exheres.conf`:
 
 	location = ${ROOT}/var/db/paludis/repositories/fg_exheres
 	sync = git://github.com/mk-fg/fg_exheres.git
