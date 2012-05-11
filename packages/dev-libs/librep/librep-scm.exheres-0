@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 SCM_REPOSITORY="git://git.tuxfamily.org/gitroot/librep/main.git"
@@ -19,7 +19,7 @@ DEPENDENCIES="
     build:
         dev-util/pkg-config
     build+run:
-        dev-libs/gmp
+        dev-libs/gmp:=
         dev-libs/libffi
         sys-libs/gdbm[>=1.8.0]
         sys-libs/readline
