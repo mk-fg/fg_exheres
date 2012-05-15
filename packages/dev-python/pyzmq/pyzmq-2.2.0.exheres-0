@@ -20,3 +20,6 @@ DEPENDENCIES="
 
 BUGS_TO="mk.fraggod@gmail.com"
 REMOTE_IDS="pypi:${PN}"
+
+
+DEFAULT_SRC_PREPARE_PATCHES=( "$FILES"/timeout_opts.patch )
