@@ -1,0 +1,22 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://code.google.com/p/ipaddr-py/"
+
+require distutils scm-git
+
+SUMMARY="An IPv4/IPv6 manipulation library in Python."
+
+HOMEPAGE="https://code.google.com/p/ipaddr-py/"
+
+LICENCES="Apache-2.0"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="${WORK}/trunk"
