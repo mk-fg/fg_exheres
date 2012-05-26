@@ -1,0 +1,24 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/mk-fg/distfiles-convergence.git"
+
+require distutils scm-git
+
+SUMMARY="Tool to verify integrity of the local source tarballs (or distfiles) by mirror network consensus."
+
+HOMEPAGE="https://github.com/mk-fg/distfiles-convergence"
+DOWNLOADS=""
+
+LICENCES="WTFPL"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-python/lya
+        dev-python/plumbum
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
