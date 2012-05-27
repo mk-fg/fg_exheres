@@ -17,6 +17,7 @@ MYOPTIONS=""
 DEPENDENCIES="
     run:
         dev-python/PyYAML
+        dev-python/lya
         dev-python/twisted
         dev-python/xattr
 "
