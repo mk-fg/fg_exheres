@@ -3,7 +3,7 @@
 
 SCM_REPOSITORY="git://fraggod.net/notification-thing"
 
-require scm-git
+require distutils scm-git
 
 SUMMARY="DE-free daemon for displaying notifications."
 
@@ -16,7 +16,6 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     build+run:
-        dev-lang/python
         dev-python/dbus-python
         dev-python/fgc
         gnome-bindings/pygobject
@@ -26,8 +25,8 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 src_install() {
-    exeinto /usr/libexec
-    newexe "${PN}.py" "$PN"
+    distutils_src_install
+
     insinto /usr/share/dbus-1/services
     doins org.freedesktop.Notifications.service
 }
