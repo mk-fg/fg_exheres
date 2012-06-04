@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 SCM_REPOSITORY="http://hg.podgorny.cz/unionfs-fuse"
@@ -24,4 +24,5 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 src_prepare() {
     edo sed -i 's:/usr/local:/usr:' Makefile
+    edo sed -i 's:LIB = :LIB = -lpthread :' src/Makefile
 }
