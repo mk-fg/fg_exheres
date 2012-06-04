@@ -5,7 +5,7 @@
 SCM_REPOSITORY="http://bazaar.launchpad.net/~wicd-devel/wicd"
 SCM_BRANCH="experimental"
 
-require distutils scm-bzr
+require distutils scm-bzr systemd-service
 
 SUMMARY="Wired and wireless network manager."
 
@@ -43,24 +43,25 @@ DEPENDENCIES="
 BUGS_TO="mk.fraggod@gmail.com"
 
 
-DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}/babel_fail.patch" )
-
 src_configure() {
-    edo python setup.py configure\
-        --distro=gentoo\
-        --python="${PYTHON}"\
-        --lib="/usr/${LIBDIR}"\
-        --pmutils="/usr/${LIBDIR}/pm-utils/sleep.d"\
-        --systemd="${SYSTEMDSYSTEMUNITDIR}"
+    edo env LANG=en_US.UTF-8\
+        "${PYTHON}" setup.py configure\
+            --distro=gentoo\
+            --python="${PYTHON}"\
+            --lib="/usr/${LIBDIR}"\
+            --pmutils="/usr/${LIBDIR}/pm-utils/sleep.d"\
+            --systemd="${SYSTEMDSYSTEMUNITDIR}"\
+            --no-install-i18n\
+            --no-install-i18n-man\
+            --no-install-kde\
+            --no-install-init
+}
+
+src_compile() {
+    edo env LANG=en_US.UTF-8 "${PYTHON}" -B setup.py build
 }
 
 src_install() {
-    distutils_src_install
-
-    keepdir /etc/wicd/scripts/{pre,post}{,dis}connect
-    keepdir /var/lib/wicd/configurations
-    keepdir /var/log/wicd
-
-    edo rm -Rf "$IMAGE"/etc/init.d
-    find "$IMAGE" -type d -empty -delete
+    edo env LANG=en_US.UTF-8 "${PYTHON}" -B setup.py install\
+        --root=/var/tmp/paludis/build/net-misc-wicd-scm/image/ --no-compile
 }
