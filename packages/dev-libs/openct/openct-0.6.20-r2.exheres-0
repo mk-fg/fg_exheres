@@ -22,8 +22,8 @@ DEPENDENCIES="
     build+run:
         dev-libs/libusb:0.1
         group/openct
-        sys-fs/udev[>=096]
         user/openct
+        || ( sys-fs/udev sys-apps/systemd )
         pcsc-lite? ( sys-apps/pcsc-lite )
 "
 
