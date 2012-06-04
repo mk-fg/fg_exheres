@@ -32,3 +32,7 @@ BUGS_TO="mk.fraggod@gmail.com"
 DEFAULT_SRC_CONFIGURE_PARAMS=( --disable-java )
 DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=(
     'audio audio-hash' 'image image-hash' 'video video-hash' )
+
+src_prepare() {
+    edo sed -i 's:SUBDIRS = java:SUBDIRS = :' bindings/Makefile.*
+}
