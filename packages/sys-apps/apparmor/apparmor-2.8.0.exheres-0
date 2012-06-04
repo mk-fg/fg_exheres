@@ -72,7 +72,7 @@ src_install() {
 
     # SUSE init.d stuff
     edo rm -r "$IMAGE"/lib/apparmor
-    edo rmdir "$IMAGE"/lib
+    edo rmdir "$IMAGE"/{lib,etc/apparmor.d/disable}
 
     keepdir /var/lib/apparmor
 
