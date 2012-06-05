@@ -17,6 +17,7 @@ MYOPTIONS=""
 DEPENDENCIES="
     run:
         dev-python/iso8601
+        dev-python/lya
         dev-python/simplejson
         dev-python/xattr
 "
