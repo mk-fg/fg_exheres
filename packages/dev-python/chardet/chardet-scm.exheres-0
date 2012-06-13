@@ -1,13 +1,13 @@
 # Copyright 2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="https://github.com/dcramer/chardet"
+SCM_REPOSITORY="https://github.com/mk-fg/chardet"
 
 require distutils scm-git
 
 SUMMARY="Mirror of Mark Pilgrim's character encoding detecion package."
 
-HOMEPAGE="https://github.com/dcramer/chardet"
+HOMEPAGE="https://github.com/mk-fg/chardet"
 
 LICENCES="LGPL-2.1"
 SLOT="0"
