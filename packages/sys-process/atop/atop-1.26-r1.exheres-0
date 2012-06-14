@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 # Based upon 'atop-1.25.ebuild' from Gentoo, which is:
 #  Copyright 1999-2010 Gentoo Foundation
@@ -23,6 +23,7 @@ REMOTE_IDS="freshmeat:${PN}"
 
 
 src_prepare() {
+    expatch "$FILES"/persistent_acctdir.patch
     edo sed -i\
         -e '/^CFLAGS/s: = -O : += :'\
         -e '/^LDFLAGS/s: = : += :'\
