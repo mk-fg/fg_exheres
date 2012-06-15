@@ -1,0 +1,79 @@
+# Copyright 2011-2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+# Based upon 'openct-0.6.20.ebuild' from Gentoo, which is:
+#  Copyright 1999-2010 Gentoo Foundation
+
+require systemd-service
+
+SUMMARY="Reader driver interface for various non-standard readers."
+
+HOMEPAGE="http://www.opensc-project.org/openct/"
+DOWNLOADS="http://www.opensc-project.org/files/${PN}/${PNV}.tar.gz"
+
+LICENCES="LGPL-2.1"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="doc
+    pcsc-lite [[ description = [ Register ifdhandler for PC/SC Architecture smartcard middleware library. ] ]]
+    udev [[ description = [ Support for operation via udev hotplug (without need for pcsc-lite). ] ]]
+    usb [[ description = [ Support hotplug via libusb. ] ]]
+"
+
+DEPENDENCIES="
+    build:
+        doc? ( app-doc/doxygen )
+    build+run:
+        group/openct
+        user/openct
+        || ( sys-fs/udev sys-apps/systemd )
+        pcsc-lite? ( sys-apps/pcsc-lite )
+        usb? ( dev-libs/libusb:0.1 )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+REMOTE_IDS="freshmeat:${PN}"
+
+
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=(
+    doc "doc api-doc"
+    "pcsc-lite pcsc"
+    usb
+)
+DEFAULT_SRC_CONFIGURE_OPTION_WITHS=(
+    "pcsc-lite bundle=/usr/$LIBDIR/pcsc/drivers"
+)
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --localstatedir=/var
+    --disable-sunray
+    --disable-sunrayclient
+    --enable-non-privileged
+    --with-daemon-user=openct
+    --with-daemon-groups=usb
+    --with-udev
+    --enable-shared --disable-static
+)
+
+src_install() {
+    default
+
+    option doc || rmdir "$IMAGE"/usr/share/doc/${PNVR}/api
+
+    if option pcsc-lite; then
+        insinto /etc/reader.conf.d
+        doins etc/reader.conf
+    fi
+
+    if option udev; then
+        insinto /usr/$LIBDIR/udev/rules.d
+        newins etc/openct.udev 70-openct.rules
+    fi
+
+    install_systemd_files
+    if option systemd; then
+        option udev && dodoc "$FILES"/openct-systemd.rules
+        insinto /usr/$LIBDIR/tmpfiles.d
+        hereins openct.conf <<EOF
+d /run/openct 0750 openct openct -
+EOF
+    fi
+}

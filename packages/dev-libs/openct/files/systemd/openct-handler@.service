@@ -1,0 +1,7 @@
+[Unit]
+Requires=openct.service
+
+[Service]
+Type=forking
+GuessMainPID=false
+ExecStart=/bin/sh -c "openct-control attach %I"
