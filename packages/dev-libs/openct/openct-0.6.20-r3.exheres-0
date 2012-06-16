@@ -34,24 +34,24 @@ BUGS_TO="mk.fraggod@gmail.com"
 REMOTE_IDS="freshmeat:${PN}"
 
 
-DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=(
-    doc "doc api-doc"
-    "pcsc-lite pcsc"
-    usb
-)
-DEFAULT_SRC_CONFIGURE_OPTION_WITHS=(
-    "pcsc-lite bundle=/usr/$LIBDIR/pcsc/drivers"
-)
-DEFAULT_SRC_CONFIGURE_PARAMS=(
-    --localstatedir=/var
-    --disable-sunray
-    --disable-sunrayclient
-    --enable-non-privileged
-    --with-daemon-user=openct
-    --with-daemon-groups=usb
-    --with-udev
-    --enable-shared --disable-static
-)
+src_configure() {
+    econf\
+        --localstatedir=/var\
+        --disable-sunray\
+        --disable-sunrayclient\
+        --enable-non-privileged\
+        --with-daemon-user=openct\
+        --with-daemon-groups=usb\
+        --with-udev\
+        --enable-shared\
+        --disable-static\
+        $(option_enable doc)\
+        $(option_enable doc api-doc)\
+        $(option_enable pcsc-lite pcsc)\
+        $(option_enable usb)\
+        $(option pcsc-lite\
+            && echo "--with-bundle=/usr/$LIBDIR/pcsc/drivers")
+}
 
 src_install() {
     default
