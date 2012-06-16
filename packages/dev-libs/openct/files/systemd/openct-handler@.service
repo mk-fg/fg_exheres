@@ -4,4 +4,4 @@ Requires=openct.service
 [Service]
 Type=forking
 GuessMainPID=false
-ExecStart=/bin/sh -c "openct-control attach %I"
+ExecStart=/bin/sh -c "exec openct-control attach %I"
