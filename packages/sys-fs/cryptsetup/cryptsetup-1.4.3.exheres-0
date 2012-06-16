@@ -29,18 +29,18 @@ DEPENDENCIES="
 BUGS_TO="mk.fraggod@gmail.com"
 
 
-# Neither systemd nor dracut support passing this, so...
 DEFAULT_SRC_PREPARE_PATCHES=( "$FILES"/allow_discards_by_default.patch )
 
 configure_one_multibuild() {
-    econf --prefix=/ \
-        --includedir=/usr/include \
-        --enable-dev-random \
-        --enable-nls \
-        --enable-udev \
-        --disable-static-cryptsetup \
-        --disable-selinux \
-        $(option_enable python) \
+    econf --prefix=/\
+        --includedir=/usr/include\
+        --enable-dev-random\
+        --enable-nls\
+        --enable-udev\
+        --disable-fips\
+        --disable-static-cryptsetup\
+        --disable-selinux\
+        $(option_enable python)\
         --with-crypto_backend=kernel
 }
 
