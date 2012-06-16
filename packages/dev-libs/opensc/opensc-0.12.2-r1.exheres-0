@@ -46,5 +46,4 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
     --enable-openssl
     --enable-readline
     --enable-zlib
-    --disable-ctapi
-    --disable-cardmod )
+    --disable-ctapi )
