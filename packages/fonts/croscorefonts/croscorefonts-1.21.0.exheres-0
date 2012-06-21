@@ -1,0 +1,31 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+FONT="${PN}"
+
+require xfont
+
+SUMMARY="Google Croscore Fonts"
+
+HOMEPAGE="https://fedoraproject.org/wiki/Google_Croscore_fonts"
+DOWNLOADS="https://gsdview.appspot.com/chromeos-localmirror/distfiles/${PNV}.tar.gz"
+
+LICENCES="OFL"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    insinto /usr/share/fonts/X11/${PN}
+    doins *.ttf
+
+    insinto /etc/fonts/conf.avail
+    doins "$FILES"/*.conf
+
+    emagicdocs
+}
