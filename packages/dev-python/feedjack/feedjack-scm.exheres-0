@@ -18,6 +18,7 @@ DEPENDENCIES="
     run:
         dev-python/django
         dev-python/feedparser
+        dev-python/lxml
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
