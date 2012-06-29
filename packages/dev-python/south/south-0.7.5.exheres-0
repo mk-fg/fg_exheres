@@ -1,0 +1,29 @@
+# Copyright 2012 Mike Kazantsev
+# Copyright 2011 Jan Meier
+# Distributed under the terms of the GNU General Public License v2
+
+MY_PNV=${PNV^}
+
+require distutils
+
+SUMMARY="Intelligent schema and data migrations for Django projects."
+
+HOMEPAGE="http://south.aeracode.org/"
+DOWNLOADS="http://www.aeracode.org/releases/${PN}/${PNV}.tar.gz"
+
+LICENCES="Apache-2.0"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        dev-python/setuptools
+    run:
+        dev-python/django
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="${WORKBASE}/${MY_PNV}"
