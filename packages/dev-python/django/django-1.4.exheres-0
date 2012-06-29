@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Copyright 2009 Jan Meier
 # Distributed under the terms of the GNU General Public License v2
 
@@ -9,7 +9,7 @@ require distutils
 SUMMARY="The Web framework for perfectionists with deadlines"
 
 HOMEPAGE="http://www.djangoproject.com"
-DOWNLOADS="http://media.djangoproject.com/releases/$(ever range -2)/${MY_PNV}.tar.gz"
+DOWNLOADS="https://www.djangoproject.com/m/releases/$(ever range -2)/${MY_PNV}.tar.gz"
 
 LICENCES="BSD-3"
 SLOT="0"
@@ -27,4 +27,4 @@ DEPENDENCIES="
 BUGS_TO="mk.fraggod@gmail.com"
 
 
-WORK=${WORKBASE}/${MY_PNV}
+WORK="${WORKBASE}/${MY_PNV}"
