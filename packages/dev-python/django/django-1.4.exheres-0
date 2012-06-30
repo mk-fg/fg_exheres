@@ -20,6 +20,7 @@ DEPENDENCIES="
     build:
         dev-python/setuptools
     suggestion:
+        dev-python/Imaging [[ description = [ Allows django to produce capchas ] ]]
         dev-python/mysql-python [[ description = [ To use mysql database as object storage backend ] ]]
         dev-python/psycopg2 [[ description = [ To use postgresql database as object storage backend ] ]]
 "
