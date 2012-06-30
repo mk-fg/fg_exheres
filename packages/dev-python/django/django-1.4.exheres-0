@@ -23,6 +23,8 @@ DEPENDENCIES="
         dev-python/Imaging [[ description = [ Allows django to produce capchas ] ]]
         dev-python/mysql-python [[ description = [ To use mysql database as object storage backend ] ]]
         dev-python/psycopg2 [[ description = [ To use postgresql database as object storage backend ] ]]
+        dev-python/pytz [[ description = [ Needed for USE_TZ
+            parameter and usage of tz-aware datetime objects in django ] ]]
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
