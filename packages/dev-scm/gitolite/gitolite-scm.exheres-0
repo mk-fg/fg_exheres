@@ -1,0 +1,38 @@
+# Copyright 2012 Mike Kazantsev
+# Copyright 2012 Johannes Nixdorf <mixi@exherbo.org>
+# Copyright 2011 Ingmar Vanhassel
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://github.com/sitaramc/gitolite.git"
+
+require scm-git
+
+SUMMARY="Gitolite allows you to setup a centralised git server"
+
+HOMEPAGE="http://github.com/sitaramc/gitolite"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-lang/perl
+        dev-scm/git
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+src_install() {
+    edo mkdir -p "$IMAGE"/usr/$LIBDIR/gitolite
+    edo ./install -to="$IMAGE"/usr/$LIBDIR/gitolite
+
+    edo mkdir -p "$IMAGE"/usr/bin
+    dosym /usr/$LIBDIR/gitolite/gitolite /usr/bin/gitolite
+    dosym /usr/$LIBDIR/gitolite/gitolite-shell /usr/bin/gitolite-shell
+
+    dodoc check-g2-compat convert-gitosis-conf
+
+    emagicdocs
+}
