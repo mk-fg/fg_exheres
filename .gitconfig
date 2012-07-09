@@ -5,13 +5,13 @@
 	logallrefupdates = true
 
 [remote "fg_core"]
-	url = git@fraggod.net:fg_exheres.git
+	url = git@fraggod.net:public/fg_exheres.git
 	fetch = +refs/heads/*:refs/remotes/origin/*
 [remote "github"]
 	url = git@github.com:mk-fg/fg_exheres.git
 	fetch = +refs/heads/*:refs/remotes/github/*
 [remote "origin"]
-	url = git@fraggod.net:fg_exheres.git
+	url = git@fraggod.net:public/fg_exheres.git
 	url = git@github.com:mk-fg/fg_exheres.git
 
 [filter "exheres_syntax"]
