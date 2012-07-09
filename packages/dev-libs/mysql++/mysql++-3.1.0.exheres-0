@@ -1,0 +1,23 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="C++ wrapper for MySQL’s C API."
+
+HOMEPAGE="http://tangentsoft.net/mysql++/"
+DOWNLOADS="http://tangentsoft.net/mysql++/releases/${PNV}.tar.gz"
+
+LICENCES="LGPL-2.1"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-db/mysql
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}/missing_includes.patch" )
+DEFAULT_SRC_CONFIGURE_PARAMS=( --hates=docdir )
