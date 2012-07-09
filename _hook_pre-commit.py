@@ -253,7 +253,7 @@ def check_file(src, exheres=None, category=None):
 		if line.startswith('require'):
 			for mod in line.split():
 				if mod in ( 'perl-module', 'sourceforge', 'googlecode', 'gnu',\
-						'gnome-2', 'gnome.org', 'launchpad', 'hackage', 'pypi' )\
+						'gnome-2', 'gnome.org', 'launchpad', 'hackage', 'pypi', 'gem' )\
 					or mod.startswith('scm-'): exlib_src = True
 				if mod in ('ejabberd-module', 'perl-module'): exlib_meta = True
 				if mod in ('hackage', 'perl-module'): exlib_deps = True
