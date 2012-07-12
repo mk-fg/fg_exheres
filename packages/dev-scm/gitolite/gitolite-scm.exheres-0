@@ -3,7 +3,7 @@
 # Copyright 2011 Ingmar Vanhassel
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="git://github.com/sitaramc/gitolite.git"
+SCM_REPOSITORY="https://github.com/sitaramc/gitolite.git"
 
 require scm-git
 

@@ -1,7 +1,7 @@
 # Copyright 2011 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="git://github.com/sebleier/django-redis-cache.git"
+SCM_REPOSITORY="https://github.com/sebleier/django-redis-cache.git"
 
 require distutils scm-git
 

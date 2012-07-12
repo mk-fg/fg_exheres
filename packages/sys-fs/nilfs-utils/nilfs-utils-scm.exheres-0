@@ -2,7 +2,7 @@
 # Copyright 2010 Joonas Sarajärvi <muepsj@gmail.com>
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="git://github.com/nilfs-dev/nilfs-utils.git"
+SCM_REPOSITORY="https://github.com/nilfs-dev/nilfs-utils.git"
 
 require scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 1.10 ] ]
 

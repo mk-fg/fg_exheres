@@ -1,7 +1,7 @@
 # Copyright 2011-2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="git://github.com/copitux/python-github3.git"
+SCM_REPOSITORY="https://github.com/copitux/python-github3.git"
 SCM_BRANCH="develop"
 
 require pypi distutils scm-git

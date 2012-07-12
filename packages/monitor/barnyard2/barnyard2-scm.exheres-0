@@ -1,7 +1,7 @@
 # Copyright 2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="git://github.com/firnsy/barnyard2.git"
+SCM_REPOSITORY="https://github.com/firnsy/barnyard2.git"
 
 require scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
 

@@ -1,7 +1,7 @@
 # Copyright 2011 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="git://github.com/octo/collectd.git"
+SCM_REPOSITORY="https://github.com/octo/collectd.git"
 
 require scm-git systemd-service\
     autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
