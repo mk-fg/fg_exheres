@@ -29,19 +29,26 @@ DEPENDENCIES="
 BUGS_TO="mk.fraggod@gmail.com"
 
 
-DEFAULT_SRC_PREPARE_PATCHES=( "$FILES"/allow_discards_by_default.patch )
-
+# static cryptsetup must be disabled because lvm2 can't be linked statically
+# anymore.
+# FIPS is probably not interesting for us, so hard disable it
 configure_one_multibuild() {
     econf --prefix=/\
         --includedir=/usr/include\
+        --enable-cryptsetup-reencrypt\
         --enable-dev-random\
         --enable-nls\
         --enable-udev\
         --disable-fips\
+        --disable-selinux\
         --disable-static-cryptsetup\
         --disable-selinux\
         $(option_enable python)\
         --with-crypto_backend=kernel
+}
+
+test_one_multibuild() {
+    multibuild_default_target C && default
 }
 
 install_one_multibuild() {
