@@ -1,0 +1,23 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://github.com/mk-fg/${PN}.git"
+
+require scm-git distutils
+
+SUMMARY="Unhosted remoteStorage server implementation as a django app."
+
+HOMEPAGE="https://github.com/mk-fg/django-unhosted"
+
+LICENCES="WTFPL"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-python/django
+        dev-python/oauth2app
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
