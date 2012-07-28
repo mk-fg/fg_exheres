@@ -1,11 +1,9 @@
 # Copyright 2011-2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="http://bazaar.launchpad.net/~graphite-dev/graphite"
-SCM_CHECKOUT_TO="graphite"
-SCM_BRANCH="main"
+SCM_REPOSITORY="https://github.com/graphite-project/graphite-web.git"
 
-require distutils scm-bzr
+require distutils scm-git
 
 SUMMARY="Enterprise Scalable Realtime Graphing, web interface."
 
@@ -28,7 +26,6 @@ DEPENDENCIES="
         dev-python/python-memcached [[ description = [
             For huge performance gains via in-memory django caching ] ]]
 "
-# x11-apps/bitmap - unsure what it's for
 
 BUGS_TO="mk.fraggod@gmail.com"
 
