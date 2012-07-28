@@ -19,6 +19,7 @@ DEPENDENCIES="
         dev-python/django
         dev-python/feedparser
         dev-python/lxml
+        dev-python/south
 "
 
 BUGS_TO="mk.fraggod@gmail.com"

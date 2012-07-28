@@ -18,6 +18,7 @@ DEPENDENCIES="
     run:
         dev-python/django
         dev-python/oauth2app
+        dev-python/south
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
