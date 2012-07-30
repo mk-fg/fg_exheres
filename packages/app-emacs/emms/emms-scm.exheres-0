@@ -29,12 +29,13 @@ REMOTE_IDS="freshmeat:${PN}"
 DEFAULT_SRC_INSTALL_PARAMS=( PREFIX="${IMAGE}/usr" INSTALLINFO=echo )
 
 src_compile() {
-    nonfatal emake
+    edo mkdir -p "$TEMP"/.emacs.d/emms
+    emake all
     option taglib && emake emms-print-metadata
 }
 
 src_install() {
-    edo mkdir -p "${IMAGE}/usr/share/man/man1" "${IMAGE}/usr/info"
+    edo mkdir -p "$IMAGE"/usr/share/man/man1 "$IMAGE"/usr/info
     default
     option taglib && dobin src/emms-print-metadata
 }
