@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 SCM_REPOSITORY="git://git.tuxfamily.org/gitroot/sawfish/main.git"
@@ -46,5 +46,5 @@ src_prepare() {
 src_install() {
     default
     rmdir "${IMAGE}"/usr/share/kde4{/apps{/ksmserver{/windowmanagers,},},}
-    rmdir "${IMAGE}"/usr/share/{xsessions,gnome{/wm-properties,},sawfish/{sounds,themes}}
+    rmdir "${IMAGE}"/usr/share/{xsessions,gnome{/wm-properties,}}
 }
