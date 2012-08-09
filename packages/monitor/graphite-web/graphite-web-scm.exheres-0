@@ -39,6 +39,7 @@ src_install() {
     keepdir /opt/graphite/storage/rrd
     keepdir /opt/graphite/storage/lists
     keepdir /opt/graphite/storage/whisper
+    keepdir /opt/graphite/storage/ceres
     keepdir /opt/graphite/storage/log/webapp
 }
 
