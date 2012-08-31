@@ -1,0 +1,211 @@
+# Copyright 2012 Mike Kazantsev
+# Copyright 2009 Bo Ørsted Andresen <zlin@exherbo.org>
+# Copyright 2008 Kim Højgaard-Hansen
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Older versions of libav from ffmpeg for binary packages."
+
+HOMEPAGE="http://ffmpeg.org/"
+DOWNLOADS="http://ffmpeg.org/releases/ffmpeg-${PV}.tar.bz2"
+
+LICENCES="GPL-2 GPL-3 LGPL-2.1 LGPL-3"
+SLOT="0.10"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="doc h264 threads truetype
+    aac [[ description = [ Additional AAC encoder plugin (ffmpeg's encoder is experimental) ] ]]
+    celt [[ description = [ Support for the CELT low-delay audio codec ] ]]
+    dirac [[ description = [ Support encoding and decoding dirac via schroedinger ] ]]
+    frei0r [[ description = [ Video effects using frei0r-plugins ] ]]
+    gsm [[ description = [ Support for GSM codec (audio), mainly for telephony ] ]]
+    ieee1394 [[ description = [ Enable IIDC-1394 grabbing using libdc1394 ] ]]
+    jpeg2000 [[ description = [ Support for decoding lossy image compression format ] ]]
+    mp3 [[ description = [ Support for mp3 encoding with lame ] ]]
+    nut [[ description = [ Support for the NUT container using libnut, ffmpeg has a native implementation ] ]]
+    opencore [[ description = [ Support for OpenCORE AMR-WB decoder and encoder (audio) ] ]]
+    opencv [[ description = [ Computer Vision techniques from OpenCV ] note = [ untested ] ]]
+    player [[ description = [ FFmpeg reference audio and video player software ] ]]
+    rtmp [[ description = [ RTMP (flash stream) support ] ]]
+    speex [[ description = [ Enable support for decoding and encoding audio using libspeex ] ]]
+    theora [[ description = [ Enable support for encoding using the Theora Video Compression Codec ] ]]
+    va [[ description = [ Enable support for decoding video using the Video Acceleration API ] ]]
+    vdpau [[ description = [ Enable support for VDPAU hardware accelerated video decoding ] ]]
+    vorbis [[ description = [ Additional OggVorbis audio de-/encoder plugin (ffmpeg's encoder is experimental) ] ]]
+    vp8 [[ description = [ Enable support for the VP8 video compression format ] ]]
+    X [[ description = [ Enable support for X11 grabbing ] ]]
+    xavs [[ description = [ Support AVS, the Audio Video Standard of China ] ]]
+
+
+    ( platform: amd64 ppc x86 )
+    ( amd64_cpu_features: 3dnow 3dnowext ssse3 )
+    ( ppc_cpu_features: altivec )
+    ( x86_cpu_features: 3dnow 3dnowext mmx mmx2 sse ssse3 )
+"
+
+DEPENDENCIES="
+    build:
+        doc? ( app-text/texi2html )
+        platform:amd64? ( dev-lang/yasm )
+        platform:x86? ( dev-lang/yasm )
+    build+run:
+        app-arch/bzip2
+        sys-libs/zlib
+        aac? ( media-libs/vo-aacenc )
+        celt? ( media-libs/celt:0.11 )
+        dirac? ( media-libs/schroedinger )
+        frei0r? ( media-plugins/frei0r-plugins )
+        gsm? ( media-libs/gsm )
+        h264? ( media-libs/x264[>=20110413] )
+        ieee1394? (
+            media-libs/libdc1394:2
+            media-libs/libraw1394
+        )
+        jpeg2000? ( media-libs/OpenJPEG )
+        mp3? ( media-sound/lame[>=3.98.3] )
+        nut? ( media-libs/libnut )
+        opencore? ( media-libs/opencore-amr
+                    media-libs/vo-amrwbenc )
+        opencv? ( media-libs/opencv )
+        player? ( media-libs/SDL[>=1.2.1] )
+        rtmp? ( media-video/rtmpdump[>=2.2] )
+        speex? ( media-libs/speex )
+        theora? ( media-libs/libtheora
+                  media-libs/libogg )
+        truetype? ( media-libs/freetype )
+        va? ( x11-libs/libva[>=1.0.6] )
+        vdpau? ( x11-libs/libvdpau[>=0.2] )
+        vorbis? (
+            media-libs/libogg
+            media-libs/libvorbis
+        )
+        vp8? ( media-libs/libvpx[>=0.9.6] )
+        X? (
+          x11-libs/libX11
+          x11-libs/libXext
+          x11-libs/libXfixes
+        )
+        xavs? ( media-libs/xavs )
+    run:
+        media/ffmpeg
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="${WORKBASE}/ffmpeg-${PV}"
+CLEAN_DIRS=( /usr/{bin,include,lib/pkgconfig,share} )
+
+pkg_setup() {
+    export V=1
+
+    for d in "${CLEAN_DIRS[@]}"
+    do exdirectory --forbid "$d"
+    done
+}
+
+# grayscale support is disabled
+src_configure() {
+    local myconf=()
+
+    # We hard enable mmx and sse on amd64, as all CPUs have them
+    if option platform:amd64; then
+        myconf+=(
+            --enable-mmx
+            --enable-mmx2
+            --enable-sse
+            --enable-yasm
+            $(option_enable amd64_cpu_features:3dnow amd3dnow)
+            $(option_enable amd64_cpu_features:3dnowext amd3dnowext)
+            $(option_enable amd64_cpu_features:ssse3)
+        )
+    elif option platform:x86; then
+        myconf+=(
+            --enable-yasm
+            $(option_enable x86_cpu_features:3dnow amd3dnow)
+            $(option_enable x86_cpu_features:3dnowext amd3dnowext)
+            $(option_enable x86_cpu_features:mmx)
+            $(option_enable x86_cpu_features:mmx2)
+            $(option_enable x86_cpu_features:sse)
+            $(option_enable x86_cpu_features:ssse3)
+        )
+    fi
+
+    myconf+=(
+        $(option_enable ppc_cpu_features:altivec)
+    )
+
+    #FIXME this configure script doesn't handle --host
+    myconf+=(
+        --cc="${CC}"
+        --host-cflags="${CFLAGS}" # respect user cflags and avoid -O3 -g
+        --prefix=/usr
+        --mandir=/usr/share/man
+        --datadir=/usr/share
+        --libdir=/usr/${LIBDIR}
+        --shlibdir=/usr/${LIBDIR}
+
+        ### hard enable
+
+        # licences
+        --enable-gpl
+        --enable-version3 # LGPL-3
+        --enable-nonfree
+
+        # system related
+
+        --enable-bzlib
+        --enable-shared
+        --enable-zlib
+        --disable-debug
+        --disable-optimizations # optimizations is just a stupid way of enabling -O3 -fomit-frame-pointer
+        --disable-stripping
+
+        # bad license
+
+        --disable-libaacplus
+
+        # hooverish upstream
+        --disable-libfaac
+
+        ### OPTIONS
+        $(option_enable aac libvo-aacenc)
+        $(option_enable celt libcelt)
+        $(option_enable dirac libschroedinger)
+        $(option_enable doc)
+        $(option_enable truetype libfreetype)
+        $(option_enable frei0r)
+        $(option_enable gsm libgsm)
+        $(option_enable h264 libx264)
+        $(option_enable ieee1394 libdc1394)
+        $(option_enable jpeg2000 libopenjpeg)
+        $(option_enable mp3 libmp3lame)
+        $(option_enable opencv libopencv)
+        $(option_enable player ffplay)
+        $(option_enable rtmp librtmp)
+        $(option_enable speex libspeex)
+        $(option_enable theora libtheora)
+        $(option_enable threads pthreads)
+        $(option_enable va vaapi)
+        $(option_enable vdpau)
+        $(option_enable opencore libopencore-amrnb)
+        $(option_enable opencore libopencore-amrwb)
+        $(option_enable opencore libvo-amrwbenc)
+        $(option_enable vorbis libvorbis)
+        $(option_enable vp8 libvpx)
+        $(option_enable X x11grab)
+        $(option_enable xavs libxavs)
+    )
+
+    edo ./configure "${myconf[@]}"
+}
+
+src_install() {
+    default
+
+    for d in "${CLEAN_DIRS[@]}"
+    do rm -Rf "${IMAGE}/${d}"
+    done
+
+    edo rm "$IMAGE"/usr/lib/*.{so,a}
+    edo rm "$IMAGE"/usr/lib/libav{filter,util}*
+    edo rm "$IMAGE"/usr/lib/lib{postproc,sw*}*
+}

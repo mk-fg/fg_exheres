@@ -307,17 +307,26 @@ def check_file(src, exheres=None, category=None):
 	econf_included_tokens = dict(it.izip(
 		it.imap('--{}dir'.format, 'man info data doc sysconf localstate'.split(' ')),
 		'/usr/share/man /usr/share/info /usr/share  /etc /var/lib'.split(' ') ))
+	errs = list()
 	for line in src_chk:
+		if re.search(r'./configure\b', line):
+			if errs:
+				print('Found manual ./configure call, skipping checks for "--*dir" options')
+				errs = list()
+			break
 		for token,val in econf_included_tokens.viewitems():
 			if token in line:
 				line_val = line.split('=', 1)[-1].split(None, 1)[0].rstrip('\\\n')
 				if line_val == val:
-					raise ChkFullError( 'Econf-provided'
-						' directive definition specified: {}'.format(token) )
+					errs.append(ChkFullError( 'Econf-provided'
+						' directive definition specified: {}'.format(token) ))
 				else:
-					print('Redefinition of econf-provided'
+					errs.append('Redefinition of econf-provided'
 						' directive: {} ({} != {})'.format(token, val, line_val))
-	del src_chk
+	for err in errs:
+		if isinstance(err, unicode): print(err)
+		else: raise err
+	del src_chk, errs
 
 	line, trailing_lines = None, list()
 	for line in src:
