@@ -57,8 +57,13 @@ src_unpack() {
 
     edo mv "$WORK"{,.base}
     edo pushd "${WORK}.base"
+
+    # Fails due to some java xml parsing error
+    sed -i '/$(MAKE) -f docs\/GNUmakefile changes/d' misc/GNUmakefile
+
     edo make -f misc/GNUmakefile release
     release=$(echo nginx-*.tar.gz)
+
     edo popd
     edo tar xf "${WORK}.base/${release}"
     edo mv "${release%.tar.gz}" "${PNV}"
