@@ -1,0 +1,35 @@
+# Copyright 2012 Mike Kazantsev
+# Copyright 2011 Paul Seidler
+# Distributed under the terms of the GNU General Public License v2
+
+require enlightenment
+
+SUMMARY="Enlightenment's thumbnailing library and dbus service."
+
+LICENCES="LGPL-3"
+SLOT="1"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="emotion exif"
+
+DEPENDENCIES="
+    build+run:
+        enlightenment-platform/e_dbus
+        enlightenment-platform/ecore
+        enlightenment-platform/edje
+        enlightenment-platform/eina
+        enlightenment-platform/evas
+        emotion? ( enlightenment-platform/emotion )
+        exif? ( media-libs/libexif )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --enable-ethumbd
+
+    # Not implemented
+    --disable-epdf
+)
+
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( 'emotion' 'exif libexif' )
