@@ -26,14 +26,7 @@ if ever is_scm; then
 	SCM_REPOSITORY="http://svn.enlightenment.org/svn/e/"
 	SCM_SUBPATH="$(exparam scm_pn)"
 	DOWNLOADS=""
-	require scm-svn autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
-	AT_M4DIR=( 'm4' )
-
-	export_exlib_phases src_prepare
-
-	enlightenment_src_prepare() {
-		autotools_src_prepare
-	}
+	require scm-svn
 fi
 
 MYOPTIONS="doc"
@@ -46,7 +39,15 @@ DEPENDENCIES="
 
 DEFAULT_SRC_CONFIGURE_OPTION_ENABLES+=( doc )
 
-export_exlib_phases src_install
+
+require autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+export_exlib_phases src_prepare src_install
+
+AT_M4DIR=( 'm4' )
+
+enlightenment_src_prepare() {
+	NOCONFIGURE=true ./autogen.sh
+}
 
 enlightenment_src_install() {
 	default
