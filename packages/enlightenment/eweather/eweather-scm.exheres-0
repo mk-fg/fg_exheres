@@ -1,0 +1,22 @@
+# Copyright 2012 Mike Kazantsev
+# Copyright 2011 Paul Seidler
+# Distributed under the terms of the GNU General Public License v2
+
+require enlightenment [ hp_pn=EFL scm_pn="PROTO/lib${PN}" ]
+
+SUMMARY="Reads weather forecasts from internet."
+
+LICENCES="LGPL-2.1"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        enlightenment/ecore[evas]
+        enlightenment/edje
+        enlightenment/eina
+        enlightenment/evas
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
