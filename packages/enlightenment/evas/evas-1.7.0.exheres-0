@@ -10,7 +10,7 @@ LICENCES="BSD-2"
 SLOT="1"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS="
-    X [[ description = [ Enable xcb render backend ] ]]
+    X [[ description = [ Enable X render backend ] ]]
     eet [[ description = [ EET image and font loader ] ]]
     fribidi [[ description = [ Use the FriBiDi libs for bidirectional unicode ] ]]
     harfbuzz [[ description = [ Shape text with the HarfBuzz library ] ]]
@@ -33,12 +33,16 @@ DEPENDENCIES="
         harfbuzz? ( media-libs/harfbuzz[>=0.5.0] )
         opengl? ( x11-dri/mesa )
         tiff? ( media-libs/tiff )
-        X? ( x11-libs/libxcb
+        X? (
             x11-libs/libXext
             x11-libs/libXrender
-            x11-utils/xcb-util )
+        )
 "
 # svg? ( esvg[>=0.0.16] )
+## XCB rendering is usually broken
+# x11-libs/libxcb
+# x11-utils/xcb-util
+# x11-utils/xcb-util-image
 
 BUGS_TO="mk.fraggod@gmail.com"
 
@@ -73,7 +77,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS+=(
     # TODO/don't need it:
     --disable-directfb
     --disable-fb
-    --disable-gl-flavor-gles
+    --disable-psl1ght
     --disable-gl-sdl
     --disable-gl-cocoa
     --disable-image-loader-edb
@@ -83,8 +87,8 @@ DEFAULT_SRC_CONFIGURE_PARAMS+=(
     --disable-software-8-x11
     --disable-software-16-x11
     --disable-static-software-generic
-    --disable-static-software-16
     --disable-static-software-8
+    --disable-static-software-16
     --disable-wayland-shm
     --disable-wayland-egl
 
@@ -104,13 +108,16 @@ DEFAULT_SRC_CONFIGURE_OPTION_ENABLES+=(
     'eet image-loader-eet' 'eet font-loader-eet'
     'fribidi'
     'harfbuzz'
-    'opengl gl-xcb'
     'opengl gl-xlib'
     'tiff image-loader-tiff'
     'X simple-x11'
-    'X software-xcb'
     'X software-xlib'
 )
 # 'svg image-loader-svg'
+## XCB
+# 'X software-xcb'
+# 'opengl gl-xcb'
+# 'opengl gl-flavor-gles'
+# 'opengl gles-variety-sgx'
 
 DEFAULT_SRC_CONFIGURE_OPTION_WITHS+=( 'X x' )

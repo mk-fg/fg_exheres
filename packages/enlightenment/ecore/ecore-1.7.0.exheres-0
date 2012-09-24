@@ -35,7 +35,6 @@ DEPENDENCIES="
         gnutls? ( dev-libs/gnutls )
         X? (
             x11-libs/libX11
-            x11-libs/libxcb
             x11-libs/libXcomposite
             x11-libs/libXcursor
             x11-libs/libXdamage
@@ -49,6 +48,7 @@ DEPENDENCIES="
             xinerama? ( x11-libs/libXinerama )
         )
 "
+# x11-libs/libxcb
 
 BUGS_TO="mk.fraggod@gmail.com"
 
@@ -70,6 +70,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS+=(
     --disable-cares
     --disable-ecore-fb
     --disable-ecore-sdl
+    --disable-ecore-psl1ght
     --disable-ecore-evas-fb
     --disable-ecore-evas-directfb
     --disable-ecore-evas-opengl-sdl
@@ -107,8 +108,8 @@ DEFAULT_SRC_CONFIGURE_PARAMS+=(
 DEFAULT_SRC_CONFIGURE_OPTION_ENABLES+=(
     'curl'
     'evas ecore-evas'
-    'evas ecore-evas-software-buffer'
     'evas ecore-evas-software-x11'
+    'evas ecore-evas-software-buffer'
     'evas ecore-evas-ews'
     'evas ecore-imf-evas'
     'evas ecore-input-evas'
@@ -133,12 +134,12 @@ DEFAULT_SRC_CONFIGURE_OPTION_ENABLES+=(
     'X ecore-x-xfixes'
     'X ecore-x-xprint'
     'X ecore-x-xtest'
-    'X ecore-x-xcb'
     'X ecore-imf-xim'
     'X simple-x11'
     'X xim'
     'xinerama ecore-x-xinerama'
 )
+# 'X ecore-x-xcb'
 
 DEFAULT_SRC_CONFIGURE_OPTION_WITHS+=(
     'X x'
