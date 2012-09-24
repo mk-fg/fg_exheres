@@ -52,6 +52,7 @@ DEPENDENCIES="
 
 BUGS_TO="mk.fraggod@gmail.com"
 
+
 DEFAULT_SRC_CONFIGURE_PARAMS+=(
     --enable-ecore-con
     --enable-ecore-ipc

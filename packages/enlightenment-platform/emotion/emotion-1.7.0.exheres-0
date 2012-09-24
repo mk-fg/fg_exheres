@@ -1,0 +1,45 @@
+# Copyright 2012 Mike Kazantsev
+# Copyright 2010 Paul Seidler
+# Distributed under the terms of the GNU General Public License v2
+
+require enlightenment
+
+SUMMARY="Enlightenment's (Ecore/Evas?) audio and video integration."
+
+LICENCES="BSD-2"
+SLOT="1"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="X vlc"
+
+DEPENDENCIES="
+    build+run:
+        enlightenment-platform/ecore[X?]
+        enlightenment-platform/edje
+        enlightenment-platform/eina
+        enlightenment-platform/evas
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS+=(
+    --enable-edje-external
+
+    --enable-generic
+    --enable-generic-vlc
+
+    # Not implemented
+    --disable-xine
+    --disable-gstreamer
+
+    --disable-emotion-test
+    --disable-build-examples
+    --disable-install-examples
+)
+
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES+=( 'X ecore-x' )
+
+src_install() {
+    default
+    edo rmdir "${IMAGE}"/usr/{bin,share/emotion/examples}
+}
