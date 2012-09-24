@@ -1,0 +1,53 @@
+# Copyright 2012 Mike Kazantsev
+# Copyright 2010 Paul Seidler
+# Distributed under the terms of the GNU General Public License v2
+
+require enlightenment
+
+SUMMARY="Enlightenment's basic widget set, based on EFL with focus mobile touch-screen devices."
+
+LICENCES="LGPL-2.1"
+SLOT="1"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="X dbus
+    desktop [[ description = [ Support Freedesktop.org standards ] ]]
+    thumbnail [[ description = [ Ability to create thumbnails with ethumb ] ]]
+    weather [[ description = [ Ability to access weather data on the internet ] ]]
+"
+
+DEPENDENCIES="
+    build+run:
+        enlightenment-platform/edje
+        enlightenment-platform/eet
+        enlightenment-platform/eina
+        enlightenment-platform/evas
+        enlightenment-platform/ecore
+        dbus? ( enlightenment-platform/e_dbus )
+        desktop? ( enlightenment-platform/efreet )
+        thumbnail? ( enlightenment-platform/ethumb )
+        weather? ( enlightenment-platform/libeweather )
+        X? ( enlightenment-platform/ecore[X] )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --enable-quick-launch
+
+    # TODO/dont need it
+    --disable-ecore-fb
+    --disable-ecore-sdl
+    --disable-ecore-win32
+    --disable-ecore-wince
+
+    # bad systems!
+    --disable-win32-threads
+)
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES+=(
+    'dbus edbus'
+    'desktop efreet'
+    'thumbnail ethumb'
+    'weather eweather'
+    'X ecore-x'
+)
