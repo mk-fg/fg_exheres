@@ -13,7 +13,7 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     build+run:
-        enlightenment-platform/eina
+        enlightenment/eina
 "
 
 BUGS_TO="mk.fraggod@gmail.com"

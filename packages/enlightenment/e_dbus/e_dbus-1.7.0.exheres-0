@@ -13,10 +13,10 @@ MYOPTIONS="notify [[ description = [ DBus wrapper for enlightenment notify syste
 
 DEPENDENCIES="
     build+run:
-        enlightenment-platform/ecore
-        enlightenment-platform/eina
+        enlightenment/ecore
+        enlightenment/eina
         sys-apps/dbus
-        notify? ( enlightenment-platform/evas )
+        notify? ( enlightenment/evas )
 "
 
 BUGS_TO="mk.fraggod@gmail.com"

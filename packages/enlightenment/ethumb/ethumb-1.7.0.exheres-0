@@ -13,12 +13,12 @@ MYOPTIONS="emotion exif"
 
 DEPENDENCIES="
     build+run:
-        enlightenment-platform/e_dbus
-        enlightenment-platform/ecore
-        enlightenment-platform/edje
-        enlightenment-platform/eina
-        enlightenment-platform/evas
-        emotion? ( enlightenment-platform/emotion )
+        enlightenment/e_dbus
+        enlightenment/ecore
+        enlightenment/edje
+        enlightenment/eina
+        enlightenment/evas
+        emotion? ( enlightenment/emotion )
         exif? ( media-libs/libexif )
 "
 

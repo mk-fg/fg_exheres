@@ -14,12 +14,12 @@ MYOPTIONS="flac sndfile vorbis"
 DEPENDENCIES="
     build+run:
         dev-lang/lua
-        enlightenment-platform/ecore
-        enlightenment-platform/eet
-        enlightenment-platform/eina
-        enlightenment-platform/eio
-        enlightenment-platform/embryo
-        enlightenment-platform/evas[eet]
+        enlightenment/ecore
+        enlightenment/eet
+        enlightenment/eina
+        enlightenment/eio
+        enlightenment/embryo
+        enlightenment/evas
         sys-sound/alsa-lib
         flac? ( media-libs/flac )
         sndfile? ( media-libs/libsndfile )
@@ -44,7 +44,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS+=(
 DEFAULT_SRC_CONFIGURE_OPTION_ENABLES+=( flac sndfile vorbis )
 
 src_install() {
-    default
+    enlightenment_src_install
 
     dodoc utils/gimp-edje-export.py
     dodoc utils/inkscape2edc

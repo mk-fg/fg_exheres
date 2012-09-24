@@ -13,8 +13,8 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     build+run:
-        enlightenment-platform/ecore
-        enlightenment-platform/eina
+        enlightenment/ecore
+        enlightenment/eina
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
@@ -28,8 +28,3 @@ DEFAULT_SRC_CONFIGURE_PARAMS+=(
     --disable-build-examples
     --disable-install-examples
 )
-
-src_install() {
-    default
-    edo rmdir "${IMAGE}"/usr/share/eio{/examples,}
-}

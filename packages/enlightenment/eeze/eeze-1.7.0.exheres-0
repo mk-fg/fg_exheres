@@ -13,8 +13,8 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     build+run:
-        enlightenment-platform/ecore
-        enlightenment-platform/eina
+        enlightenment/ecore
+        enlightenment/eina
         || ( sys-apps/systemd sys-fs/udev )
 "
 

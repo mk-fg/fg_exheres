@@ -45,3 +45,13 @@ DEPENDENCIES="
 "
 
 DEFAULT_SRC_CONFIGURE_OPTION_ENABLES+=( doc )
+
+export_exlib_phases src_install
+
+enlightenment_src_install() {
+	default
+
+	# These are usually present and empty, so deal with them here
+	# Nothing will miss them being installed as empty anyway
+	rmdir "${IMAGE}"/usr/{bin,share/${PN}{/examples,}}
+}

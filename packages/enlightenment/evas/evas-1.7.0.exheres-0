@@ -22,13 +22,13 @@ MYOPTIONS="
 DEPENDENCIES="
     build+run:
         dev-libs/liblinebreak
-        enlightenment-platform/eina
+        enlightenment/eina
         media-libs/freetype:2
         media-libs/fontconfig
         media-libs/giflib
         media-libs/jpeg
         media-libs/libpng
-        eet? ( enlightenment-platform/eet )
+        eet? ( enlightenment/eet )
         fribidi? ( dev-libs/fribidi[>=0.19.2] )
         harfbuzz? ( media-libs/harfbuzz[>=0.5.0] )
         opengl? ( x11-dri/mesa )
@@ -114,8 +114,3 @@ DEFAULT_SRC_CONFIGURE_OPTION_ENABLES+=(
 # 'svg image-loader-svg'
 
 DEFAULT_SRC_CONFIGURE_OPTION_WITHS+=( 'X x' )
-
-src_install() {
-    default
-    edo rmdir "${IMAGE}"/usr/share/evas/examples
-}

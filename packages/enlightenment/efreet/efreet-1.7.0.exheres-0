@@ -13,9 +13,9 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     build+run:
-        enlightenment-platform/ecore
-        enlightenment-platform/eet
-        enlightenment-platform/eina
+        enlightenment/ecore
+        enlightenment/eet
+        enlightenment/eina
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
