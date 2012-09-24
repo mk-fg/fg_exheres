@@ -1,0 +1,149 @@
+# Copyright 2012 Mike Kazantsev
+# Copyright 2010 Paul Seidler
+# Distributed under the terms of the GNU General Public License v2
+
+require enlightenment
+
+SUMMARY="Core mainloop, display abstraction and utility library, part of Enlightenment."
+
+LICENCES="BSD-2"
+SLOT="1"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="
+    curl
+    evas [[ description = [ Enable the ecore_evas module for rendering ] requires = [ X ] ]]
+    glib [[ description = [ Integrate glib ] ]]
+    gnutls [[ description = [ Use GnuTLS instead of OpenSSL ] ]]
+    opengl [[ requires = [ evas ] ]]
+    X
+    xinerama [[ requires = [ X ] ]]
+"
+
+DEPENDENCIES="
+    build:
+        X? (
+            x11-proto/kbproto
+            x11-proto/printproto
+            xinerama? ( x11-proto/xineramaproto )
+        )
+    build+run:
+        enlightenment-platform/eina
+        !gnutls? ( dev-libs/openssl )
+        curl? ( net-misc/curl )
+        evas? ( enlightenment-platform/evas[X?][opengl?] )
+        glib? ( dev-libs/glib )
+        gnutls? ( dev-libs/gnutls )
+        X? (
+            x11-libs/libX11
+            x11-libs/libxcb
+            x11-libs/libXcomposite
+            x11-libs/libXcursor
+            x11-libs/libXdamage
+            x11-libs/libXext
+            x11-libs/libXfixes
+            x11-libs/libXi
+            x11-libs/libXp
+            x11-libs/libXrandr
+            x11-libs/libXScrnSaver
+            x11-libs/libXtst
+            xinerama? ( x11-libs/libXinerama )
+        )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+DEFAULT_SRC_CONFIGURE_PARAMS+=(
+    --enable-ecore-con
+    --enable-ecore-ipc
+    --enable-ecore-file
+    --enable-ecore-imf
+    --enable-ecore-input
+    --enable-inotify
+    --enable-posix-threads
+    --enable-poll
+    --enable-epoll
+    --enable-ipv6
+
+    # TODO/dont need it:
+    --disable-glib-integration-always
+    --disable-cares
+    --disable-ecore-fb
+    --disable-ecore-sdl
+    --disable-ecore-evas-fb
+    --disable-ecore-evas-directfb
+    --disable-ecore-evas-opengl-sdl
+    --disable-ecore-evas-opengl-glew
+    --disable-ecore-evas-software-8-x11
+    --disable-ecore-evas-software-16-x11
+    --disable-tslib
+    --disable-ecore-wayland
+    --disable-ecore-evas-wayland-shm
+    --disable-ecore-evas-wayland-egl
+
+    --disable-tests
+    --disable-coverage
+    --disable-build-examples
+    --disable-install-examples
+
+    # bad systems:
+    --disable-notify-win32
+    --disable-ecore-cocoa
+    --disable-ecore-directfb
+    --disable-ecore-evas-direct3d
+    --enable-ecore-evas-opengl-cocoa
+    --disable-ecore-win32
+    --disable-ecore-wince
+    --disable-notify-win32
+    --disable-win32-threads
+    --disable-ecore-evas-software-16-ddraw
+    --disable-ecore-evas-software-16-wince
+    --disable-ecore-evas-software-ddraw
+    --disable-ecore-evas-software-gdi
+    --disable-ecore-imf-scim
+    --disable-ecore-imf-ibus
+)
+
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES+=(
+    'curl'
+    'evas ecore-evas'
+    'evas ecore-evas-software-buffer'
+    'evas ecore-evas-software-x11'
+    'evas ecore-evas-ews'
+    'evas ecore-imf-evas'
+    'evas ecore-input-evas'
+    'glib'
+    'glib g-main-loop'
+    'gnutls gnutls'
+    '!gnutls openssl'
+    'opengl ecore-evas-opengl-x11'
+    'X ecore-x'
+    'X ecore-x-composite'
+    'X ecore-x-cursor'
+    'X ecore-x-damage'
+    'X ecore-x-dri'
+    'X ecore-x-dpms'
+    'X ecore-x-input'
+    'X ecore-x-randr'
+    'X ecore-x-render'
+    'X ecore-x-screensaver'
+    'X ecore-x-shape'
+    'X ecore-x-gesture'
+    'X ecore-x-sync'
+    'X ecore-x-xfixes'
+    'X ecore-x-xprint'
+    'X ecore-x-xtest'
+    'X ecore-x-xcb'
+    'X ecore-imf-xim'
+    'X simple-x11'
+    'X xim'
+    'xinerama ecore-x-xinerama'
+)
+
+DEFAULT_SRC_CONFIGURE_OPTION_WITHS+=(
+    'X x'
+)
+
+src_install() {
+    default
+    edo rmdir "${IMAGE}"/usr/{bin,share/ecore{/examples,}}
+}
