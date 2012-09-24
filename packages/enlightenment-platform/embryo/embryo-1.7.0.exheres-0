@@ -1,0 +1,19 @@
+# Copyright 2012 Mike Kazantsev
+# Copyright 2010 Paul Seidler
+# Distributed under the terms of the GNU General Public License v2
+
+require enlightenment
+
+SUMMARY="Small Pawn based virtual machine and compiler."
+
+LICENCES="|| ( BSD-2 ZLIB )"
+SLOT="1"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        enlightenment-platform/eina
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
