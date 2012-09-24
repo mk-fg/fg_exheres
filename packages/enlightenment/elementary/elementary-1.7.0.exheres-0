@@ -13,6 +13,7 @@ MYOPTIONS="
     X
     dbus
     desktop [[ description = [ Support Freedesktop.org standards ] ]]
+    emotion [[ description = [ Emotion media player widget ] ]]
     map [[ description = [ Map display widget ] ]]
     thumbnail [[ description = [ Ability to create thumbnails with ethumb ] ]]
     weather [[ description = [ Ability to access weather data on the internet ] ]]
@@ -44,9 +45,6 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
     --enable-elementary-config
 
     # TODO/dont need it
-    --disable-emap
-    --disable-web
-
     --disable-ecore-fb
     --disable-ecore-sdl
     --disable-ecore-cocoa
@@ -63,7 +61,9 @@ DEFAULT_SRC_CONFIGURE_OPTION_ENABLES+=(
     'dbus edbus'
     'desktop efreet'
     'emotion emotion'
+    'map emap'
     'thumbnail ethumb'
     'weather eweather'
     'X ecore-x'
+    'web'
 )
