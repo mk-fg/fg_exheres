@@ -24,7 +24,4 @@ DEFAULT_SRC_CONFIGURE_PARAMS+=(
     --enable-cpu-sse
     --enable-cpu-sse2
     --enable-cpu-altivec
-
-    --enable-amalgamation
-    --enable-voltron
 )
