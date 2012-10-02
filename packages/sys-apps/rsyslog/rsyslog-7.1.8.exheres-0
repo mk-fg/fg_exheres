@@ -1,0 +1,117 @@
+# Copyright 2012 Mike Kazantsev
+# Copyright 2010-2012 Wulf C. Krueger <philantrop@exherbo.org>
+# Distributed under the terms of the GNU General Public License v2
+
+require systemd-service
+
+SUMMARY="An enhanced syslog daemon for Linux (and Unix)."
+
+HOMEPAGE="http://www.${PN}.com"
+DOWNLOADS="${HOMEPAGE}/files/download/${PN}/${PNV}.tar.gz"
+
+LICENCES="GPL-3 LGPL-3"
+SLOT="4"
+PLATFORMS="~amd64 ~ppc64 ~x86"
+MYOPTIONS="
+    baselayout
+    debug
+    gnutls
+    kerberos
+    mysql [[ description = [ Support logging to a MySQL database ] ]]
+    postgresql [[ description = [ Support logging to a PostgreSQL database ] ]]
+    relp [[ description = [ Support relp network protocol ] ]]
+    systemd
+"
+
+DEPENDENCIES="
+    build:
+        dev-util/pkg-config
+    build+run:
+        dev-libs/libee[>=0.3.1]
+        dev-libs/libestr[>=0.1.0]
+        gnutls? ( dev-libs/gnutls )
+        kerberos? ( app-crypt/heimdal )
+        mysql? ( dev-db/mysql )
+        postgresql? ( dev-db/postgresql )
+        relp? ( net-libs/librelp )
+    run:
+        systemd? ( sys-apps/systemd[>=38] )
+    suggestion:
+        app-admin/logrotate [[ description = [ Support for rotating log files ] ]]
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_configure() {
+    local myconf=(
+        --enable-imdiag
+        --enable-imptcp
+        --enable-imfile
+        --enable-imttcp
+        --enable-inet
+        --enable-klog
+        --enable-mail
+        --enable-omprog
+        --enable-omruleset
+        --enable-omuxsock
+        --enable-pthreads
+        --enable-regexp
+        --enable-rsyslogd
+        --enable-rsyslogrt
+        --enable-zlib
+        --disable-gui
+        --disable-impstats
+        --disable-imsolaris
+        --disable-libdbi
+        --disable-omhdfs
+        --disable-ommongodb
+        --disable-omstdout
+        --disable-omudpspoof
+        --disable-oracle
+        --disable-pmaixforwardedfrom
+        --disable-pmcisconames
+        --disable-pmlastmsg
+        --disable-pmrfc3164sd
+        --disable-pmsnare
+        --disable-rfc3195
+        --disable-snmp
+
+        # This is not a mistake and passing it to configure is correct.
+        # Java is not being used at all yet, however the tests depend on it.
+        HAVE_JAVAC=yes
+
+        $(option_enable debug)
+        $(option_enable debug diagtools)
+        $(option_enable gnutls)
+        $(option_enable kerberos gssapi-krb5)
+        $(option_enable mysql)
+        $(option_enable postgresql pgsql)
+        $(option_enable relp)
+
+        $(option_with systemd systemdsystemunitdir ${SYSTEMDSYSTEMUNITDIR})
+    )
+
+    if expecting_tests; then
+        myconf+=( --enable-{testbench,extended-tests} )
+    else
+        myconf+=( --disable-{testbench,extended-tests} )
+    fi
+
+    econf "${myconf[@]}"
+}
+
+src_install() {
+    default
+
+    edo rmdir "${IMAGE}"/usr/bin
+
+    if option systemd ; then
+        edo echo '$SystemLogSocketName /run/systemd/journal/syslog' >> "${IMAGE}"/etc/rsyslog.conf
+        edo sed -i -e "/systemd-kmsg-syslogd.service/d" "${IMAGE}"/usr/${LIBDIR}/systemd/system/rsyslog.service
+    fi
+
+    insinto /usr/share/doc/${PNVR}/html
+    doins -r "${WORK}"/doc/*.{html,png,jpg}
+    dodoc "${WORK}"/rsyslog.conf
+}
