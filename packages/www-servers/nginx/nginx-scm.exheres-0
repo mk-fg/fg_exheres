@@ -11,24 +11,33 @@ require systemd-service scm-svn
 SUMMARY="A small and fast HTTP server and mail proxy server."
 
 HOMEPAGE="http://nginx.net/ http://sysoev.ru/nginx/"
-DOWNLOADS="pam? ( http://web.iti.upv.es/~sto/nginx/ngx_http_auth_pam_module-1.1.tar.gz )"
+DOWNLOADS="
+    chunkin? (
+        https://github.com/agentzh/chunkin-nginx-module/tarball/v0.22
+            -> agentzh-chunkin-nginx-module-v0.22-0-gb46dd27.tar.gz )
+    pam? ( http://web.iti.upv.es/~sto/nginx/ngx_http_auth_pam_module-1.2.tar.gz )"
 
 LICENCES="GPL-2 pam? ( as-is )"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 
+
+# ./configure --help | awk 'match($1,/^--without-http_(\S+)_module$/,a) {print a[1]}' | xargs
 MOD_HTTP_EXC="
     charset gzip ssi userid access auth_basic autoindex geo map split_clients
-    referer rewrite proxy fastcgi uwsgi scgi memcached limit_zone limit_req
-    empty_gif browser upstream_ip_hash"
+    referer rewrite proxy fastcgi uwsgi scgi memcached limit_conn limit_req
+    empty_gif browser upstream_ip_hash upstream_least_conn upstream_keepalive"
+
+# ./configure --help | awk 'match($1,/^--with-http_(\S+)_module$/,a) {print a[1]}' | xargs
 MOD_HTTP_INC="
-    realip addition xslt image_filter geoip sub dav flv
-    gzip_static random_index secure_link degradation stub_status perl"
+    realip addition xslt image_filter geoip sub dav flv mp4 gunzip gzip_static
+    random_index secure_link degradation stub_status perl"
+
 MOD_HTTP_EXT=""
 MOD_MAIL="mail_imap mail_pop3 mail_smtp"
 
 MYOPTIONS="
-    aio asm cache debug pam
+    aio asm cache chunkin debug pam
     nginx_modules: $MOD_HTTP_INC $MOD_HTTP_EXC $MOD_HTTP_EXT $MOD_MAIL
 "
 
@@ -53,7 +62,8 @@ UPSTREAM_DOCUMENTATION="http://wiki.nginx.org"
 
 src_unpack() {
     scm_src_unpack
-    option pam && unpack "ngx_http_auth_pam_module-1.1.tar.gz"
+    option pam && unpack "ngx_http_auth_pam_module-1.2.tar.gz"
+    option chunkin && unpack "agentzh-chunkin-nginx-module-v0.22-0-gb46dd27.tar.gz"
 
     edo mv "$WORK"{,.base}
     edo pushd "${WORK}.base"
@@ -113,7 +123,9 @@ src_configure() {
     option aio && conf_params+=( --with-file-aio )
     option debug && conf_params+=( --with-debug )
     option pam && conf_params+=(
-        "--add-module=${WORKBASE}/ngx_http_auth_pam_module-1.1" )
+        "--add-module=${WORKBASE}/ngx_http_auth_pam_module-1.2" )
+    option chunkin && conf_params+=(
+        "--add-module=${WORKBASE}/agentzh-chunkin-nginx-module-b46dd27" )
 
     # MAIL
     local mail_enabled=
@@ -147,7 +159,9 @@ src_install() {
     option nginx_modules:perl\
         && emake -C objs/src/http/modules/perl install DESTDIR="${IMAGE}" INSTALLDIRS=vendor
     option pam\
-        && newdoc "${WORKBASE}"/ngx_http_auth_pam_module-1.1/README README.pam
+        && newdoc "${WORKBASE}"/ngx_http_auth_pam_module-1.2/README README.pam
+    option chunkin\
+        && newdoc "${WORKBASE}"/agentzh-chunkin-nginx-module-b46dd27/README README.chunkin
 
     keepdir /var/log/${PN}
     install_systemd_files
