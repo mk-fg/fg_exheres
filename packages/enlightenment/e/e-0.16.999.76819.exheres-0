@@ -57,11 +57,10 @@ DEFAULT_SRC_CONFIGURE_PARAMS+=(
     --enable-simple-x11
     --enable-device-udev
     --enable-install-sysactions
-    --enable-enlightenment-menu
-
-    --enable-elementary
-    --enable-emotion
     --enable-enotify
+
+    # No idea what for
+    --disable-elementary
 
     # Not implemented
     --disable-ephysics
