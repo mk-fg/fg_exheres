@@ -1,0 +1,22 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://bazaar.launchpad.net/~proyvind/pyliblzma"
+
+require distutils pypi launchpad scm-bzr
+
+SUMMARY="Python interface for the liblzma library."
+
+DOWNLOADS=""
+
+LICENCES="PSF-2.2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        app-arch/xz
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
