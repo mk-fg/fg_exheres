@@ -1,0 +1,23 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://code.google.com/p/pycparser"
+
+require distutils pypi scm-hg
+
+SUMMARY="Complete parser for the C language, written in pure Python."
+
+HOMEPAGE="https://code.google.com/p/pycparser"
+DOWNLOADS=""
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-python/ply
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
