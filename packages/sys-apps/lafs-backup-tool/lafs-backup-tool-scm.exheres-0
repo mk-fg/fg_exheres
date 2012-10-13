@@ -21,6 +21,8 @@ DEPENDENCIES="
         dev-python/lya
         dev-python/pyliblzma
         dev-python/twisted
+        sys-apps/acl
+        sys-libs/libcap
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
