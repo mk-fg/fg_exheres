@@ -1,0 +1,19 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://www.tablix.org/~avian/git/unidecode.git"
+
+require distutils scm-git pypi
+
+SUMMARY="ASCII transliterations of Unicode text."
+
+DOWNLOADS=""
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"

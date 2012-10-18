@@ -1,0 +1,20 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://github.com/bmc/munkres.git"
+
+require distutils scm-git pypi
+
+HOMEPAGE="http://bmc.github.com/munkres/"
+SUMMARY="Munkres algorithm for Python."
+
+DOWNLOADS=""
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"

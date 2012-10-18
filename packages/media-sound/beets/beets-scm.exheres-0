@@ -1,0 +1,25 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://github.com/sampsyo/beets.git"
+
+require distutils scm-git
+
+SUMMARY="Music library manager and MusicBrainz tagger."
+
+HOMEPAGE="http://beets.radbox.org/"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-python/munkres
+        dev-python/musicbrainzngs
+        dev-python/mutagen
+        dev-python/unidecode
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
