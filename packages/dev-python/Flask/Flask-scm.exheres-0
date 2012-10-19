@@ -1,0 +1,25 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://github.com/mitsuhiko/flask/"
+SCM_EXTERNAL_REFS="docs/_themes:"
+
+require distutils scm-git pypi
+
+SUMMARY="A microframework based on Werkzeug, Jinja2 and good intentions."
+
+DOWNLOADS=""
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-python/Jinja2
+        dev-python/Werkzeug
+        dev-python/itsdangerous
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
