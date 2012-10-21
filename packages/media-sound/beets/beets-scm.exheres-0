@@ -1,7 +1,7 @@
 # Copyright 2012 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="https://github.com/sampsyo/beets.git"
+SCM_REPOSITORY="https://github.com/mk-fg/beets/"
 
 require distutils scm-git
 
