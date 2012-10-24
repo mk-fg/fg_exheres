@@ -39,7 +39,7 @@ src_install() {
 
     edo rm -rf "$IMAGE"/run
     if option systemd; then
-        insinto /$LIBDIR/tmpfiles.d
+        insinto /usr/$LIBDIR/tmpfiles.d
         hereins davfs2.conf <<EOF
 d /run/mount.davfs 0755 root root -
 EOF
