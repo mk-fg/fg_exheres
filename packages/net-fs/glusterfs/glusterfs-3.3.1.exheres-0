@@ -14,10 +14,15 @@ PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
 DEPENDENCIES="
-    build:
-        sys-libs/libcap
     build+run:
+        dev-lang/python
+        dev-libs/libxml2
+        dev-libs/openssl
+        sys-devel/bison
+        sys-devel/flex
         sys-fs/fuse
+        sys-libs/ncurses
+        sys-libs/readline
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
@@ -38,5 +43,5 @@ src_install() {
 
     edo rmdir "$IMAGE"/var/run
 
-    keepdir /etc/glusterd /var/log/glusterfs # glusterd writes into the latter regardless of --log-file
+    keepdir /var/log/glusterfs # glusterd writes into the latter regardless of --log-file
 }
