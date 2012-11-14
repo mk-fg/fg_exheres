@@ -206,6 +206,5 @@ src_install() {
     done
 
     edo rm "$IMAGE"/usr/lib/*.{so,a}
-    edo rm "$IMAGE"/usr/lib/libav{filter,util}*
-    edo rm "$IMAGE"/usr/lib/lib{postproc,sw*}*
+    edo rm "$IMAGE"/usr/lib/lib{avutil,postproc,sw}*
 }
