@@ -22,5 +22,5 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 src_install() {
     distutils_src_install
-    chmod ugo+rX "$IMAGE"
+    edo chmod -R ugo+rX "$IMAGE"
 }
