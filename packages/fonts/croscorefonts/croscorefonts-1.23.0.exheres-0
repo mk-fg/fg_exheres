@@ -24,7 +24,7 @@ src_install() {
     insinto /usr/share/fonts/X11/${PN}
     doins *.ttf
 
-    insinto /etc/fonts/conf.avail
+    insinto /usr/share/fontconfig/conf.avail
     doins "$FILES"/*.conf
 
     emagicdocs
