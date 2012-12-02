@@ -4,7 +4,7 @@
 
 MY_PN=enlightenment
 
-require enlightenment [ snapshot=true snapdate=2012-09-18 ]
+require enlightenment
 
 SUMMARY="Enlightenment, the window manager."
 
@@ -13,7 +13,7 @@ HOMEPAGE="http://www.enlightenment.org/"
 LICENCES="BSD-2"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
-MYOPTIONS="bluetooth"
+MYOPTIONS="emotion"
 
 DEPENDENCIES="
     build:
@@ -35,7 +35,7 @@ DEPENDENCIES="
         x11-libs/libX11
         x11-libs/libXext
         sys-libs/pam
-        bluetooth? ( net-wireless/bluez )
+        emotion? ( enlightenment/emotion )
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
@@ -58,6 +58,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS+=(
     --enable-device-udev
     --enable-install-sysactions
     --enable-enotify
+    --enable-access
 
     # No idea what for
     --disable-elementary
@@ -65,10 +66,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS+=(
     # Not implemented
     --disable-ephysics
     --disable-connman
-    --disable-ofono
 )
-
-DEFAULT_SRC_CONFIGURE_OPTION_ENABLES+=( 'bluetooth bluez' )
 
 src_prepare() {
     edo autopoint -f
