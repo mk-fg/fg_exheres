@@ -32,10 +32,10 @@ src_install() {
     dosym ../usr/sbin/umount.davfs /sbin/umount.davfs
     dosym ../usr/sbin/mount.davfs /sbin/mount.davfs
 
-    keepdir /etc/davfs2/certs/private
     diropts -m1770 -gdavfs2
-    keepdir /var/cache/davfs2
+    keepdir /etc/davfs2/certs/private
     diropts -m1775 -gdavfs2
+    keepdir /var/cache/davfs2
 
     edo rm -rf "$IMAGE"/run
     if option systemd; then
