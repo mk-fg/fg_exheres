@@ -1,0 +1,22 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://github.com/mk-fg/pretty-yaml.git"
+
+require distutils scm-git
+
+SUMMARY="PyYAML-based module to' produce pretty and readable YAML-serialized data."
+
+HOMEPAGE="https://github.com/mk-fg/pretty-yaml"
+
+LICENCES="WTFPL"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-python/PyYAML
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
