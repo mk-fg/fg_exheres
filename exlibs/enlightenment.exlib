@@ -46,6 +46,10 @@ export_exlib_phases src_prepare src_install
 AT_M4DIR=( 'm4' )
 
 enlightenment_src_prepare() {
+	edo sed -i\
+		-e s/AM_PROG_CC_STDC/AC_PROG_CC/g\
+		-e s/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/g\
+		configure.ac
 	NOCONFIGURE=true ./autogen.sh
 }
 
