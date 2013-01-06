@@ -7,6 +7,7 @@ usage() {
 }
 
 [[ $# -lt 2 ]] && usage 1
+cd "$(dirname "$0")"
 
 for p in $(find -type f -name "*-$1.exheres-0")
 do git mv "$p" "${p/$1/$2}"
