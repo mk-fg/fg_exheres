@@ -1,0 +1,22 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Tool for linux-based firewalls that allows connections passing through them to be forcably aborted by the firewall administrator."
+
+HOMEPAGE="http://www.digitage.co.uk/digitage/software/cutter"
+DOWNLOADS="http://www.digitage.co.uk/digitage/files/${PN}/${PNV}.tgz"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    dobin cutter
+    emagicdocs
+}
