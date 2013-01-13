@@ -1,4 +1,4 @@
-# Copyright 2012 Mike Kazantsev
+# Copyright 2012-2013 Mike Kazantsev
 # Copyright 2009 Bo Ørsted Andresen <zlin@exherbo.org>
 # Copyright 2008 Kim Højgaard-Hansen
 # Distributed under the terms of the GNU General Public License v2
@@ -206,5 +206,5 @@ src_install() {
     done
 
     edo rm "$IMAGE"/usr/lib/*.{so,a}
-    edo rm "$IMAGE"/usr/lib/lib{avutil,postproc,sw}*
+    edo rm "$IMAGE"/usr/lib/lib{postproc,sw}*
 }
