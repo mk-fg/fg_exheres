@@ -33,7 +33,7 @@ First, install all repo-dependencies:
 Then put the following into `/etc/paludis/repositories/fg_exheres.conf`:
 
 	location = ${ROOT}/var/db/paludis/repositories/fg_exheres
-	sync = https://github.com/mk-fg/fg_exheres.git
+	sync = git+https://github.com/mk-fg/fg_exheres.git
 	format = e
 
 And then run `cave sync x-fg_exheres` to do the initial clone.
