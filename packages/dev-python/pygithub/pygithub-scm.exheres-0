@@ -3,7 +3,7 @@
 
 SCM_REPOSITORY="https://github.com/jacquev6/PyGithub"
 
-require distutils scm-git
+require python distutils scm-git
 
 SUMMARY="Library implementing the full Github API v3."
 
@@ -18,3 +18,10 @@ MYOPTIONS=""
 DEPENDENCIES=""
 
 BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    distutils_src_install
+
+    dosym github "$(python_get_sitedir)"/pygithub
+}
