@@ -229,6 +229,8 @@ src_install() {
     default
     install_systemd_files
 
+    [[ $LIBDIR != lib ]] && edo mv "$IMAGE"/usr/{lib,${LIBDIR}}
+
     keepdir /var/lib/collectd
     edo rmdir "$IMAGE"/var/{run,log}
 }
