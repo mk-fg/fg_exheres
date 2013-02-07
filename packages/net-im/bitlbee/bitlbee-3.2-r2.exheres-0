@@ -1,0 +1,127 @@
+# Copyright 2013 Mike Kazantsev
+# Copyright 2010-2013 Wulf C. Krueger <philantrop@exherbo.org>
+# Copyright 2009 Anders Ossowicki <arkanoid@exherbo.org>
+# Distributed under the terms of the GNU General Public License v2
+
+require systemd-service
+
+SUMMARY="An IRC to other chat networks gateway"
+
+HOMEPAGE="http://bitlbee.org"
+DOWNLOADS="http://get.bitlbee.org/src/${PNV}.tar.gz"
+
+LICENCES="GPL-2 GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="
+    otr [[ description = [ Support for Off-the-Record Messaging ] ]]
+    purple [[ description = [ Use pidgin's libpurple instead of the built-in code ] ]]
+    skype [[ description = [ Install skype client and skyped bridge
+        on this machine (can be on any remote host) to connect to skype network ] ]]
+"
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/glib
+        dev-libs/gnutls
+        dev-util/pkg-config
+        user/bitlbee
+        otr? ( net-libs/libotr )
+        purple? ( net-im/pidgin[ssl] )
+        skype? ( dev-python/Skype4Py [[ description = [ To run skyped on this host ] ]] )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+REMOTE_IDS="freecode:bitlbee"
+
+UPSTREAM_DOCUMENTATION="http://bitlbee.org/main.php/extdoc.html"
+UPSTREAM_CHANGELOG="http://bitlbee.org/main.php/changelog.html"
+
+# The tests themselves have been broken since 3.0. Last checked: 3.2
+RESTRICT="test"
+
+# Parallel make broke with 3.2.
+DEFAULT_SRC_COMPILE_PARAMS=( -j1 )
+
+src_prepare() {
+    default
+
+    # Enable verbose output. Upstream rejected a patch for this.
+    for makefile in $(find . -type f -name "Makefile"); do
+        edo sed -i -e '/@echo '*'/d' ${makefile}
+        edo sed -i -e 's:@$(CC):$(CC):g' ${makefile}
+        edo sed -i -e 's:@$(LD):$(LD):g' ${makefile}
+    done
+}
+
+src_configure() {
+    local im myconf=(
+        --plugins=1
+        --ssl=gnutls
+        --msn=1
+        --jabber=1
+        --oscar=1
+        --skype=1
+        --yahoo=1
+    )
+
+    if option purple; then
+        myconf+=( --purple=1 )
+    fi
+    if option otr; then
+        myconf+=( --otr=plugin )
+    fi
+
+    if option systemd; then
+        myconf+=( --systemdsystemunitdir=${SYSTEMDSYSTEMUNITDIR} )
+    fi
+
+    edo ./configure \
+        --prefix=/usr \
+        --mandir=/usr/share/man \
+        --datadir=/usr/share/doc/${PNVR} \
+        --etcdir=/etc/bitlbee \
+        --ipcsocket=/run/bitlbee.sock \
+        --pidfile=/run/bitlbee.pid \
+        --plugindir=/usr/${LIBDIR}/bitlbee \
+        --strip=0 \
+        "${myconf[@]}"
+}
+
+src_compile() {
+    default
+
+    edo "${CC}" ${CFLAGS} -o bitlbeed utils/bitlbeed.c
+}
+
+src_install() {
+    default
+
+    # Install sample configuration + motd
+    emake DESTDIR="${IMAGE}" install-etc
+
+    # Install headers and a pkgconfig file used by plugins to build
+    # against bitlbee
+    emake DESTDIR="${IMAGE}" PCDIR="/usr/${LIBDIR}/pkgconfig/" install-dev
+
+    # Install the forking bitlbee daemon
+    insinto /usr/bin
+    doins bitlbeed
+    edo chmod 755 "${IMAGE}"/usr/bin/bitlbeed
+
+    # Install a compatibility symlink for /usr/bin/bitlbee
+    dosym /usr/sbin/bitlbee /usr/bin/bitlbee
+
+    # Bitlbee needs this to save user configuration
+    edo mkdir -p "${IMAGE}"/var/lib/bitlbee
+    keepdir /var/lib/bitlbee
+    edo chown bitlbee:bitlbee "${IMAGE}"/var/lib/bitlbee
+
+    # Install docs describing how to run skyped if it's enabled
+    if option skype; then
+        dodoc protocols/skype/skyped.txt
+        newdoc protocols/skype/README README.skype
+    fi
+}
