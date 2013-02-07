@@ -3,12 +3,14 @@
 # Copyright 2009 Anders Ossowicki <arkanoid@exherbo.org>
 # Distributed under the terms of the GNU General Public License v2
 
-require systemd-service
+SCM_REPOSITORY="https://github.com/mk-fg/bitlbee"
+SCM_BRANCH="stable"
+
+require scm-git systemd-service
 
 SUMMARY="An IRC to other chat networks gateway"
 
 HOMEPAGE="http://bitlbee.org"
-DOWNLOADS="http://get.bitlbee.org/src/${PNV}.tar.gz"
 
 LICENCES="GPL-2 GPL-3"
 SLOT="0"
@@ -28,7 +30,6 @@ DEPENDENCIES="
         user/bitlbee
         otr? ( net-libs/libotr )
         purple? ( net-im/pidgin[ssl] )
-        skype? ( dev-python/Skype4Py [[ description = [ To run skyped on this host ] ]] )
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
@@ -120,8 +121,6 @@ src_install() {
     edo chown bitlbee:bitlbee "${IMAGE}"/var/lib/bitlbee
 
     # Install docs describing how to run skyped if it's enabled
-    if option skype; then
-        dodoc protocols/skype/skyped.txt
-        newdoc protocols/skype/README README.skype
-    fi
+    dodoc protocols/skype/skyped.txt
+    newdoc protocols/skype/README README.skype
 }
