@@ -1,11 +1,9 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2013 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-require sourceforge
+require sourceforge [ suffix=tar.gz ]
 
 SUMMARY="Linux hugetlbfs userspace components."
-
-DOWNLOADS="http://downloads.sourceforge.net/project/libhugetlbfs/libhugetlbfs/2.12/libhugetlbfs-2.12.tar.gz"
 
 LICENCES="LGPL-2.1"
 SLOT="0"
