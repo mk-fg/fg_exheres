@@ -1,0 +1,12 @@
+diff --git a/src/uqm/planets/lander.c b/src/uqm/planets/lander.c
+index 7d80417..caacb1c 100644
+--- a/src/uqm/planets/lander.c
++++ b/src/uqm/planets/lander.c
+@@ -449,6 +449,7 @@ DeltaLanderCrew (SIZE crew_delta, COUNT which_disaster)
+ 		if (crew_left < 1)
+ 			return; // irrelevant -- all dead
+ 
++		if (TFB_Random () % 100 < 95) return; // 95% chance of no damage - cheat
+ 		shieldHit = GET_GAME_STATE (LANDER_SHIELDS);
+ 		shieldHit &= 1 << which_disaster;
+ 		if (!shieldHit || TFB_Random () % 100 >= 95)
