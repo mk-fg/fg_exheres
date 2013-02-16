@@ -1,0 +1,30 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require distutils [ python_dep=2.5 ]
+
+SUMMARY="Skype API wrapper for Python"
+
+HOMEPAGE="https://github.com/awahlig/skype4py"
+DOWNLOADS="mirror://sourceforge/${PN,,}/${PNV}.tar.gz"
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-python/dbus-python
+        net-im/skype
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_unpack() {
+    default
+
+    # Modes are screwed in the tarball
+    edo chmod -R +rX "$WORK"
+}
