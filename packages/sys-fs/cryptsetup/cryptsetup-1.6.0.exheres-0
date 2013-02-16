@@ -1,4 +1,4 @@
-# Copyright 2011-2012 Mike Kazantsev
+# Copyright 2011-2013 Mike Kazantsev
 # Copyright 2011-2012 Wulf C. Krueger <philantrop@exherbo.org>
 # Copyright 2009 Mike Kelly
 # Copyright 2008 Stephen Bennett
@@ -40,6 +40,7 @@ configure_one_multibuild() {
         --enable-nls\
         --enable-udev\
         --disable-fips\
+        --disable-pwquality\
         --disable-selinux\
         --disable-static-cryptsetup\
         --disable-selinux\
