@@ -27,5 +27,6 @@ src_install() {
     emake -j1\
         ${MAKE_PARAMS[@]} $( [[ "$LIBDIR" = lib64 ]] && echo LIB32= )\
         DESTDIR="$IMAGE" install
+    [[ "$LIBDIR" != lib ]] && edo mv "$IMAGE"/usr/{lib,$LIBDIR}
     emagicdocs
 }
