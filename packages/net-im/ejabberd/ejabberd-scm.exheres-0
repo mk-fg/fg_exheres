@@ -52,13 +52,9 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
 )
 
 src_install() {
-    if option systemd; then
-        insinto /usr/$LIBDIR/tmpfiles.d
-        hereins ejabberd.conf <<EOF
-d /var/lib/ejabberd 0700 jabber jabber -
-d /var/log/ejabberd 0755 jabber jabber -
-EOF
-    fi
     install_systemd_files
     autoprune_src_install
+
+    keepdir /var/lib/ejabberd
+    keepdir /var/log/ejabberd
 }
