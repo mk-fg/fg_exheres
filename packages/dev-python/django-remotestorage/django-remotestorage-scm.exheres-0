@@ -1,13 +1,13 @@
-# Copyright 2012 Mike Kazantsev
+# Copyright 2012-2013 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="https://github.com/RemoteStorage/${PN}.git"
+SCM_REPOSITORY="https://github.com/remotestorage/${PN}.git"
 
 require scm-git distutils
 
 SUMMARY="Unhosted remoteStorage server implementation as a django app."
 
-HOMEPAGE="https://github.com/RemoteStorage/${PN}"
+HOMEPAGE=${SCM_REPOSITORY}
 
 LICENCES="WTFPL"
 SLOT="0"
