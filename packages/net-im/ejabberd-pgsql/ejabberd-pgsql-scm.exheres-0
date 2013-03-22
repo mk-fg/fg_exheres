@@ -1,0 +1,12 @@
+# Copyright 2011-2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require ejabberd-module
+
+SUMMARY="Erlang/ejabberd PostgreSQL interface."
+
+PLATFORMS="~amd64 ~x86"
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
