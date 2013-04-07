@@ -1,0 +1,37 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://git.criu.org/crtools.git"
+
+require scm-git
+
+SUMMARY="An utility to checkpoint/restore tasks."
+
+HOMEPAGE="http://criu.org/"
+DOWNLOADS=""
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        app-doc/asciidoc
+    build+run:
+        dev-libs/protobuf-c
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    dobin crtools
+    emagicdocs
+
+    pushd Documentation
+    # Makefile is missing ../Makefile.inc
+    edo a2x --asciidoc-opts='-f asciidoc.conf' -f manpage -D . crtools.txt
+    doman crtools.1
+    popd
+}
