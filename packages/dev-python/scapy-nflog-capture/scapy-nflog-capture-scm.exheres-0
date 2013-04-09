@@ -1,0 +1,22 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://github.com/mk-fg/scapy-nflog-capture"
+
+require distutils scm-git
+
+SUMMARY="Driver for scapy to allow capturing packets via Linux NFLOG interface."
+
+HOMEPAGE="https://github.com/mk-fg/scapy-nflog-capture"
+
+LICENCES="WTFPL"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        net-analyzer/scapy
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
