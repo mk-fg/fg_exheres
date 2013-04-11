@@ -15,6 +15,9 @@ PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
 DEPENDENCIES="
+    build+run:
+        dev-python/cffi
+        net-libs/libnetfilter_log
     run:
         net-analyzer/scapy
 "
