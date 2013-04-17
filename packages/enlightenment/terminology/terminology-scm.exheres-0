@@ -3,7 +3,7 @@
 
 SCM_REPOSITORY="https://git.enlightenment.org/apps/terminology.git"
 
-require scm-git
+require scm-git enlightenment [ handle_source=false handle_doc=false ]
 
 HOMEPAGE="http://www.enlightenment.org/p.php?p=about/terminology"
 SUMMARY="Terminology is a new terminal emulator."
