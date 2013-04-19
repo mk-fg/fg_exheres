@@ -1,0 +1,18 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require distutils checksums [ sha1=[ ${PNV}.tar.gz=3b5b19e857e6451d8a8fae91bbb303cb57a33e6c ] ]
+
+SUMMARY="Securely drop privileges from root to another user."
+
+HOMEPAGE="https://pypi.python.org/pypi/privilege/1.0"
+DOWNLOADS="http://www.subspacefield.org/security/${PN}/code/${PN}/${PNV}.tar.gz"
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"

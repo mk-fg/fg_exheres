@@ -1,0 +1,19 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://github.com/epsy/clize"
+
+require scm-git distutils
+
+SUMMARY="Function decorator to quickly turn Python functions into CLIs as we know them."
+
+HOMEPAGE="https://github.com/epsy/clize"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
