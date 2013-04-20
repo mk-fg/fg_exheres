@@ -1,13 +1,14 @@
 # Copyright 2013 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="https://github.com/sametmax/0bin"
+SCM_REPOSITORY="https://github.com/mk-fg/0bin"
+SCM_BRANCH="bootstrap_white"
 
 require scm-git distutils
 
 SUMMARY="Client side encrypted pastebin."
 
-HOMEPAGE="https://github.com/sametmax/0bin"
+HOMEPAGE="https://github.com/mk-fg/0bin"
 
 LICENCES="WTFPL"
 SLOT="0"
