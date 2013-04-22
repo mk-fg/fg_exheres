@@ -1,11 +1,11 @@
 # Copyright 2013 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="https://git.enlightenment.org/apps/terminology.git"
+SCM_REPOSITORY="https://github.com/mk-fg/e17-terminology-local"
 
 require scm-git enlightenment [ handle_source=false handle_doc=false ]
 
-HOMEPAGE="http://www.enlightenment.org/p.php?p=about/terminology"
+HOMEPAGE="https://github.com/mk-fg/e17-terminology-local"
 SUMMARY="Terminology is a new terminal emulator."
 
 LICENCES="BSD-2"
