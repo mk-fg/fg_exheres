@@ -7,6 +7,7 @@ Type=forking
 User=graphite
 GuessMainPID=false
 PIDFile=/opt/graphite/storage/carbon-relay-%i.pid
+ExecStartPre=-/bin/rm -f /opt/graphite/storage/carbon-relay-%i.pid
 ExecStart=/opt/graphite/bin/carbon-relay.py --pidfile=/opt/graphite/storage/carbon-relay-%i.pid --instance=%i start
 ExecStop=/opt/graphite/bin/carbon-relay.py --pidfile=/opt/graphite/storage/carbon-relay-%i.pid --instance=%i stop
 
