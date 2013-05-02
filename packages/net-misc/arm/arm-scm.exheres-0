@@ -1,0 +1,35 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://git.torproject.org/arm.git"
+
+require scm-git distutils
+
+SUMMARY="Terminal status monitor for Tor (onion router) relay."
+
+HOMEPAGE="http://www.atagar.com/arm/"
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-python/stem
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_prepare() {
+    # setup.py has reference to spin-off "stem" package
+    edo sed -i -e "s:, *'arm\.stem'::" -e '/src\/gui\/arm\.xml/d' setup.py
+}
+
+src_install() {
+    distutils_src_install
+
+    # Installs all the *.py files to /usr/share
+    rmdir -p "$IMAGE"/usr/$LIBDIR/python*/site-packages
+}
