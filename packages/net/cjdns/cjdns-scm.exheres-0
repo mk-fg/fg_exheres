@@ -3,7 +3,8 @@
 
 SCM_REPOSITORY="https://github.com/cjdelisle/cjdns"
 
-require cmake python scm-git
+require scm-git cmake python\
+    systemd-service [ systemd_files=[ "$WORK"/contrib/systemd ] ]
 
 SUMMARY="Encrypted networking for regular people."
 
@@ -45,5 +46,6 @@ src_install() {
 
     popd
 
+    install_systemd_files
     emagicdocs
 }
