@@ -3,7 +3,7 @@
 
 SCM_REPOSITORY="https://github.com/cjdelisle/cjdns"
 
-require cmake scm-git
+require cmake python scm-git
 
 SUMMARY="Encrypted networking for regular people."
 
@@ -14,18 +14,36 @@ SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
-DEPENDENCIES=""
+DEPENDENCIES="
+    run:
+        dev-python/bencode
+"
 
 BUGS_TO="mk.fraggod@gmail.com"
 
 
 src_install() {
+    # Main C parts
     dobin "${ECMAKE_BUILD_DIR}"/admin/angel/cjdns
     newbin "${ECMAKE_BUILD_DIR}"/admin/angel/cjdroute2 cjdroute
 
+    # Helper C tools
     for bin in cleanconfig benc2json privatetopublic publictoip6
     do newbin "${ECMAKE_BUILD_DIR}"/"$bin" "cjdns_${bin}"
     done
+
+    # Python tools/module
+    pushd contrib/python
+
+    newbin cexec cjdns_exec
+    newbin cjdnslog cjdns_log
+    newbin findnodes cjdns_findnodes
+    newbin dumptable cjdns_dumptable
+
+    insinto $(python_get_sitedir)
+    doins cjdns.py
+
+    popd
 
     emagicdocs
 }
