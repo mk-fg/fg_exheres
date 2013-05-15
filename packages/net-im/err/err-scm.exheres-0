@@ -19,6 +19,7 @@ DEPENDENCIES="
     run:
         dev-python/3to2
         dev-python/Jinja2
+        dev-python/WebTest
         dev-python/bottle
         dev-python/config
         dev-python/dnspython
