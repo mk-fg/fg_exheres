@@ -1,0 +1,20 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://bazaar.launchpad.net/~tdfarrell/rocket"
+
+require distutils launchpad pypi scm-bzr
+
+SUMMARY="Modern, multi-threaded and extensible web server."
+
+HOMEPAGE="https://launchpad.net/rocket"
+DOWNLOADS=""
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"

@@ -1,0 +1,23 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://hg.code.sf.net/p/yapsy/code"
+
+require distutils pypi scm-hg
+
+SUMMARY="Yet Another Plugin SYstem."
+
+HOMEPAGE="http://yapsy.sf.net/"
+DOWNLOADS=""
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="$WORK"/package

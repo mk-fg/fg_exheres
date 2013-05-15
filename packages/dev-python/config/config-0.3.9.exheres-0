@@ -1,0 +1,18 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require distutils pypi
+
+SUMMARY="Module for configuring Python programs."
+
+HOMEPAGE="http://www.red-dove.com/config-doc/"
+DOWNLOADS+=" http://www.red-dove.com/config-0.3.9.tar.gz"
+
+LICENCES="as-is"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
