@@ -1,0 +1,29 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://git.code.sf.net/p/ngrep/code"
+
+require scm-git
+
+SUMMARY="A program that mimicks as much functionality in GNU grep as possible, applied at the network layer."
+
+LICENCES="as-is"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-libs/libpcap
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --enable-ipv6 --with-regex=pcre --with-pcap-includes=/usr/include/pcap )
+
+src_install() {
+    default
+    dodoc doc/*
+}
