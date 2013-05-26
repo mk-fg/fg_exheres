@@ -1,13 +1,13 @@
-# Copyright 2012 Mike Kazantsev
+# Copyright 2013 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="https://code.google.com/p/pycparser"
+SCM_REPOSITORY="https://bitbucket.org/eliben/pycparser"
 
 require distutils pypi scm-hg
 
 SUMMARY="Complete parser for the C language, written in pure Python."
 
-HOMEPAGE="https://code.google.com/p/pycparser"
+HOMEPAGE="https://bitbucket.org/eliben/pycparser"
 DOWNLOADS=""
 
 LICENCES="BSD-3"
@@ -15,9 +15,6 @@ SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
-DEPENDENCIES="
-    build+run:
-        dev-python/ply
-"
+DEPENDENCIES=""
 
 BUGS_TO="mk.fraggod@gmail.com"
