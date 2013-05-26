@@ -17,8 +17,7 @@ MYOPTIONS=""
 DEPENDENCIES="
     build+run:
         dev-db/sqlite
-        dev-lang/python:2.7
-        dev-lang/python:3.3
+        dev-lang/python
         dev-libs/libxml2
         dev-libs/libyaml
         dev-libs/pcre
@@ -47,18 +46,23 @@ src_install() {
     dobin uwsgi
     emagicdocs
 
-    # These do build+install
     edo mkdir -p "$IMAGE"/usr/lib/uwsgi
-    edo python2.7 uwsgiconfig.py --plugin plugins/python package python27
-    edo python3.3 uwsgiconfig.py --plugin plugins/python package python33
 
-    export PYTHON="/usr/bin/python"
-    insinto $(python_get_sitedir)
-    doins uwsgidecorators.py
+    # BAD automagic follows
 
-    export PYTHON="/usr/bin/python3"
-    insinto $(python_get_sitedir)
-    doins uwsgidecorators.py
+    which python 2>/dev/null && {
+        edo python2.7 uwsgiconfig.py --plugin plugins/python package python27
+        export PYTHON="/usr/bin/python"
+        insinto $(python_get_sitedir)
+        doins uwsgidecorators.py
+    }
+
+    which python3 2>/dev/null && {
+        edo python3.3 uwsgiconfig.py --plugin plugins/python package python33
+        export PYTHON="/usr/bin/python3"
+        insinto $(python_get_sitedir)
+        doins uwsgidecorators.py
+    }
 
     option systemd && keepdir /etc/uwsgi
     install_systemd_files
