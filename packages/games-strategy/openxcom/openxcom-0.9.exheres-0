@@ -17,7 +17,7 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     build+run:
-        dev-libs/yaml-cpp
+        dev-libs/yaml-cpp[~0.3.0]
         media-libs/SDL
         media-libs/SDL_gfx
         media-libs/SDL_image

@@ -1,0 +1,23 @@
+# Copyright 2013 Mike Kazantsev
+# Copyright 2009 Ingmar Vanhassel
+# Distributed under the terms of the GNU General Public License v2
+
+require cmake googlecode [ suffix=tar.gz ]
+
+SUMMARY="A YAML parser and emitter in C++ written around the YAML 1.2 spec. It's based on (but not a wrapper to) the C library libyaml"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/boost
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="${WORKBASE}/yaml-cpp"
+CMAKE_SRC_CONFIGURE_PARAMS=( -DBUILD_SHARED_LIBS=TRUE )
