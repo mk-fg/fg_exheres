@@ -1,0 +1,35 @@
+# Copyright 2013 Mike Kazantsev
+# Copyright 2011 Paul Seidler <sepek@exherbo.org>
+# Distributed under the terms of the GNU General Public License v2
+
+require autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.13 ] ] easy-multibuild
+
+SUMMARY="Reference counting object model that lets you construct JSON objects in C"
+
+HOMEPAGE="https://github.com/${PN}/${PN}/wiki"
+DOWNLOADS="https://github.com/${PN}/${PN}/archive/${PNV}-${RELDATE}.tar.gz -> ${PNV}.tar.gz"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="multibuild_c: 32 64"
+
+# tests break because of autofoo
+RESTRICT="test"
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --enable-oldname-compat --disable-static )
+DEFAULT_SRC_COMPILE_PARAMS=( -j1 )
+
+RELDATE=20130402
+WORK=${WORKBASE}/${PN}-${PNV}-${RELDATE}
+
+src_prepare() {
+    edo sed -i -e "s:-Werror::" Makefile.am.inc
+
+    autotools_src_prepare
+}
