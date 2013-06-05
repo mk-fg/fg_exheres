@@ -1,0 +1,105 @@
+diff --git a/dom/plugins/base/nsPluginNativeWindowGtk2.cpp b/dom/plugins/base/nsPluginNativeWindowGtk2.cpp
+index 38e13ee..f5f622b 100644
+--- a/dom/plugins/base/nsPluginNativeWindowGtk2.cpp
++++ b/dom/plugins/base/nsPluginNativeWindowGtk2.cpp
+@@ -16,6 +16,7 @@
+ #include <gtk/gtk.h>
+ #include <gdk/gdkx.h>
+ #include <gdk/gdk.h>
++#include <gdk/gdkkeysyms.h>
+ 
+ #include "gtk2xtbin.h"
+ #include "mozilla/X11Util.h"
+@@ -157,6 +158,82 @@ nsresult nsPluginNativeWindowGtk2::CallSetWindow(nsRefPtr<nsNPAPIPluginInstance>
+   return NS_OK;
+ }
+ 
++// Adapted from patch on https://bugzilla.mozilla.org/show_bug.cgi?id=78414
++gboolean on_key_press(GtkWidget *window, GdkEventKey *pKey, gpointer data) {
++  GtkWidget *parent_widget;
++  gboolean combination_keypress = FALSE;
++  gboolean F1_to_F12 = FALSE;
++  gboolean plugin_text_edit_keys = FALSE;
++
++  /* Should the plugin or Firefox receive the key?
++   * 1. If it's a regular key, the plugin
++   * 2. If it's F1-F12, Firefox
++   * 3. If it's a common modifier key, not in a combination with another key, the plugin
++   * 4. If it's a common modifier key (except shift) in combination with another key, Firefox
++   * 5. If it's ctrl-z, ctrl-x, ctrl-c or ctrl-v, the plugin
++   */
++
++  /* Firefox priority keys:
++   *  F1 to F12
++   */
++  if (pKey->type == GDK_KEY_PRESS) {
++    switch (pKey->keyval)
++    {
++      /* Fallthrough */
++      case GDK_KEY_F1:
++      case GDK_KEY_F2:
++      case GDK_KEY_F3:
++      case GDK_KEY_F4:
++      case GDK_KEY_F5:
++      case GDK_KEY_F6:
++      case GDK_KEY_F7:
++      case GDK_KEY_F8:
++      case GDK_KEY_F9:
++      case GDK_KEY_F10:
++      case GDK_KEY_F11:
++      case GDK_KEY_F12:
++        /* The keypress is F1-F12 */
++        F1_to_F12 = TRUE;
++        break;
++    }
++  }
++
++  /* This is not a single modifier-key keypress (like Ctrl by itself) */
++  if (pKey->state & (GDK_CONTROL_MASK | GDK_MOD1_MASK)) {
++    /* This is a combination of a modifier and a keypress */
++    combination_keypress = TRUE;
++  }
++
++  /* Flash priority keys:
++   *  Ctrl-Z, Ctrl-X, Ctrl-C, Ctrl-V, Ctrl-A
++   */
++  if (combination_keypress) {
++    switch (pKey->keyval)
++    {
++      /* Fallthrough */
++      case GDK_KEY_z:
++      case GDK_KEY_x:
++      case GDK_KEY_c:
++      case GDK_KEY_v:
++      case GDK_KEY_a:
++        /* Yes, it's one of the plugin text editing keys */
++        plugin_text_edit_keys = TRUE;
++        break;
++    }
++  }
++
++  if (((!F1_to_F12) && (!combination_keypress)) || (plugin_text_edit_keys)) {
++    /* The plugin should receive this keypress */
++    return FALSE;
++  } else {
++    /* Change focus to the parent widget */
++    parent_widget = gtk_widget_get_parent(window);
++    gtk_widget_grab_focus(parent_widget);
++    /* The keypress will be handled by the parent widget (Firefox) */
++    return FALSE;
++  }
++}
++
+ nsresult nsPluginNativeWindowGtk2::CreateXEmbedWindow(bool aEnableXtFocus) {
+   NS_ASSERTION(!mSocketWidget,"Already created a socket widget!");
+   GdkDisplay *display = gdk_display_get_default();
+@@ -183,6 +260,9 @@ nsresult nsPluginNativeWindowGtk2::CreateXEmbedWindow(bool aEnableXtFocus) {
+   g_signal_connect(mSocketWidget, "destroy",
+                    G_CALLBACK(gtk_widget_destroyed), &mSocketWidget);
+ 
++  g_signal_connect(mSocketWidget, "key-press-event",
++                   G_CALLBACK(on_key_press), NULL);
++
+   gpointer user_data = NULL;
+   gdk_window_get_user_data(parent_win, &user_data);
+ 

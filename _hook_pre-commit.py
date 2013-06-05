@@ -259,7 +259,8 @@ def check_file(src, exheres=None, category=None):
 				if mod in ('ejabberd-module', 'perl-module'): exlib_meta = True
 				if mod in ('hackage', 'perl-module'): exlib_deps = True
 				# No further checks if exheres is just an extension of ad-hoc exlib
-				if exheres and exheres.startswith(mod):
+				if exheres and exheres.startswith(mod)\
+						or mod == 'mozilla-app': # ...or some special cases
 					chk_emptyline(src)
 					chk_ordering(chk_definition_len(src, 'PLATFORMS', min_len=4))
 					return
