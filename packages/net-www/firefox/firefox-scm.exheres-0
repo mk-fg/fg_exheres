@@ -2,6 +2,8 @@
 # Copyright 2011-2012 Quentin "Sardem FF7" Glidic <sardemff7+exherbo@sardemff7.net>
 # Distributed under the terms of the GNU General Public License v2
 
+XULRUNNER_HG_MODULE=releases/mozilla-aurora
+
 require mozilla-app
 
 SUMMARY="Firefox Web Browser"
@@ -12,7 +14,7 @@ PLATFORMS="~amd64"
 
 DEFAULT_SRC_PREPARE_PATCHES=(
     "$FILES"/no_plugins_popup.patch
-    "-l $FILES"/loose_plugin_keygrab.patch
+    "$FILES"/loose_plugin_keygrab.patch
 )
 
 src_configure() {

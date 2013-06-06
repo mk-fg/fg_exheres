@@ -41,9 +41,9 @@ export_exlib_phases pkg_setup src_unpack src_prepare src_configure src_install
 
 # It is really quicker and we do not need a full repo here
 scm-hg_do_unpack() {
-    scm-hg_hg archive \
-        --rev=$(scm-hg_revision_spec) \
-        "$(scm_get_var UNPACK_TO)"
+	scm-hg_hg archive \
+		--rev=$(scm-hg_revision_spec) \
+		"$(scm_get_var UNPACK_TO)"
 }
 
 
@@ -53,319 +53,319 @@ LICENCES="MPL-2.0"
 SLOT="0"
 
 MYOPTIONS="
-    dbus
-    pulseaudio
-    raw                  [[ description = [ RAW image formats ] ]]
-    startup-notification
-    wifi
+	dbus
+	pulseaudio
+	raw				  [[ description = [ RAW image formats ] ]]
+	startup-notification
+	wifi
 "
 
 case "${XULRUNNER_HG_MODULE}" in
-    releases/mozilla-beta|releases/mozilla-release) MYOPTIONS+=" bindist "  ;;
+	releases/mozilla-beta|releases/mozilla-release) MYOPTIONS+=" bindist "  ;;
 esac
 
 DEPENDENCIES="
-    build:
-        app-arch/zip
-        dev-lang/python:*[>=2.5&<3][sqlite]
-        dev-lang/yasm[>=1.1]
-        dev-python/ply
-        virtual/pkg-config
-    build+run:
-        app-arch/unzip
-        app-spell/hunspell[>=1.2]
-        dev-libs/expat
-        dev-libs/glib:2
-        dev-libs/libevent[>=1.4.7]
-        dev-libs/libffi
-        dev-libs/libIDL[>=0.8.0]
-        media-libs/libvpx[>=1.0.0]
-        sys-devel/binutils[>=2.16.1]
-        sys-libs/zlib[>=1.1.4]
-        sys-sound/alsa-lib
-        x11-libs/gtk+:2[>=2.14.0]
-        x11-libs/libXmu
-        x11-libs/libXrender
-        x11-libs/libXt
-        x11-libs/pango[>=1.10.1]
-        x11-libs/pixman
+	build:
+		app-arch/zip
+		dev-lang/python:*[>=2.5&<3][sqlite]
+		dev-lang/yasm[>=1.1]
+		dev-python/ply
+		virtual/pkg-config
+	build+run:
+		app-arch/unzip
+		app-spell/hunspell[>=1.2]
+		dev-libs/expat
+		dev-libs/glib:2
+		dev-libs/libevent[>=1.4.7]
+		dev-libs/libffi
+		dev-libs/libIDL[>=0.8.0]
+		media-libs/libvpx[>=1.0.0]
+		sys-devel/binutils[>=2.16.1]
+		sys-libs/zlib[>=1.1.4]
+		sys-sound/alsa-lib
+		x11-libs/gtk+:2[>=2.14.0]
+		x11-libs/libXmu
+		x11-libs/libXrender
+		x11-libs/libXt
+		x11-libs/pango[>=1.10.1]
+		x11-libs/pixman
 
-        dbus? ( dev-libs/dbus-glib[>=0.72] )
-        startup-notification? ( x11-libs/startup-notification )
-        wifi? ( net-wireless/wireless_tools )
-    recommendation:
-        x11-libs/libnotify [[ description = [ Provide system integrated notification ] ]]
+		dbus? ( dev-libs/dbus-glib[>=0.72] )
+		startup-notification? ( x11-libs/startup-notification )
+		wifi? ( net-wireless/wireless_tools )
+	recommendation:
+		x11-libs/libnotify [[ description = [ Provide system integrated notification ] ]]
 "
 # Broken from http://hg.mozilla.org/mozilla-central/rev/713814f07168
-#        x11-libs/cairo[X][>=1.10.2]
+#		x11-libs/cairo[X][>=1.10.2]
 
 
 WORK="${WORKBASE}"/moz_xulrunner
 
 mozilla-app_pkg_setup() {
-    default
+	default
 
-    # Set by configure (plus USE_AUTOCONF=1), but useful for NSPR
-    export MOZILLA_CLIENT=1
-    export BUILD_OPT=1
-    export NO_STATIC_LIB=1
-    export PKG_SKIP_STRIP=1
-    export USE_PTHREADS=1
+	# Set by configure (plus USE_AUTOCONF=1), but useful for NSPR
+	export MOZILLA_CLIENT=1
+	export BUILD_OPT=1
+	export NO_STATIC_LIB=1
+	export PKG_SKIP_STRIP=1
+	export USE_PTHREADS=1
 
-    MOZILLA_FIVE_HOME="/usr/${LIBDIR}/${PN}"
-    case "${PN}" in
-        firefox)
-            MOZ_APPLICATION=browser
-        ;;
-        thunderbird)
-            MOZ_APPLICATION=mail
-        ;;
-        seamonkey)
-            MOZ_APPLICATION=suite
-        ;;
-    esac
+	MOZILLA_FIVE_HOME="/usr/${LIBDIR}/${PN}"
+	case "${PN}" in
+		firefox)
+			MOZ_APPLICATION=browser
+		;;
+		thunderbird)
+			MOZ_APPLICATION=mail
+		;;
+		seamonkey)
+			MOZ_APPLICATION=suite
+		;;
+	esac
 
 
-    case "${XULRUNNER_HG_MODULE}" in
-        mozilla-central)
-            MOZ_BRANDING=nightly
-        ;;
-        releases/mozilla-aurora)
-            MOZ_BRANDING=aurora
-        ;;
-        releases/mozilla-beta|releases/mozilla-release)
-            if option bindist; then
-                MOZ_BRANDING=unofficial
-            else
-                MOZ_BRANDING=official
-            fi
-        ;;
-    esac
+	case "${XULRUNNER_HG_MODULE}" in
+		mozilla-central)
+			MOZ_BRANDING=nightly
+		;;
+		releases/mozilla-aurora)
+			MOZ_BRANDING=aurora
+		;;
+		releases/mozilla-beta|releases/mozilla-release)
+			if option bindist; then
+				MOZ_BRANDING=unofficial
+			else
+				MOZ_BRANDING=official
+			fi
+		;;
+	esac
 }
 
 mozilla-app_src_unpack() {
-    scm_src_unpack
-    edo mv "${WORKBASE}"/moz_dom_inspector "${WORKBASE}"/moz_xulrunner/extensions/inspector
+	scm_src_unpack
+	edo mv "${WORKBASE}"/moz_dom_inspector "${WORKBASE}"/moz_xulrunner/extensions/inspector
 }
 
 mozilla-app_src_prepare() {
-    default
+	default
 
-    # Exherbo install dirs
-    edo sed -i \
-        -e "/^installdir/ c installdir = ${MOZILLA_FIVE_HOME}" \
-        -e "/^includedir/ c includedir = /usr/include/${PN}" \
-        -e "/^idldir/ c idldir = /usr/share/idl/${PN}" \
-        -e "/^sdkdir/ c sdkdir = /usr/${LIBDIR}/${PN}-devel" \
-        config/baseconfig.mk
+	# Exherbo install dirs
+	edo sed -i \
+		-e "/^installdir/ c installdir = ${MOZILLA_FIVE_HOME}" \
+		-e "/^includedir/ c includedir = /usr/include/${PN}" \
+		-e "/^idldir/ c idldir = /usr/share/idl/${PN}" \
+		-e "/^sdkdir/ c sdkdir = /usr/${LIBDIR}/${PN}-devel" \
+		config/baseconfig.mk
 
-    # Force symbols file to be regenerated
-    edo sed -i \
-        -e '/MAPFILE =/s/def/sym/' \
-        security/nss/lib/ckfw/builtins/manifest.mn \
-        security/nss/lib/ckfw/capi/manifest.mn \
-        security/nss/lib/ckfw/nssmkey/manifest.mn \
-        security/nss/lib/nss/manifest.mn \
-        security/nss/lib/ssl/manifest.mn \
-        security/nss/lib/util/manifest.mn \
-        security/nss/lib/smime/manifest.mn \
-        security/nss/lib/freebl/manifest.mn \
-        security/nss/lib/sqlite/manifest.mn \
-        security/nss/lib/softoken/legacydb/manifest.mn \
-        security/nss/lib/softoken/manifest.mn
+	# Force symbols file to be regenerated
+	edo sed -i \
+		-e '/MAPFILE =/s/def/sym/' \
+		security/nss/lib/ckfw/builtins/manifest.mn \
+		security/nss/lib/ckfw/capi/manifest.mn \
+		security/nss/lib/ckfw/nssmkey/manifest.mn \
+		security/nss/lib/nss/manifest.mn \
+		security/nss/lib/ssl/manifest.mn \
+		security/nss/lib/util/manifest.mn \
+		security/nss/lib/smime/manifest.mn \
+		security/nss/lib/freebl/manifest.mn \
+		security/nss/lib/sqlite/manifest.mn \
+		security/nss/lib/softoken/legacydb/manifest.mn \
+		security/nss/lib/softoken/manifest.mn
 
-    # Avoid failures when nothing to remove (.pyc)
-    edo sed -i \
-        -e 's/xargs rm/xargs rm -f/' \
-        toolkit/mozapps/installer/packager.mk
+	# Avoid failures when nothing to remove (.pyc)
+	edo sed -i \
+		-e 's/xargs rm/xargs rm -f/' \
+		toolkit/mozapps/installer/packager.mk
 
-    edo sed -i \
-        -e '/GCC_TREAT_WARNINGS_AS_ERRORS/s/YES/NO/' \
-        media/webrtc/trunk/build/common.gypi
+	edo sed -i \
+		-e '/GCC_TREAT_WARNINGS_AS_ERRORS/s/YES/NO/' \
+		media/webrtc/trunk/build/common.gypi
 
-    eautoconf
+	eautoconf
 
-    cd js/src
+	cd js/src
 
-    edo mkdir .deps
+	edo mkdir .deps
 
-    eautoconf
+	eautoconf
 }
 
 mozilla-app_src_configure() {
-    # Optimization CFLAG
-    local opt=-O2
-    # Set optimization level based on CFLAGS
-    for x in ${CFLAGS}; do
-        case ${x} in
-            -O0|-01|-O2|-O3|-Os) opt=${x} ;;
-        esac
-    done
+	# Optimization CFLAG
+	local opt=-O2
+	# Set optimization level based on CFLAGS
+	for x in ${CFLAGS}; do
+		case ${x} in
+			-O0|-01|-O2|-O3|-Os) opt=${x} ;;
+		esac
+	done
 
-    # Now strip optimization from CFLAGS so it doesn't end up in the
-    # compile string
-    filter-flags '-O*'
+	# Now strip optimization from CFLAGS so it doesn't end up in the
+	# compile string
+	filter-flags '-O*'
 
-    # Ensure we do not fail on i{3,5,7} processors that support -mavx
-    append-flags -mno-avx
+	# Ensure we do not fail on i{3,5,7} processors that support -mavx
+	append-flags -mno-avx
 
-    local econf_params=(
-        # CFLAGS
-        --enable-optimize=${opt}
-        --disable-pedantic
-        --disable-strip
-        --disable-strip-libs
-        --disable-install-strip
-        --disable-warnings-as-errors
+	local econf_params=(
+		# CFLAGS
+		--enable-optimize=${opt}
+		--disable-pedantic
+		--disable-strip
+		--disable-strip-libs
+		--disable-install-strip
+		--disable-warnings-as-errors
 
-        # We don’t want debug
-        --disable-debug
-        --disable-debug-symbols
-        --disable-tests
+		# We don’t want debug
+		--disable-debug
+		--disable-debug-symbols
+		--disable-tests
 
-        # Exherbo system'
-        --with-distribution-id=org.exherbo
+		# Exherbo system'
+		--with-distribution-id=org.exherbo
 
-        # Disable auto-distribution stuff
-        --disable-installer
-        --disable-updater
+		# Disable auto-distribution stuff
+		--disable-installer
+		--disable-updater
 
-        # Use system libs
-        # --with-system-jpeg # needs libjpeg-turbo
-        --with-system-bz2
-        --with-system-zlib
-        --with-system-ply
-        --enable-system-hunspell
-        --enable-system-ffi
-        --enable-system-libvpx
-        --enable-system-pixman
-        --with-system-libevent=/usr
-        --x-includes=/usr/include
-        --x-libraries=/usr/${LIBDIR}
-        # Broken from http://hg.mozilla.org/mozilla-central/rev/713814f07168
-        #--enable-system-cairo
+		# Use system libs
+		# --with-system-jpeg # needs libjpeg-turbo
+		--with-system-bz2
+		--with-system-zlib
+		--with-system-ply
+		--enable-system-hunspell
+		--enable-system-ffi
+		--enable-system-libvpx
+		--enable-system-pixman
+		--with-system-libevent=/usr
+		--x-includes=/usr/include
+		--x-libraries=/usr/${LIBDIR}
+		# Broken from http://hg.mozilla.org/mozilla-central/rev/713814f07168
+		#--enable-system-cairo
 
-        # Exheres defaults and options
-        --enable-chrome-format=omni
-        --enable-default-toolkit=cairo-gtk2
-        --enable-gio
-        --enable-ogg
-        --enable-opus
-        --enable-single-profile
-        --enable-svg
-        --enable-wave
-        --enable-webm
-        --disable-crashreporter
-        --disable-profilesharing
-        --disable-profilelocking
-        --disable-gconf          # Deprecated
-        --disable-gnomeui        # Deprecated
-        --disable-gnomevfs       # Deprecated
-        --disable-websms-backend
-        $(option_enable dbus)
-        $(option_enable pulseaudio)
-        $(option_enable raw)
-        $(option_enable startup-notification)
-        $(option_enable wifi necko-wifi)
+		# Exheres defaults and options
+		--enable-chrome-format=omni
+		--enable-default-toolkit=cairo-gtk2
+		--enable-gio
+		--enable-ogg
+		--enable-opus
+		--enable-single-profile
+		--enable-svg
+		--enable-wave
+		--enable-webm
+		--disable-crashreporter
+		--disable-profilesharing
+		--disable-profilelocking
+		--disable-gconf		  # Deprecated
+		--disable-gnomeui		# Deprecated
+		--disable-gnomevfs	   # Deprecated
+		--disable-websms-backend
+		$(option_enable dbus)
+		$(option_enable pulseaudio)
+		$(option_enable raw)
+		$(option_enable startup-notification)
+		$(option_enable wifi necko-wifi)
 
-        # Application defaults
-        --enable-ipc
-        --enable-application=${MOZ_APPLICATION}
-        --with-default-mozilla-five-home="${MOZILLA_FIVE_HOME}"
-        --enable-extensions=default,-gnomevfs,inspector
+		# Application defaults
+		--enable-ipc
+		--enable-application=${MOZ_APPLICATION}
+		--with-default-mozilla-five-home="${MOZILLA_FIVE_HOME}"
+		--enable-extensions=default,-gnomevfs,inspector
 
-        # Basic features
-        --enable-crypto
-        --enable-tracejit
-        --enable-pango
-        --enable-mathml
-        --enable-safe-browsing
-        --enable-storage
-        --enable-places
-        --enable-places_bookmarks
-    )
+		# Basic features
+		--enable-crypto
+		--enable-tracejit
+		--enable-pango
+		--enable-mathml
+		--enable-safe-browsing
+		--enable-storage
+		--enable-places
+		--enable-places_bookmarks
+	)
 
-    if [ "${MOZ_BRANDING}" = "official" ]; then
-        econf_params+=(
-            --enable-official-branding
-        )
-    else
-        econf_params+=(
-            --with-branding=${MOZ_APPLICATION}/branding/${MOZ_BRANDING}
-        )
-    fi
+	if [ "${MOZ_BRANDING}" = "official" ]; then
+		econf_params+=(
+			--enable-official-branding
+		)
+	else
+		econf_params+=(
+			--with-branding=${MOZ_APPLICATION}/branding/${MOZ_BRANDING}
+		)
+	fi
 
-    econf \
-        --hates=docdir \
-        ${econf_params[@]} \
-        "$@"
+	econf \
+		--hates=docdir \
+		${econf_params[@]} \
+		"$@"
 }
 
 mozilla-app_src_install() {
-    default
+	default
 
-    find "${IMAGE}" -type d -empty -printf "rmdir %P\n" -delete 1>&2
+	find "${IMAGE}" -type d -empty -printf "rmdir %P\n" -delete 1>&2
 
-    local branding_path_base branding_path icon iconsname size
-    branding_path_base="${WORK}"/${MOZ_APPLICATION}/branding
+	local branding_path_base branding_path icon iconsname size
+	branding_path_base="${WORK}"/${MOZ_APPLICATION}/branding
 
-    [[ ! -d "${branding_path_base}"/official ]] && \
-        ln -sf ../../other-licenses/branding/${PN} "${branding_path_base}"/official
+	[[ ! -d "${branding_path_base}"/official ]] && \
+		ln -sf ../../other-licenses/branding/${PN} "${branding_path_base}"/official
 
-    iconsname=default
-    case "${MOZ_APPLICATION}" in
-        mail)
-            iconsname=mailicon
-        ;;
-    esac
+	iconsname=default
+	case "${MOZ_APPLICATION}" in
+		mail)
+			iconsname=mailicon
+		;;
+	esac
 
-    branding_path="${branding_path_base}"/${MOZ_BRANDING}
-    source "${branding_path}"/configure.sh
-    targeticonname="${MOZ_APP_DISPLAYNAME,,}"
+	branding_path="${branding_path_base}"/${MOZ_BRANDING}
+	source "${branding_path}"/configure.sh
+	targeticonname="${MOZ_APP_DISPLAYNAME,,}"
 
-    # Install icons
-    for size in 16 22 24 32 48 64 72 96 128 256; do
-        if [ -f "${branding_path}/${iconsname}${size}.png" ]; then
-            insinto /usr/share/icons/hicolor/${size}x${size}/apps
-            newins "${branding_path}"/${iconsname}${size}.png ${targeticonname}.png
-        fi
-        if [ -f "${branding_path}/mozicon${size}.png" ]; then
-            insinto /usr/share/icons/hicolor/${size}x${size}/apps
-            newins "${branding_path}"/mozicon${size}.png ${targeticonname}.png
-        fi
-    done
+	# Install icons
+	for size in 16 22 24 32 48 64 72 96 128 256; do
+		if [ -f "${branding_path}/${iconsname}${size}.png" ]; then
+			insinto /usr/share/icons/hicolor/${size}x${size}/apps
+			newins "${branding_path}"/${iconsname}${size}.png ${targeticonname}.png
+		fi
+		if [ -f "${branding_path}/mozicon${size}.png" ]; then
+			insinto /usr/share/icons/hicolor/${size}x${size}/apps
+			newins "${branding_path}"/mozicon${size}.png ${targeticonname}.png
+		fi
+	done
 
-    # Install a 48x48 icon into /usr/share/pixmaps for legacy DEs
-    insinto /usr/share/pixmaps
-    newins "${branding_path}"/content/icon48.png ${targeticonname}.png
+	# Install a 48x48 icon into /usr/share/pixmaps for legacy DEs
+	insinto /usr/share/pixmaps
+	newins "${branding_path}"/content/icon48.png ${targeticonname}.png
 
-    # Install .desktop for menu entry
-    insinto /usr/share/applications
-    doins "${FILES}"/${PN}.desktop
+	# Install .desktop for menu entry
+	insinto /usr/share/applications
+	doins "${FILES}"/${PN}.desktop
 
-    edo sed -i \
-        -e "s:@NAME@:${MOZ_APP_DISPLAYNAME}:" \
-        -e "s:@ICON@:${targeticonname}:" \
-        "${IMAGE}"/usr/share/applications/${PN}.desktop
+	edo sed -i \
+		-e "s:@NAME@:${MOZ_APP_DISPLAYNAME}:" \
+		-e "s:@ICON@:${targeticonname}:" \
+		"${IMAGE}"/usr/share/applications/${PN}.desktop
 
-    # Add StartupNotify=true bug 237317
-    if option startup-notification ; then
-        edo sed -i \
-            -e '$ a StartupNotify=true' \
-            "${IMAGE}"/usr/share/applications/${PN}.desktop
-    fi
+	# Add StartupNotify=true bug 237317
+	if option startup-notification ; then
+		edo sed -i \
+			-e '$ a StartupNotify=true' \
+			"${IMAGE}"/usr/share/applications/${PN}.desktop
+	fi
 
-    # Plugins dir
-    hereenvd 50${PN} <<EOF
+	# Plugins dir
+	hereenvd 50${PN} <<EOF
 MOZ_PLUGIN_PATH="${MOZILLA_FIVE_HOME}/plugins:/usr/${LIBDIR}/mozilla/plugins:/usr/${LIBDIR}/nsbrowser/plugins:/opt/nsbrowser/plugins"
 COLON_SEPARATED="MOZ_PLUGIN_PATH"
 EOF
 }
 
 mozilla-app_unpack_extension() {
-    local emid=$1 xpi=$2
-    dodir ${MOZILLA_FIVE_HOME}/extensions/${emid}
-    edo pushd "${IMAGE}"${MOZILLA_FIVE_HOME}/extensions/${emid}
-    edo unzip "${WORK}"/${xpi}
-    edo popd
+	local emid=$1 xpi=$2
+	dodir ${MOZILLA_FIVE_HOME}/extensions/${emid}
+	edo pushd "${IMAGE}"${MOZILLA_FIVE_HOME}/extensions/${emid}
+	edo unzip "${WORK}"/${xpi}
+	edo popd
 }
