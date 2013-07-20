@@ -13,7 +13,6 @@ PLATFORMS="~amd64"
 
 
 DEFAULT_SRC_PREPARE_PATCHES=(
-    "$FILES"/no_plugins_popup.patch
     "$FILES"/loose_plugin_keygrab.patch
 )
 
