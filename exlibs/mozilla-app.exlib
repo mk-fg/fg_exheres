@@ -262,6 +262,7 @@ mozilla-app_src_configure() {
 		--disable-gnomeui		# Deprecated
 		--disable-gnomevfs	   # Deprecated
 		--disable-websms-backend
+		--disable-gstreamer
 		$(option_enable dbus)
 		$(option_enable pulseaudio)
 		$(option_enable raw)
