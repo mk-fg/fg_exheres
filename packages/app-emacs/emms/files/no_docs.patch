@@ -1,0 +1,24 @@
+diff --git a/Makefile b/Makefile
+index b64b25c..edb5fc1 100644
+--- a/Makefile
++++ b/Makefile
+@@ -21,7 +21,7 @@ VERSION=3.0
+ 
+ .PHONY: all install lisp docs deb-install clean
+ .PRECIOUS: %.elc
+-all: lisp docs
++all: lisp
+ 
+ autoloads:
+ 	$(MAKE) -C $(LISPDIR) emms-auto.el
+@@ -37,10 +37,8 @@ emms-print-metadata: $(SRCDIR)/emms-print-metadata.c
+ 
+ install:
+ 	test -d $(SITELISP) || mkdir -p $(SITELISP)
+-	test -d $(INFODIR) || install -d $(INFODIR)
+ 	install -m 644 $(ALLSOURCE) $(SITELISP)
+ 	install -m 644 $(ALLCOMPILED) $(SITELISP)
+-	install -m 0644 $(DOCDIR)emms.info $(INFODIR)/emms
+ 	for p in $(MAN1PAGES) ; do $(GZIP) -9c $$p > $(MAN1DIR)/$$p.gz ; done
+ 	$(INSTALLINFO) emms.info
+ 
