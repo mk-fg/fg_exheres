@@ -1,0 +1,41 @@
+# Copyright 2013 Mike Kazantsev
+# Copyright (c) 2009 Jan Meier
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://bazaar.launchpad.net/~vcs-imports/unetbootin"
+
+require launchpad scm-bzr
+
+SUMMARY="UNetbootin allows you to create bootable Live USB drives for a variety of Linux distributions, without requiring you to burn a CD."
+
+DOWNLOADS=""
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        x11-libs/qt:4
+    run:
+        app-arch/p7zip
+        base/syslinux
+        sys-fs/mtools
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="$WORK"/src/unetbootin
+
+src_compile() {
+    edo lupdate unetbootin.pro
+    edo lrelease unetbootin.pro
+    edo qmake-qt4
+    default
+}
+
+src_install() {
+    dobin unetbootin
+}
