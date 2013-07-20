@@ -1,13 +1,13 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2013 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="https://bitbucket.org/eliben/pss"
+SCM_REPOSITORY="https://github.com/eliben/pss"
 
-require scm-hg distutils
+require distutils scm-git
 
 SUMMARY="A tool for grepping through source code."
 
-HOMEPAGE="http://kitenet.net/~joey/code/moreutils/"
+HOMEPAGE="https://github.com/eliben/pss"
 DOWNLOADS=""
 
 LICENCES="public-domain"
