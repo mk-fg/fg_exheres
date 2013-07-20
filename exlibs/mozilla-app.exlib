@@ -313,16 +313,20 @@ mozilla-app_src_install() {
 	[[ ! -d "${branding_path_base}"/official ]] && \
 		ln -sf ../../other-licenses/branding/${PN} "${branding_path_base}"/official
 
+	branding_path="${branding_path_base}"/${MOZ_BRANDING}
+	source "${branding_path}"/configure.sh
+	targeticonname="${MOZ_APP_DISPLAYNAME,,}"
+
 	iconsname=default
 	case "${MOZ_APPLICATION}" in
 		mail)
 			iconsname=mailicon
 		;;
+		browser)
+			# In case MOZ_APP_DISPLAYNAME is multi-word
+			targeticonname=${MOZ_BRANDING,,}
+		;;
 	esac
-
-	branding_path="${branding_path_base}"/${MOZ_BRANDING}
-	source "${branding_path}"/configure.sh
-	targeticonname="${MOZ_APP_DISPLAYNAME,,}"
 
 	# Install icons
 	for size in 16 22 24 32 48 64 72 96 128 256; do

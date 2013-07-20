@@ -16,6 +16,14 @@ DEFAULT_SRC_PREPARE_PATCHES=(
     "$FILES"/loose_plugin_keygrab.patch
 )
 
+src_prepare() {
+    edo pushd browser/branding/aurora
+    edo tar xf "$FILES"/godzilla_flamewolf.tar.gz
+    edo popd
+
+    mozilla-app_src_prepare
+}
+
 src_configure() {
     mozilla-app_src_configure --disable-elf-hack
 }
