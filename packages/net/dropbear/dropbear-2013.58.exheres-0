@@ -17,6 +17,7 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 DEFAULT_SRC_CONFIGURE_PARAMS=( --disable-pam )
 DEFAULT_SRC_INSTALL_EXTRA_DOCS=( MULTI )
+DEFAULT_SRC_PREPARE_PATCHES=( "$FILES"/proc_reading_hang.patch )
 
 
 dbmake() {
@@ -37,8 +38,8 @@ src_compile() {
 src_install() {
     dbmake DESTDIR="${IMAGE}" install
 
-    for prog in dbclient dropbearkey dropbearconvert ; do
-        edo ln -s dropbearmulti "${IMAGE}"/usr/bin/"${prog}"
+    for prog in dbclient dropbearkey dropbearconvert
+    do edo ln -s dropbearmulti "${IMAGE}"/usr/bin/"${prog}"
     done
 
     dodir /usr/sbin
