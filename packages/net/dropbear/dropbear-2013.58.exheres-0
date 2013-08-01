@@ -1,0 +1,49 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="A small SSH 2 server and client."
+
+HOMEPAGE="http://matt.ucc.asn.au/dropbear/dropbear.html"
+DOWNLOADS="https://matt.ucc.asn.au/dropbear/${PNV}.tar.bz2"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="static"
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --disable-pam )
+DEFAULT_SRC_INSTALL_EXTRA_DOCS=( MULTI )
+
+
+dbmake() {
+    local makeopts
+
+    makeopts+=" MULTI=1"
+    option static && makeopts+=" STATIC=1"
+
+    emake\
+        PROGRAMS="dropbear dbclient dropbearkey dropbearconvert"\
+        ${makeopts} "${@}"
+}
+
+src_compile() {
+    dbmake
+}
+
+src_install() {
+    dbmake DESTDIR="${IMAGE}" install
+
+    for prog in dbclient dropbearkey dropbearconvert ; do
+        edo ln -s dropbearmulti "${IMAGE}"/usr/bin/"${prog}"
+    done
+
+    dodir /usr/sbin
+    edo ln -s ../bin/dropbearmulti "${IMAGE}"/usr/sbin/dropbear
+
+    doman dropbear{,key}.8
+    emagicdocs
+}
