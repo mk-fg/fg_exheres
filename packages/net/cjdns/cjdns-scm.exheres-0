@@ -15,10 +15,7 @@ SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
-DEPENDENCIES="
-    run:
-        dev-python/bencode
-"
+DEPENDENCIES=""
 
 BUGS_TO="mk.fraggod@gmail.com"
 
@@ -42,7 +39,7 @@ src_install() {
     newbin dumptable cjdns_dumptable
 
     insinto $(python_get_sitedir)
-    doins cjdns.py
+    doins -r cjdnsadmin
 
     popd
 
