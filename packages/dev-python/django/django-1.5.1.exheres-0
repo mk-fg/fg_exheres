@@ -1,10 +1,11 @@
-# Copyright 2011-2012 Mike Kazantsev
+# Copyright 2011-2013 Mike Kazantsev
 # Copyright 2009 Jan Meier
 # Distributed under the terms of the GNU General Public License v2
 
 MY_PNV=${PNV^}
 
-require distutils
+require distutils\
+    checksums [ sha1=[ ${PNV}.tar.gz=0ab97b90c4c79636e56337f426f1e875faccbba1 ] ]
 
 SUMMARY="The Web framework for perfectionists with deadlines"
 
