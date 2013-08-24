@@ -1,0 +1,39 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require sourceforge [ project=unhide suffix=tgz pnv="${PN}/${PNV}" ]\
+    checksums [ sha1=[ ${PNV}.tgz=ebbcbba512ad9f67266adec545a383556ae1419f ] ]
+
+SUMMARY="Forensic tool to find hidden processes and TCP/UDP ports."
+
+HOMEPAGE="http://www.unhide-forensics.info/"
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        sys-apps/iproute2
+        sys-apps/net-tools
+        sys-process/lsof
+        sys-process/procps
+        sys-process/psmisc
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_compile() {
+    edo gcc -Wall -O2 --static -pthread unhide-linux*.c unhide-output.c -o unhide-linux
+    edo gcc -Wall -O2 --static unhide_rb.c -o unhide_rb
+    edo gcc -Wall -O2 --static unhide-tcp.c unhide-tcp-fast.c unhide-output.c -o unhide-tcp
+}
+
+src_install() {
+    dobin unhide-linux unhide_rb unhide-tcp
+    dosym unhide-linux /usr/bin/unhide
+    doman man/unhide{,-tcp}.8
+    emagicdocs
+}

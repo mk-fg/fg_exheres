@@ -17,6 +17,8 @@ DEPENDENCIES="
     build+run:
         dev-lang/perl
         net-misc/wget
+    recommendation:
+        app-admin/unhide
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
