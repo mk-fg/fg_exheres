@@ -18,6 +18,7 @@ DEPENDENCIES="
         dev-lang/perl
         net-misc/wget
     recommendation:
+        app-admin/skdet
         app-admin/unhide
 "
 

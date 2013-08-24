@@ -1,0 +1,37 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require checksums [ sha1=[ ${PNV}.tgz=b61e02853a7b94ffce17c563250230e03f76a598 ] ]
+
+SUMMARY="Rootkit detector."
+
+HOMEPAGE="http://dvgevers.home.xs4all.nl/"
+DOWNLOADS="
+    http://dvgevers.home.xs4all.nl/${PN}/${PNV}.tar.bz2
+    http://dvgevers.home.xs4all.nl/${PN}/${PNV}.1"
+
+LICENCES="as-is"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_COMPILE_PARAMS=( STRIP=true )
+
+src_prepare() {
+    rm -f skdet
+}
+
+src_install() {
+    dobin skdet
+    newman "$FETCHEDDIR"/${PNV}.1 skdet.1
+
+    insinto /usr/include
+    doins include/skdet.h
+
+    emagicdocs
+}
