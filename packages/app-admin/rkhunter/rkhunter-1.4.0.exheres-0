@@ -1,0 +1,33 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require sourceforge [ project=rkhunter suffix=tar.gz pnv="${PN}/${PV}/${PNV}" ]\
+    checksums [ sha1=[ ${PNV}.tar.gz=48798beec504c00af93bf64b6e35dfc7d7aaff07 ] ]
+
+SUMMARY="Rootkit auditing tool."
+
+HOMEPAGE="http://rkhunter.sourceforge.net/"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-lang/perl
+        net-misc/wget
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    edo mkdir "$IMAGE"usr
+    sed -i s:'\<\(VAR\|SYSCONFIG\)DIR="${PREFIX}/':'\1DIR="'"$IMAGE": installer.sh
+    edo ./installer.sh --layout custom "$IMAGE"usr --install
+
+    # --striproot won't work, because it does "find $PREFIX .."
+    find "$IMAGE" -type f |
+        while read f; do sed -i "s:${IMAGE%/}::g" "$f"; done
+}
