@@ -1,10 +1,10 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2013 Mike Kazantsev
 # Copyright 2009 Marvin Schmidt <marv@exherbo.org>
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="http://${PN}.svn.sourceforge.net/svnroot/${PN}"
+SCM_REPOSITORY="git://git.code.sf.net/p/geeqie/git"
 
-require scm-svn sourceforge [ pnv=${MY_PNV} suffix=tar.gz ]\
+require scm-git sourceforge [ pnv=${MY_PNV} suffix=tar.gz ]\
     autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.10 ] ]
 
 SUMMARY="Lightweight GTK+ based image viewer"

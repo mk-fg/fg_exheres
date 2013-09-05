@@ -1,8 +1,8 @@
-# Copyright 2012 Mike Kazantsev
+# Copyright 2012-2013 Mike Kazantsev
 # Copyright 2010, 2011 Johannes Nixdorf <mixi@user-helfen-usern.de>
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="http://netpbm.svn.sourceforge.net/svnroot/netpbm/advanced/"
+SCM_REPOSITORY="http://svn.code.sf.net/p/netpbm/code/advanced/"
 SCM_SVN_RAW_URI=true
 
 require scm-svn
