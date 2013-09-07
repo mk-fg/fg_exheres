@@ -1,12 +1,14 @@
 # Copyright 2013 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-require cmake
+SCM_REPOSITORY="https://github.com/SupSuper/OpenXcom"
+
+require cmake scm-git
 
 SUMMARY="An open-source reimplementation of the popular UFO: Enemy Unknown"
 
 HOMEPAGE="http://openxcom.org/"
-DOWNLOADS="https://github.com/SupSuper/OpenXcom/archive/v${PV}.tar.gz -> ${PNV}.tar.gz"
+DOWNLOADS=""
 
 LICENCES="GPL-2"
 SLOT="0"
@@ -15,7 +17,7 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     build+run:
-        dev-libs/yaml-cpp[~0.3.0]
+        dev-libs/yaml-cpp
         media-libs/SDL
         media-libs/SDL_gfx
         media-libs/SDL_image
@@ -25,8 +27,6 @@ DEPENDENCIES="
 
 BUGS_TO="mk.fraggod@gmail.com"
 
-
-WORK="${WORKBASE}/OpenXcom-${PV}"
 
 pkg_postinst() {
     elog "In order to play you need copy GEODATA, GEOGRAPH, MAPS, SOUND, TERRAIN"
