@@ -30,7 +30,7 @@ DEPENDENCIES="
         media-libs/libpng
         eet? ( enlightenment/eet )
         fribidi? ( dev-libs/fribidi[>=0.19.2] )
-        harfbuzz? ( media-libs/harfbuzz[>=0.5.0] )
+        harfbuzz? ( x11-libs/harfbuzz[>=0.5.0] )
         opengl? ( x11-dri/mesa )
         tiff? ( media-libs/tiff )
         X? (
