@@ -1,0 +1,16 @@
+# Copyright 2012 Romain Lalaut <romain.lalaut@laposte.net>
+# Distributed under the terms of the GNU General Public License v2
+
+[Unit]
+Description=Fail2ban
+After=syslog.target
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/fail2ban-client -c /etc/fail2ban/ start
+ExecStop=/usr/bin/fail2ban-client -c /etc/fail2ban/ stop
+PIDFile=/run/fail2ban/fail2ban.pid
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,43 @@
+# Copyright 2013 Mike Kazantsev
+# Copyright 2012 Romain Lalaut <romain.lalaut@laposte.net>
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://github.com/fail2ban/fail2ban"
+
+require scm-git distutils systemd-service
+
+SUMMARY="An intrusion prevention framework"
+
+HOMEPAGE="http://www.fail2ban.org/"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+UPSTREAM_DOCUMENTATION="${HOMEPAGE}/wiki/index.php/Manual"
+
+
+DEFAULT_SRC_PREPARE_PATCHES=( "$FILES"/no_fd_cleanup.patch )
+
+src_install() {
+    distutils_src_install
+    doman man/*.1
+
+    install_systemd_files
+    if option systemd; then
+        insinto /usr/${LIBDIR}/tmpfiles.d
+        hereins ${PN}.conf <<EOF
+d /run/fail2ban 0755 root root
+EOF
+    fi
+
+    keepdir /etc/fail2ban/fail2ban.d
+    keepdir /etc/fail2ban/jail.d
+
+    edo rm -r "${IMAGE}"$(python_get_libdir)
+    edo rm -r "${IMAGE}"/var
+}
