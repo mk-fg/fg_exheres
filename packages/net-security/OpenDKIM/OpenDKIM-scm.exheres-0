@@ -1,0 +1,70 @@
+# Copyright 2013 Mike Kazantsev
+# Copyright 2011-2012 Quentin "Sardem FF7" Glidic <sardemff7@exherbo.org>
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://git.code.sf.net/p/opendkim/git"
+
+require sourceforge [ project=${PN,,} pn=${PN,,} suffix=tar.gz ] scm-git\
+    autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+
+SUMMARY="An open source implementation of the DKIM sender authentication system."
+
+HOMEPAGE="http://www.opendkim.org/"
+DOWNLOADS=""
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="gnutls lua memcache"
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/libxml2
+        dev-libs/tre
+        mail-mta/sendmail
+        net-misc/curl
+        sys-libs/db:=
+        !gnutls? ( dev-libs/openssl )
+        gnutls? ( dev-libs/gnutls[>=2.11.7] )
+        lua? ( dev-lang/lua )
+        memcache? ( net/memcache )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+# WORK="${WORKBASE}"/${PNV,,}
+
+DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}"/no_serial_tests_option.patch )
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --with-milter --with-db --with-tre
+
+    # Reputation queries support
+    --with-libcurl --with-libxml2 --without-libjansson
+
+    # Disable ldap
+    --without-openldap --without-sasl --without-mdb
+    # Disable sql
+    --without-odbx --without-sql-backend
+    # Disable various ways to communicate with unbound
+    --without-unbound --without-ldns --without-libevent
+    # Disable misc stuff
+    --without-librrd --without-erlang
+)
+
+DEFAULT_SRC_CONFIGURE_OPTION_WITHS=(
+    'gnutls gnutls /usr'
+    'memcache libmemcached'
+    'lua lua'
+)
+
+src_configure() {
+    export PTHREAD_CC='cc -lpthread'
+    default
+}
+
+src_install() {
+    default
+    edo rmdir "$IMAGE"/usr/share/man/man1
+}

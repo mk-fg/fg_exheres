@@ -1,0 +1,21 @@
+commit 25e8ed91262a5f0908d5507510d47f31cd6182c5 (HEAD, master)
+Author: Mike Kazantsev <mk.fraggod@gmail.com>
+Date:   Tue Sep 10 22:55:54 2013 +0600
+
+    Revert "Request serial tests from automake for now"
+    
+    This reverts commit 3f35805b0c3f51ba9c7e8081a7c391084a6dfbb6.
+
+diff --git a/configure.ac b/configure.ac
+index e1334d7..d4360cf 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -34,7 +34,7 @@ AC_INIT([OpenDKIM],
+         [bugs@opendkim.org])
+ 
+ AC_CONFIG_AUX_DIR([build-aux])
+-AM_INIT_AUTOMAKE([serial-tests])
++AM_INIT_AUTOMAKE
+ AC_CONFIG_HEADERS([build-config.h])
+ 
+ AC_CONFIG_MACRO_DIR([m4])
