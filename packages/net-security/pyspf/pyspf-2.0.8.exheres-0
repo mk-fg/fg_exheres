@@ -1,0 +1,19 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require distutils pypi
+
+SUMMARY="Sender-Policy-Framework queries in Python."
+
+LICENCES="PSF"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-python/ipaddr
+        dev-python/pydns
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
