@@ -20,3 +20,9 @@ DEPENDENCIES="
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    default
+    dodoc policyd-spf.conf.commented
+}
