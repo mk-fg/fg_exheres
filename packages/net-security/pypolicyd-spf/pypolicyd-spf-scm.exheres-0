@@ -16,7 +16,7 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     run:
-        net-security/pyspf
+        dev-python/pyspf
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
