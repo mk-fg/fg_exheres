@@ -2,6 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 SCM_REPOSITORY="https://github.com/drkjam/netaddr"
+SCM_BRANCH="rel-0.7.x"
 
 require distutils scm-git
 
