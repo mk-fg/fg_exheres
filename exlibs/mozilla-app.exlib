@@ -76,6 +76,7 @@ DEPENDENCIES="
 		app-spell/hunspell[>=1.2]
 		dev-libs/expat
 		dev-libs/glib:2
+		dev-libs/icu
 		dev-libs/libevent[>=1.4.7]
 		dev-libs/libffi
 		dev-libs/libIDL[>=0.8.0]
@@ -83,6 +84,7 @@ DEPENDENCIES="
 		sys-devel/binutils[>=2.16.1]
 		sys-libs/zlib[>=1.1.4]
 		sys-sound/alsa-lib
+		x11-libs/cairo[X][>=1.10.2]
 		x11-libs/gtk+:2[>=2.14.0]
 		x11-libs/libXmu
 		x11-libs/libXrender
@@ -96,8 +98,6 @@ DEPENDENCIES="
 	recommendation:
 		x11-libs/libnotify [[ description = [ Provide system integrated notification ] ]]
 "
-# Broken from http://hg.mozilla.org/mozilla-central/rev/713814f07168
-#		x11-libs/cairo[X][>=1.10.2]
 
 
 WORK="${WORKBASE}"/moz_xulrunner
@@ -233,17 +233,17 @@ mozilla-app_src_configure() {
 		# Use system libs
 		# --with-system-jpeg # needs libjpeg-turbo
 		--with-system-bz2
-		--with-system-zlib
+		--with-system-icu
+		--with-system-libevent=/usr
 		--with-system-ply
+		--with-system-zlib
+		--enable-system-cairo
 		--enable-system-hunspell
 		--enable-system-ffi
 		--enable-system-libvpx
 		--enable-system-pixman
-		--with-system-libevent=/usr
 		--x-includes=/usr/include
 		--x-libraries=/usr/${LIBDIR}
-		# Broken from http://hg.mozilla.org/mozilla-central/rev/713814f07168
-		#--enable-system-cairo
 
 		# Exheres defaults and options
 		--enable-chrome-format=omni
