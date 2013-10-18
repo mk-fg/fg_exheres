@@ -1,0 +1,39 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://gitboria.com/cjd/rainflynamecoin.git"
+
+require scm-git
+
+SUMMARY="Namecoin fork for use with rainflydns."
+
+LICENCES="as-is"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/boost
+        dev-libs/glib
+        dev-libs/openssl
+        sys-libs/db
+"
+# net-libs/miniupnpc - for upnp, hard-disabled here
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="$WORK"/src
+
+DEFAULT_SRC_COMPILE_PARAMS=( LIBBOOST_SUFFIX=-mt )
+
+src_install() {
+    dosbin namecoind
+
+    edo pushd ..
+    dodoc README* DESIGN* FAQ.md
+    dodoc -r client
+    dodoc contrib/merged-mine-proxy
+    edo popd
+}
