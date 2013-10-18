@@ -7,13 +7,15 @@ require scm-git
 
 SUMMARY="A program that mimicks as much functionality in GNU grep as possible, applied at the network layer."
 
+HOMEPAGE="http://ngrep.sourceforge.net/"
+
 LICENCES="as-is"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
 DEPENDENCIES="
-    run:
+    build+run:
         dev-libs/libpcap
 "
 
