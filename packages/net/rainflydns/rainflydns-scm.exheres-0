@@ -13,6 +13,8 @@ PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
 DEPENDENCIES="
+    recommendation:
+        net/rainflynamecoin
     run:
         dev-js/binarysearch
         dev-js/js-nacl
