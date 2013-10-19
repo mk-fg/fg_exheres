@@ -1,0 +1,52 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://gitboria.com/cjd/rainflydns.git"
+
+require scm-git
+
+SUMMARY="DNS alternative, based on namecoin."
+
+LICENCES="as-is"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-js/binarysearch
+        dev-js/js-nacl
+        dev-lang/node
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    local dst=/usr/$LIBDIR/rainflydns
+    insinto "$dst"
+    doins -r $(find * -maxdepth 0 -type d)
+
+    exes_names=( auth rainserv rdig rproxy )
+    declare -A exes
+    for bin in ${exes_names[@]}; do exes[$bin]=t; done
+
+    mkdir -p "$IMAGE"/usr/bin
+    exeinto "$dst"
+    for bin in $(find * -maxdepth 0 -type f -executable); do
+        [[ -z "${exes[$bin]}" ]] && die "New binary: $bin"
+        unset exes[$bin]
+        doexe $bin
+        dosym "$dst"/$bin /usr/bin/$bin
+    done
+
+    [[ ${#exes[@]} -eq 0 ]] || {
+        for bin in ${exes_names[@]}; do
+            [[ -n ${exes[$bin]} ]] && die "Missing binary: $bin"
+        done
+        die
+    }
+
+    dodoc package.json
+    emagicdocs
+}
