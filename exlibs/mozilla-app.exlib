@@ -54,8 +54,9 @@ SLOT="0"
 
 MYOPTIONS="
 	dbus
+	gtk3
 	pulseaudio
-	raw				  [[ description = [ RAW image formats ] ]]
+	raw [[ description = [ RAW image formats ] ]]
 	startup-notification
 	wifi
 "
@@ -85,7 +86,6 @@ DEPENDENCIES="
 		sys-libs/zlib[>=1.1.4]
 		sys-sound/alsa-lib
 		x11-libs/cairo[X][>=1.10.2]
-		x11-libs/gtk+:2[>=2.14.0]
 		x11-libs/libXmu
 		x11-libs/libXrender
 		x11-libs/libXt
@@ -93,14 +93,16 @@ DEPENDENCIES="
 		x11-libs/pixman
 
 		dbus? ( dev-libs/dbus-glib[>=0.72] )
+		gtk3? ( x11-libs/gtk+:3 )
+		!gtk3? ( x11-libs/gtk+:2[>=2.14.0] )
 		startup-notification? ( x11-libs/startup-notification )
 		wifi? ( net-wireless/wireless_tools )
 	recommendation:
 		x11-libs/libnotify [[ description = [ Provide system integrated notification ] ]]
 "
 
-
-WORK="${WORKBASE}"/moz_xulrunner
+WORK="${WORKBASE}"/build
+ECONF_SOURCE="${WORKBASE}"/moz_xulrunner
 
 mozilla-app_pkg_setup() {
 	default
@@ -146,9 +148,12 @@ mozilla-app_pkg_setup() {
 mozilla-app_src_unpack() {
 	scm_src_unpack
 	edo mv "${WORKBASE}"/moz_dom_inspector "${WORKBASE}"/moz_xulrunner/extensions/inspector
+	edo mkdir "${WORK}"
 }
 
 mozilla-app_src_prepare() {
+	edo pushd "${ECONF_SOURCE}"
+
 	default
 
 	# Exherbo install dirs
@@ -190,6 +195,8 @@ mozilla-app_src_prepare() {
 	edo mkdir .deps
 
 	eautoconf
+
+	edo popd
 }
 
 mozilla-app_src_configure() {
@@ -223,7 +230,7 @@ mozilla-app_src_configure() {
 		--disable-debug-symbols
 		--disable-tests
 
-		# Exherbo system'
+		# Exherbo system
 		--with-distribution-id=org.exherbo
 
 		# Disable auto-distribution stuff
@@ -233,21 +240,21 @@ mozilla-app_src_configure() {
 		# Use system libs
 		# --with-system-jpeg # needs libjpeg-turbo
 		--with-system-bz2
+		--enable-system-cairo
+		--enable-system-ffi
+		--enable-system-hunspell
 		--with-system-icu
 		--with-system-libevent=/usr
-		--with-system-ply
-		--with-system-zlib
-		--enable-system-cairo
-		--enable-system-hunspell
-		--enable-system-ffi
 		--enable-system-libvpx
 		--enable-system-pixman
+		--with-system-ply
 		--x-includes=/usr/include
 		--x-libraries=/usr/${LIBDIR}
+		--with-system-zlib
 
 		# Exheres defaults and options
 		--enable-chrome-format=omni
-		--enable-default-toolkit=cairo-gtk2
+		$(option gtk3 --enable-default-toolkit=cairo-gtk3 --enable-default-toolkit=cairo-gtk2)
 		--enable-gio
 		--enable-ogg
 		--enable-opus
@@ -261,8 +268,8 @@ mozilla-app_src_configure() {
 		--disable-gconf		  # Deprecated
 		--disable-gnomeui		# Deprecated
 		--disable-gnomevfs	   # Deprecated
-		--disable-websms-backend
 		--disable-gstreamer
+		--disable-websms-backend
 		$(option_enable dbus)
 		$(option_enable pulseaudio)
 		$(option_enable raw)
@@ -308,7 +315,7 @@ mozilla-app_src_install() {
 	find "${IMAGE}" -type d -empty -printf "rmdir %P\n" -delete 1>&2
 
 	local branding_path_base branding_path icon iconsname size
-	branding_path_base="${WORK}"/${MOZ_APPLICATION}/branding
+	branding_path_base="${ECONF_SOURCE}"/${MOZ_APPLICATION}/branding
 
 	[[ ! -d "${branding_path_base}"/official ]] && \
 		ln -sf ../../other-licenses/branding/${PN} "${branding_path_base}"/official

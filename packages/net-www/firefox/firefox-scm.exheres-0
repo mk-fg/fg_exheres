@@ -13,7 +13,7 @@ PLATFORMS="~amd64"
 
 
 src_prepare() {
-    edo pushd browser/branding/aurora
+    edo pushd "$ECONF_SOURCE"/${MOZ_APPLICATION}/branding/${MOZ_BRANDING}
     edo tar xf "$FILES"/godzilla_flamewolf.tar.gz
     edo popd
 
