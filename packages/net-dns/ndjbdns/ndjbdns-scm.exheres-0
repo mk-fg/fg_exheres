@@ -1,0 +1,21 @@
+# Copyright 2011-2013 Mike Kazantsev
+# Copyright 2008 Daniel Mierswa <impulze@impulze.org>
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://github.com/pjps/ndjbdns"
+
+require scm-git autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.13 ] ]
+
+SUMMARY="Collection of DNS tools."
+DESCRIPTION="A DNS cache, a DNS server and some DNS client utilities."
+
+HOMEPAGE="http://pjp.dgplug.org/djbdns/ http://cr.yp.to/djbdns/"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
