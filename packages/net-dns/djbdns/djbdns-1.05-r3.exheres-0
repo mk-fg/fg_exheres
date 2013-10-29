@@ -14,7 +14,7 @@ DOWNLOADS="
 
 LICENCES="public-domain"
 SLOT="0"
-PLATFORMS="~amd64"
+PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
 DEPENDENCIES="
@@ -26,17 +26,17 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 src_prepare() {
-    edo cd "${WORKBASE}"
-    expatch -p1 "${FILES}"/headtail.patch
-    expatch -p0 "${FILES}"/dnsroots.patch
-    expatch -p0 "${FILES}"/dnstracesort.patch
-
-    edo cd "${WORK}"
+    expatch -p2 "${FILES}"/headtail.patch
+    expatch -p1 "${FILES}"/dnsroots.patch
+    expatch -p1 "${FILES}"/dnstracesort.patch
+    expatch -p1 "${FILES}"/string_length_255.patch
     expatch -p1 "${FILES}"/CVE2009-0858_0001-check-response-domain-name-length.patch
+
     edo cp -pR "${WORK}" "${WORK}-noipv6"
     expatch -p1 "${FETCHEDDIR}/${PNV}-test23.diff.bz2"
     expatch -p1 "${FILES}"/CVE2008-4392_0001-dnscache-merge-similar-outgoing-queries-ipv6.patch
     expatch -p1 "${FILES}"/CVE2008-4392_0002-dnscache-cache-soa-records-ipv6.patch
+    expatch -p1 "${FILES}"/makefile-parallel.patch
 
     edo cd "${WORK}-noipv6"
     expatch -p1 "${FILES}"/CVE2008-4392_0001-dnscache-merge-similar-outgoing-queries.patch
@@ -67,10 +67,6 @@ src_install() {
         dnsfilter random-ip dnsqr dnsq dnstrace dnstracesort
 
     dobin dnsip6 dnsip6q "${WORK}-noipv6/dnstrace"
-
-    dobin "${FILES}/dnscache-setup"
-    dobin "${FILES}/tinydns-setup"
-    newbin "${FILES}/djbdns-setup-r17" djbdns-setup
 
     emagicdocs
     install_systemd_files
