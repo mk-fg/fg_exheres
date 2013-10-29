@@ -19,3 +19,9 @@ MYOPTIONS=""
 DEPENDENCIES=""
 
 BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    default
+    edo mv "$IMAGE"/usr/{lib,$LIBDIR}
+}
