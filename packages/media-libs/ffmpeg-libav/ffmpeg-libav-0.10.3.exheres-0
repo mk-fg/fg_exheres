@@ -35,9 +35,8 @@ MYOPTIONS="doc h264 threads truetype
     xavs [[ description = [ Support AVS, the Audio Video Standard of China ] ]]
 
 
-    ( platform: amd64 ppc x86 )
+    ( platform: amd64 x86 )
     ( amd64_cpu_features: 3dnow 3dnowext ssse3 )
-    ( ppc_cpu_features: altivec )
     ( x86_cpu_features: 3dnow 3dnowext mmx mmx2 sse ssse3 )
 "
 
@@ -128,10 +127,6 @@ src_configure() {
             $(option_enable x86_cpu_features:ssse3)
         )
     fi
-
-    myconf+=(
-        $(option_enable ppc_cpu_features:altivec)
-    )
 
     #FIXME this configure script doesn't handle --host
     myconf+=(
