@@ -92,8 +92,8 @@ def chk_copyright( line, prior=False,
 		raise ChkHeadersError('Identical dates: {}'.format(match.group('dates')))
 	date_min = int(date_min)
 	date_max = int(date_max) if date_max is not None else date_min
-	if date_min < date_chk and date_max < date_chk:
-		raise ChkHeadersError('Obsolete dates: {}'.format(match.group('dates')))
+	# if date_min < date_chk and date_max < date_chk:
+	# 	raise ChkHeadersError('Obsolete dates: {}'.format(match.group('dates')))
 	if date_min > date_max:
 		raise ChkHeadersError( 'Dates ordering is wrong:'
 			' {} ({} > {}!)'.format(match.group('dates'), date_min, date_max) )
