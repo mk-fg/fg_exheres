@@ -12,10 +12,6 @@ HOMEPAGE="http://www.mozilla.com/en-US/firefox"
 PLATFORMS="~amd64"
 
 
-DEFAULT_SRC_PREPARE_PATCHES=(
-    "$FILES"/loose_plugin_keygrab.patch
-)
-
 src_prepare() {
     edo pushd browser/branding/aurora
     edo tar xf "$FILES"/godzilla_flamewolf.tar.gz
