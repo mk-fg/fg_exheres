@@ -1,14 +1,16 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2013 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 # Based upon 'apel-10.7-r1.ebuild' from Gentoo, which is:
 #  Copyright 1999-2010 Gentoo Foundation
 
-require elisp
+SCM_REPOSITORY="https://github.com/jeffgran/APEL"
+SCM_REVISION="0b9f4177bbe20e0422b6413d6d21dd73275da832"
+
+require elisp scm-git
 
 SUMMARY="A Portable Emacs Library is a library for making portable Emacs Lisp programs."
 
-HOMEPAGE="http://cvs.m17n.org/elisp/APEL/"
-DOWNLOADS="ftp://ftp.jpl.org/pub/elisp/apel/${PNV}.tar.gz"
+HOMEPAGE="http://cvs.m17n.org/elisp/APEL/ https://github.com/jeffgran/APEL http://www.emacswiki.org/emacs/APortableEmacsLibrary"
 
 LICENCES="GPL-2"
 SLOT="0"
