@@ -1,14 +1,16 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2013 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 # Based upon 'flim-1.14.9-r2.ebuild' from Gentoo, which is:
 #  Copyright 1999-2010 Gentoo Foundation
 
-require elisp
+SCM_REPOSITORY="https://github.com/wanderlust/flim"
+SCM_BRANCH="flim-1_14-wl"
+
+require elisp scm-git
 
 SUMMARY="Emacs library to provide basic features for message representation and encoding."
 
-HOMEPAGE="http://cvs.m17n.org/elisp/FLIM/"
-DOWNLOADS="http://www.kanji.zinbun.kyoto-u.ac.jp/~tomo/lemi/dist/flim/${PNV%.*}/${PNV}.tar.gz"
+HOMEPAGE="http://cvs.m17n.org/elisp/FLIM/ https://github.com/wanderlust/flim"
 
 LICENCES="GPL-2"
 SLOT="0"
@@ -22,8 +24,6 @@ DEPENDENCIES="
 
 BUGS_TO="mk.fraggod@gmail.com"
 
-
-DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}"/mel-q-ccl.patch )
 
 EMAKE_PARAMS=(
     DESTDIR="${IMAGE}"
