@@ -1,9 +1,0 @@
-[Unit]
-Description=mongoc
-
-[Service]
-EnvironmentFile=/etc/conf.d/mongodb.conf
-ExecStart=/usr/bin/mongoc $MONGOC_OPTIONS
-
-[Install]
-WantedBy=multi-user.target

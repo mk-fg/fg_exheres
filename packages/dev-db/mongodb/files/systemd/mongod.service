@@ -1,9 +1,0 @@
-[Unit]
-Description=mongod
-
-[Service]
-EnvironmentFile=/etc/conf.d/mongodb.conf
-ExecStart=/usr/bin/mongod $MONGOD_OPTIONS
-
-[Install]
-WantedBy=multi-user.target
