@@ -23,6 +23,6 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 src_install() {
-    default
+    distutils_src_install
     dodoc policyd-spf.conf.commented
 }
