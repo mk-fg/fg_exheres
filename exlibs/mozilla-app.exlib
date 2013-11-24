@@ -239,8 +239,8 @@ mozilla-app_src_configure() {
 
 		# Use system libs
 		# --with-system-jpeg # needs libjpeg-turbo
+		# --enable-system-cairo # needs disable-subpixel-antialiasing.patch (in ff tree)
 		--with-system-bz2
-		--enable-system-cairo
 		--enable-system-ffi
 		--enable-system-hunspell
 		--with-system-icu
