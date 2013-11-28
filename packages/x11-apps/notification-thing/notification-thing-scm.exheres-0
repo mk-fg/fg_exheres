@@ -21,11 +21,3 @@ DEPENDENCIES="
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
-
-
-src_install() {
-    distutils_src_install
-
-    insinto /usr/share/dbus-1/services
-    doins org.freedesktop.Notifications.service
-}
