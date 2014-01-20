@@ -1,0 +1,78 @@
+# Copyright 2013 Mike Kazantsev
+# Copyright 2008 David Leverton <dleverton@exherbo.org>
+# Distributed under the terms of the GNU General Public License v2
+
+[[ -z ${SCM_REPOSITORY} ]]\
+	&& SCM_REPOSITORY=$HOMEPAGE
+FOSSIL_FILE=${PN}.fossil
+
+if [[ -z ${SCM_TYPE} ]]; then
+	SCM_TYPE=fossil
+	require scm
+fi
+
+
+scm-fossil_do_dependencies() {
+	echo dev-scm/fossil
+}
+
+scm-fossil_fossil() {
+	local echo=echo
+	[[ ${1} == -q ]] && { shift; echo=:; }
+	${echo} fossil "${@}" >&2
+	fossil "${@}" || die_unless_nonfatal "fossil ${1} failed"
+}
+
+scm-fossil_do_check_vars() {
+	[[ $(scm_get_var REPOSITORY) == +([^/])://* ]] || die "$(scm_var_name REPOSITORY) must have a URI scheme"
+	for var in BRANCH TAG REVISION SUBPATH EXTERNAL_REFS ; do
+		[[ -n $(scm_get_var $var) ]]\
+			&& die "BRANCH, TAG, REVISION, SUBPATH are not supported by scm-fossil exlib yet"
+	done
+	scm_modify_var REPOSITORY scm_trim_slashes -scheme -trailing
+}
+
+scm-fossil_do_appraise() {
+	local dst="$(scm_get_var CHECKOUT_TO)"/${FOSSIL_FILE}
+
+	if [[ ! -f ${dst} ]]; then
+		echo "${dst} is not a fossil repository file"
+		return 3
+	fi
+
+	local remote_uri=$(scm-fossil_fossil remote-url -R "${dst}")
+	if [[ ${remote_uri} != $(scm_get_var REPOSITORY) ]]; then
+		echo "${dst} is a clone of $remote_uri, but wanted $(scm_get_var REPOSITORY)"
+		return 1
+	fi
+}
+
+scm-fossil_do_checkout() {
+	local dst=$(scm_get_var CHECKOUT_TO)
+	[[ ! -d ${dst} ]] && edo mkdir "${dst}"
+	local dst="${dst}"/${FOSSIL_FILE}
+	local repo=$(scm_get_var REPOSITORY)
+	scm-fossil_fossil clone "${repo}" "${dst}" || return $?
+	local remote=$(scm-fossil_fossil remote-url -R "${dst}")
+	[[ ${remote} != ${repo} ]]\
+		&& die "remote-url after clone (${remote}) does not match REPOSITORY (${repo})"
+}
+
+scm-fossil_do_update() {
+	local dst="$(scm_get_var CHECKOUT_TO)"/${FOSSIL_FILE}
+	scm-fossil_fossil pull -R "${dst}" "$(scm_get_var REPOSITORY)"
+}
+
+scm-fossil_do_unpack() {
+	local dst="$(scm_get_var CHECKOUT_TO)"/${FOSSIL_FILE}
+	local dir=$(scm_get_var UNPACK_TO)
+	[[ ! -d ${dir} ]] && mkdir "${dir}"
+	pushd "${dir}"
+	scm-fossil_fossil open "${dst}"
+	popd
+}
+
+scm-fossil_do_revision() {
+	local dst="$(scm_get_var CHECKOUT_TO)"/${FOSSIL_FILE}
+	scm-fossil_fossil info -R "${dst}" trunk | awk '$1=="uuid:" {print $2}'
+}

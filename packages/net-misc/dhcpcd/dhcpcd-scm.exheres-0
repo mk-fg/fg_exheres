@@ -1,0 +1,42 @@
+# Copyright 2013 Mike Kazantsev
+# Copyright 2010 Wulf C. Krueger <philantrop@exherbo.org>
+# Copyright 2007 Bryan Østergaard
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://roy.marples.name/projects/${PN}"
+
+require scm-fossil
+
+SUMMARY="RFC2131 compliant DHCP client"
+
+HOMEPAGE="http://roy.marples.name/projects/${PN}"
+
+LICENCES="BSD-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        dev-scm/fossil
+    build+run:
+        sys-apps/systemd [[ note = [ for udev ] ]]
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --dbdir=/var/lib/dhcpcd
+    --libdir=/${LIBDIR}
+    --libexecdir=/${LIBDIR}/dhcpcd
+    --rundir=/run
+    --sbindir=/sbin
+    --enable-ipv6
+    --with-hooks="yp ntp"
+)
+
+src_install() {
+    default
+    keepdir /var/lib/dhcpcd
+}
