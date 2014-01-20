@@ -46,7 +46,7 @@ scm-cvs_cvs() {
     fi
     has "${cmd}" update up upd && extra+=( -dP -I.scm.exlib.timestamp )
 
-    ${echo} cd "${dir}" '&&' cvs "${global[@]}" "${cmd}" "${extra[@]}" "${@}"
+    ${echo} cd "${dir}" '&&' cvs "${global[@]}" "${cmd}" "${extra[@]}" "${@}" >&2
     ( cd "${dir}" && cvs "${global[@]}" "${cmd}" "${extra[@]}" "${@}" ) || die_unless_nonfatal "cvs ${cmd} failed"
 }
 
@@ -139,16 +139,16 @@ scm-cvs_set_branchdate() {
 
 scm-cvs_do_checkout() {
     local dir=$(scm_get_var CHECKOUT_TO)
-    addfilter "${dir%/*}/CVS"
-    local what=$(scm-cvs_tagrevbranch) whatarr=
+    esandbox addfilter "${dir%/*}/CVS"
+    local what=$(scm-cvs_tagrevbranch) whatarr=( )
     [[ -n ${what} ]] && whatarr=( "${what}" )
     scm-cvs_cvs checkout "${whatarr[@]}" "$(scm_get_var SUBPATH)"
     scm-cvs_set_branchdate
-    rmfilter "${dir%/*}/CVS"
+    esandbox rmfilter "${dir%/*}/CVS"
 }
 
 scm-cvs_do_update() {
-    local what=$(scm-cvs_tagrevbranch) whatarr=
+    local what=$(scm-cvs_tagrevbranch) whatarr=( )
     [[ -n ${what} ]] && whatarr=( "${what}" )
     scm-cvs_cvs update -A "${whatarr[@]}"
     scm-cvs_set_branchdate
@@ -171,4 +171,3 @@ scm-cvs_do_info() {
     echo "CVS revision list for ${SCM_THIS:-primary repository}:"
     scm_get_var CVS_ACTUAL_REVISION_LIST
 }
-
