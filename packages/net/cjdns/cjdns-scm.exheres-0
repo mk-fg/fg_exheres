@@ -3,8 +3,7 @@
 
 SCM_REPOSITORY="https://github.com/cjdelisle/cjdns"
 
-require scm-git cmake python\
-    systemd-service [ systemd_files=[ "$WORK"/contrib/systemd ] ]
+require scm-git systemd-service [ systemd_files=[ "$WORK"/contrib/systemd ] ]
 
 SUMMARY="Encrypted networking for regular people."
 
@@ -15,19 +14,25 @@ SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
-DEPENDENCIES=""
+DEPENDENCIES="
+    build:
+        dev-lang/node
+"
 
 BUGS_TO="mk.fraggod@gmail.com"
 
 
+src_compile() {
+    edo ./do
+}
+
 src_install() {
     # Main C parts
-    dobin "${ECMAKE_BUILD_DIR}"/admin/angel/cjdns
-    newbin "${ECMAKE_BUILD_DIR}"/admin/angel/cjdroute2 cjdroute
+    dobin cjdroute dnsserv
 
     # Helper C tools
-    for bin in cleanconfig benc2json privatetopublic publictoip6
-    do newbin "${ECMAKE_BUILD_DIR}"/"$bin" "cjdns_${bin}"
+    for bin in cleanconfig benc2json privatetopublic publictoip6 makekeys sybilsim
+    do newbin $bin cjdns_${bin}
     done
 
     # Lots of bindings/tools in contrib/ - ignored
