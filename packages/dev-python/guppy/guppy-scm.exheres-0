@@ -1,7 +1,7 @@
 # Copyright 2011 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="https://guppy-pe.svn.sourceforge.net/svnroot/guppy-pe/trunk/guppy"
+SCM_REPOSITORY="https://svn.code.sf.net/p/guppy-pe/code/trunk/guppy"
 SCM_SVN_RAW_URI=true
 
 require distutils pypi scm-svn
