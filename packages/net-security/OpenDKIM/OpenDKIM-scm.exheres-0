@@ -20,6 +20,7 @@ MYOPTIONS="gnutls lua memcache"
 DEPENDENCIES="
     build+run:
         dev-libs/libxml2
+        dev-libs/libstrl
         dev-libs/tre
         mail-mta/sendmail
         net-misc/curl
