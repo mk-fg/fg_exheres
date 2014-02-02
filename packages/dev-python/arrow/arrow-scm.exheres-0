@@ -1,0 +1,23 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://github.com/crsmithdev/arrow"
+
+require distutils pypi scm-git
+
+SUMMARY="Better dates & times for Python."
+
+HOMEPAGE="https://github.com/crsmithdev/arrow"
+DOWNLOADS=""
+
+LICENCES="Apache-2.0"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-python/python-dateutil
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
