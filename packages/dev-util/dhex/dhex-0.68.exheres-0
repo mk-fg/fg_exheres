@@ -1,0 +1,34 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+MY_PNV="${PN}_${PV}"
+
+SUMMARY="Curses-based hex editor and binary diff tool."
+
+HOMEPAGE="http://www.dettus.net/dhex/"
+DOWNLOADS="http://www.dettus.net/dhex/${MY_PNV}.tar.gz"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        sys-libs/ncurses
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="${WORKBASE}/${MY_PNV}"
+
+src_prepare() {
+    edo sed -i '/^[ \t]*strip dhex$/d' Makefile
+}
+
+src_install() {
+    edo mkdir -p "$IMAGE"/usr/bin "$IMAGE"/usr/man/man{1,5}
+    emake DESTDIR="$IMAGE"/usr install
+    emagicdocs
+}
