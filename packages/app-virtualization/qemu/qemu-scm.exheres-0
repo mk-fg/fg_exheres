@@ -1,0 +1,298 @@
+# Copyright 2014 Mike Kazantsev
+# Copyright 2009-2014 Wulf C. Krueger <philantrop@exherbo.org>
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://git.qemu-project.org/qemu.git"
+
+SCM_SECONDARY_REPOSITORIES="qemu_palcode pixman qemu_dtc"
+SCM_qemu_palcode_REPOSITORY="https://github.com/rth7680/qemu-palcode"
+SCM_pixman_REPOSITORY="git://anongit.freedesktop.org/pixman"
+SCM_qemu_dtc_REPOSITORY="git://git.qemu-project.org/dtc.git"
+SCM_EXTERNAL_REFS="
+    roms/qemu-palcode:qemu_palcode
+    pixman:pixman
+    dtc:qemu_dtc
+"
+
+for n in vgabios seabios SLOF ipxe openbios sgabios; do
+    n_local=qemu_$n
+    SCM_SECONDARY_REPOSITORIES+=" ${n_local}"
+    SCM_EXTERNAL_REFS+=" roms/${n}:${n_local}"
+    eval "SCM_${n_local}_REPOSITORY=git://git.qemu-project.org/${n}.git"
+done
+
+require udev-rules scm-git
+
+SUMMARY="Generic F/OSS machine emulator and virtualizer"
+
+HOMEPAGE="http://${PN}.org/"
+DOWNLOADS=""
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="
+    alsa
+    async [[ description = [ Enable asynchronous I/O using the kernels native interface ] ]]
+    bluetooth
+    caps [[ description = [ Use libcap-ng to reduce qemu process privileges ] ]]
+    debug [[ description = [ Enable common debugging features ] ]]
+    gnutls [[ description = [ Enable TLS encryption for VNC server ] ]]
+    (
+        gtk2 [[ description = [ Enables the GTK+-2 GUI part of qemu ] ]]
+        gtk3 [[ description = [ Enables the GTK+-3 GUI part of qemu ] ]]
+    ) [[ number-selected = at-most-one ]]
+    iasl [[ description = [ Enable QEMU to create ACPI tables directly ] ]]
+    iscsi [[ description = [ Enable iSCSI support ] ]]
+    jpeg [[ description = [ Enable JPEG lossy compression for VNC server ] ]]
+    opengl
+    png [[ description = [ Enable PNG compression for VNC server ] ]]
+    pulseaudio
+    rbd [[ description = [ Support storage on rados block devices (rbd; ceph) ] ]]
+    sasl [[ description = [ Enables SASL authentication for VNC server ] ]]
+    sdl [[ description = [ Enables the SDL GUI part of qemu ] ]]
+    smartcard [[ description = [ Enables smartcard support ] ]]
+    spice [[ description = [ Enable the SPICE protocol, a remote-display system ] ]]
+    ssh-block-dev [[ description = [ Enable support for ssh block devices ] ]]
+    usb-passthrough [[ description = [ Enable USB passthrough support ] ]]
+    vde [[ description = [ Enable support for VDE-based networking ] ]]
+    virtfs [[ description = [ Enable support for Plan 9 folder sharing over Virtio ]
+              requires = [ caps xattr ] ]]
+    xattr
+    (
+        amd64 [[ description = [ build the amd64 (x86_64) target ] ]]
+        arm [[ description = [ build the arm target ] ]]
+        ppc [[ description = [ build the ppc (powerpc) target ] ]]
+        ppc64 [[ description = [ build the ppc64 (powerpc64) target ] ]]
+        x86 [[ description = [ build the x86 target ] ]]
+    ) [[ number-selected = at-least-one ]]
+"
+
+DEPENDENCIES="
+    build:
+        dev-lang/python:*[<3.0]
+        virtual/pkg-config
+        spice? ( virtualization-lib/spice-protocol[>=0.12.4] )
+    build+run:
+        net-misc/curl[>=7.19.6]
+        sys-apps/util-linux[>=2.16.1]
+        sys-libs/libseccomp[>=2.1.0]
+        x11-libs/pixman:1
+        alsa? ( sys-sound/alsa-lib[>=1.0.13] )
+        async? ( dev-libs/libaio[>=0.3.107] )
+        bluetooth? ( net-wireless/bluez[>=4.9] )
+        caps? ( sys-libs/libcap-ng )
+        gnutls? ( dev-libs/gnutls )
+        gtk2? (
+            dev-libs/vte:0[>=0.24.0]
+            x11-libs/gtk+:2[>=2.18.0]
+        )
+        gtk3? (
+            dev-libs/vte:3.0[>=0.32.0]
+            x11-libs/gtk+:3[>=3.0.0]
+        )
+        iasl? ( sys-power/iasl )
+        iscsi? ( dev-libs/libiscsi[>=1.7.0] )
+        jpeg? ( media-libs/jpeg )
+        opengl? ( x11-dri/mesa[X] )
+        png? ( media-libs/libpng )
+        pulseaudio? ( media-sound/pulseaudio )
+        rbd? ( sys-cluster/ceph )
+        sasl? ( net-libs/cyrus-sasl[>=2.1.22] )
+        sdl? ( media-libs/SDL[X][>=1.2.11] )
+        smartcard? (
+            dev-libs/libcacard
+            dev-libs/nss[>=3.13.3]
+        )
+        spice? (
+            virtualization-lib/spice[>=0.8.2-r2]
+            virtualization-lib/spice-protocol[>=0.12.3]
+        )
+        ssh-block-dev? ( net-libs/libssh2[>=1.2.8] )
+        usb-passthrough? ( dev-libs/libusb:1[>=1.0.13] )
+        vde? ( net/vde[>=2.2.2] )
+        xattr? ( sys-apps/attr )
+        !app-emulation/qemu [[
+            description = [ Same package, different category ]
+            resolution = [ uninstall-blocked-after ]
+        ]]
+        !app-virtualization/qemu-kvm [[
+            description = [ qemu-kvm and qemu finally completely merged again. ]
+            resolution = [ uninstall-blocked-after ]
+        ]]
+        group/kvm
+"
+#		rados? ( dev-libs/rados )
+
+BUGS_TO="mk.fraggod@gmail.com"
+REMOTE_IDS="freecode:qemu"
+
+
+DEFAULT_SRC_COMPILE_PARAMS=( V=1 )
+
+src_prepare() {
+    # Don't install the docs directly. We do that in src_install.
+    edo sed -i -e '/$(DESTDIR)$(docdir)/d' Makefile
+
+    default
+}
+
+src_configure() {
+    local my_targets=
+
+    local myconfig=(
+        --prefix=/usr
+        --libdir=/usr/${LIBDIR}
+        --localstatedir=/var
+        --sysconfdir=/etc
+        --enable-curl
+        --enable-curses
+        --enable-fdt
+        --enable-guest-agent
+        --enable-guest-base
+        --enable-kvm
+        --enable-linux-user
+        --enable-seccomp
+        --enable-system
+        --enable-tcg-interpreter
+        --enable-tpm
+        --enable-user
+        --enable-uuid
+        --enable-vhost-net
+        --enable-vhost-scsi
+        --disable-brlapi
+        --disable-glusterfs
+        --disable-rdma
+        --disable-sparse
+        --disable-strip
+        --disable-usb-redir
+        --disable-werror
+        --disable-xen
+        --disable-xen-pci-passthrough
+        --disable-xfsctl # needs xfs/xfs.h, which isn't installed by xfsprogs atm
+        --python=/usr/bin/python2
+        --with-system-pixman # required for softmmu
+        $(option_enable async linux-aio)
+        $(option_enable async virtio-blk-data-plane)
+        $(option_enable bluetooth bluez)
+        $(option_enable caps cap-ng)
+        $(option_enable gnutls vnc-tls)
+        $(option_enable gnutls vnc-ws)
+        $(option_enable iscsi libiscsi)
+        $(option_enable jpeg vnc-jpeg)
+        $(option_enable opengl glx)
+        $(option_enable png vnc-png)
+        $(option_enable rbd)
+        $(option_enable sasl vnc-sasl)
+        $(option_enable sdl)
+        $(option_enable smartcard smartcard-nss)
+        $(option_enable spice)
+        $(option_enable ssh-block-dev libssh2)
+        $(option_enable usb-passthrough libusb)
+        $(option_enable vde)
+        $(option_enable virtfs)
+        $(option_enable xattr attr)
+
+        --cc=${CC}
+        --enable-vhdx
+        --without-vss-sdk
+        --without-win-sdk
+        $(option iasl && echo --iasl=/usr/bin/iasl)
+    )
+
+    # audio drivers
+    local myaudiodrv="--audio-drv-list="
+    option alsa && myaudiodrv+="alsa "
+    option pulseaudio && myaudiodrv+="pa "
+    option sdl && myaudiodrv+="sdl "
+
+    # features
+    if option debug ; then
+        myconfig+=( --enable-debug-info )
+    else
+        myconfig+=( --disable-debug-info )
+    fi
+
+    if option gtk2 ; then
+        myconfig+=(
+            --enable-gtk
+            --with-gtkabi=2.0
+        )
+    elif option gtk3 ; then
+        myconfig+=(
+            --enable-gtk
+            --with-gtkabi=3.0
+        )
+    else
+        myconfig+=( --disable-gtk )
+    fi
+
+    # targets
+    option arm && my_targets+=",arm-linux-user,armeb-linux-user,arm-softmmu"
+    option amd64 && my_targets+=",x86_64-linux-user,x86_64-softmmu"
+    option ppc && my_targets+=",ppc-linux-user,ppcemb-softmmu,ppc-softmmu"
+    option ppc64 && my_targets+=",ppc64-linux-user,ppc64abi32-linux-user,ppc64-softmmu"
+    option x86 && my_targets+=",i386-linux-user,i386-softmmu"
+
+    edo ./configure \
+        "${myconfig[@]}" \
+        "${myaudiodrv}" \
+        --target-list=${my_targets:1}
+}
+
+src_install() {
+    default
+
+    insinto /etc/qemu/
+    insopts -m0755
+    doins "${FILES}"/qemu-if{down,up}
+    option sasl && doins qemu.sasl
+
+    newdoc pc-bios/README README.pc-bios
+    dodoc qemu-{doc,tech}.html
+    dodoc qemu.sasl
+    dodoc -r docs/*
+    dodoc -r QMP
+
+    # Remove obsolete docdir
+    edo rm \
+        "${IMAGE}"/usr/share/doc/qemu/qemu-{doc,tech}.html \
+        "${IMAGE}"/usr/share/doc/qemu/qmp-commands.txt
+    edo rmdir "${IMAGE}"/usr/share/doc/qemu
+
+    # Remove empty dirs
+    edo rmdir "${IMAGE}"/var/{run,}
+
+    arch=${CHOST%%-*}
+    case ${arch} in
+      i486|i586|i686|x86) arch=i386 ;;
+      amd64) arch=x86_64 ;;
+    esac
+    dosym /usr/bin/qemu-system-${arch} /usr/bin/qemu
+    dosym /usr/bin/qemu-system-${arch} /usr/bin/qemu-kvm
+
+    exeinto /usr/bin/
+    doexe scripts/kvm/*
+
+    insinto "${UDEVRULESDIR}"
+    hereins 65-kvm.rules <<EOF
+KERNEL=="kvm", GROUP="kvm", MODE="0660"
+EOF
+}
+
+pkg_postinst() {
+    local cruft=( /etc/udev/rules.d/65-kvm.rules )
+    for file in ${cruft[@]}; do
+        if test -f "${file}" ; then
+            nonfatal edo rm "${file}" || eerror "removing ${file} failed"
+        fi
+    done
+
+    elog "Make sure your user is in the 'kvm' group"
+    elog
+    elog "You will need the Universal TUN/TAP driver compiled into your"
+    elog "kernel or loaded as a module to use the virtual network device"
+    elog "if using -net tap. You will also need support for 802.1d"
+    elog "Ethernet Bridging and a configured bridge if using the provided"
+    elog "qemu-ifup script from /etc/qemu."
+}
