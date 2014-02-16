@@ -49,6 +49,6 @@ src_prepare() {
 }
 
 src_install() {
+    default
     edo rmdir "$IMAGE"/usr/share/electricsheep/icons
-    cmake_src_install
 }
