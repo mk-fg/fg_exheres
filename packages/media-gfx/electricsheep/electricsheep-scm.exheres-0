@@ -42,8 +42,6 @@ WORK="$WORK"/client_generic
 src_prepare() {
     # m4 file doesn't seem to be loaded from mk/autoconf/acx_pthread.m4
     edo sed -i 's/^ACX_PTHREAD.*/PTHREAD_OK=true/' configure.ac
-    # wxGTK:3.0 works as well, but configure check forces major=2, so override it
-    edo sed -i 's/^WX_VER_291=""/WX_VER_291=yes/' configure.ac
     # bogus case
     edo sed -i 's/^[[:space:]]*GLEE_LIBS="-lGLee"/GLEE_LIBS="-lglee"/' configure.ac
 
