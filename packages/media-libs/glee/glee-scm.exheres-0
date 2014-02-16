@@ -1,0 +1,23 @@
+# Copyright 2014 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://git.code.sf.net/p/glee/glee"
+
+require scm-git cmake sourceforge
+
+SUMMARY="Free cross-platform extension loading library for OpenGL."
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_prepare() {
+    edo mv Readme.txt readme.txt
+    cmake_src_prepare
+}

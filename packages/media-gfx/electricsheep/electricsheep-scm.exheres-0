@@ -1,0 +1,56 @@
+# Copyright 2014 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://electricsheep.googlecode.com/svn/"
+
+require scm-svn googlecode\
+    autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.13 ] ]
+
+SUMMARY="Collaborative abstract artwork generator."
+
+DOWNLOADS=""
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-lang/lua
+        dev-libs/boost
+        dev-libs/expat
+        dev-libs/tinyxml
+        gnome-desktop/libgtop
+        media/ffmpeg
+        media-gfx/flam3
+        media-libs/glee
+        net-misc/curl
+        x11-dri/freeglut
+        x11-dri/mesa
+        x11-libs/libX11
+        x11-libs/libXrender
+        x11-libs/wxGTK[>=2.9.1]
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="$WORK"/client_generic
+
+src_prepare() {
+    # m4 file doesn't seem to be loaded from mk/autoconf/acx_pthread.m4
+    edo sed -i 's/^ACX_PTHREAD.*/PTHREAD_OK=true/' configure.ac
+    # wxGTK:3.0 works as well, but configure check forces major=2, so override it
+    edo sed -i 's/^WX_VER_291=""/WX_VER_291=yes/' configure.ac
+    # bogus case
+    edo sed -i 's/^[[:space:]]*GLEE_LIBS="-lGLee"/GLEE_LIBS="-lglee"/' configure.ac
+
+    autotools_src_prepare
+}
+
+src_install() {
+    edo rmdir "$IMAGE"/usr/share/electricsheep/icons
+    cmake_src_install
+}

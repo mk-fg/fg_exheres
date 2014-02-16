@@ -1,0 +1,29 @@
+# Copyright 2014 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://flam3.googlecode.com/svn/"
+
+require scm-svn googlecode\
+    autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.13 ] ]
+
+SUMMARY="Command-line tools and API to manipulate and render genomes for the Electric Sheep."
+
+DOWNLOADS=""
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/libxml2
+        media-libs/jpeg
+        media-libs/libpng
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="$WORK"/src
