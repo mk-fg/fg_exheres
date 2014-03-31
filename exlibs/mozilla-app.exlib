@@ -1,69 +1,78 @@
-# Copyright 2011-2012 Quentin "Sardem FF7" Glidic <sardemff7+exherbo@sardemff7.net>
+# Copyright 2011-2014 Quentin "Sardem FF7" Glidic <sardemff7@exherbo.org>
 # Distributed under the terms of the GNU General Public License v2
 
-MOZ_HG_BASE_URI="http://hg.mozilla.org"
+myexparam application
+myexparam branding
+myexparam -b comm=false
 
-# Default to mozilla-central, you may want
-# to use mozilla-aurora
-: ${XULRUNNER_HG_MODULE:=mozilla-central}
-DOM_INSPECTOR_HG_MODULE=dom-inspector
+exparam -v MOZ_APPLICATION application
+exparam -v MOZ_BRANDING branding
 
-: ${COMM_HG_MODULE=${XULRUNNER_HG_MODULE/mozilla/comm}}
-LDAP_SDKS_HG_MODULE=projects/ldap-sdks
-VENKMAN_HG_MODULE=venkman
-IRC_HG_MODULE=chatzilla
+require python flag-o-matic
 
-SCM_TYPE=hg
-SCM_CHECKOUT_TO=moz_xulrunner
-SCM_UNPACK_TO="${WORKBASE}"/moz_xulrunner
-SCM_REPOSITORY=${MOZ_HG_BASE_URI}/${XULRUNNER_HG_MODULE}
-SCM_moz_dom_inspector_TYPE=hg
-SCM_moz_dom_inspector_REPOSITORY=${MOZ_HG_BASE_URI}/${DOM_INSPECTOR_HG_MODULE}
+if ever is_scm; then
+	MOZ_HG_BASE_URI="http://hg.mozilla.org"
 
-SCM_moz_comm_TYPE=hg
-SCM_moz_comm_REPOSITORY=${MOZ_HG_BASE_URI}/${COMM_HG_MODULE}
-SCM_moz_ldap_sdks_TYPE=hg
-SCM_moz_ldap_sdks_REPOSITORY=${MOZ_HG_BASE_URI}/${LDAP_SDKS_HG_MODULE}
-SCM_moz_venkman_TYPE=hg
-SCM_moz_venkman_REPOSITORY=${MOZ_HG_BASE_URI}/${VENKMAN_HG_MODULE}
-SCM_moz_irc_TYPE=hg
-SCM_moz_irc_REPOSITORY=${MOZ_HG_BASE_URI}/${IRC_HG_MODULE}
+	# Default to mozilla-central, you may want
+	# to use mozilla-aurora
+	MOZ_HG_MODULE_XULRUNNER=releases/mozilla-aurora
+	MOZ_HG_MODULE_DOM_INSPECTOR=dom-inspector
 
-SCM_enigmail_TYPE=git
-SCM_enigmail_REPOSITORY="git://git.code.sf.net/p/enigmail/source"
+	MOZ_HG_MODULE_COMM=${MOZ_HG_MODULE_XULRUNNER/mozilla/comm}
+	MOZ_HG_MODULE_LDAP_SDKS=projects/ldap-sdks
+	MOZ_HG_MODULE_VENKMAN=venkman
+	MOZ_HG_MODULE_IRC=chatzilla
 
-SCM_SECONDARY_REPOSITORIES="moz_dom_inspector ${SCM_SECONDARY_REPOSITORIES}"
+	SCM_CHECKOUT_TO=moz_xulrunner
+	SCM_UNPACK_TO="${WORKBASE}"/moz_xulrunner
+	SCM_REPOSITORY=${MOZ_HG_BASE_URI}/${MOZ_HG_MODULE_XULRUNNER}
+	SCM_moz_dom_inspector_REPOSITORY=${MOZ_HG_BASE_URI}/${MOZ_HG_MODULE_DOM_INSPECTOR}
 
-require autotools [ supported_autoconf=[ 2.1 ] supported_automake=[ none ] ] flag-o-matic
-require scm python
+	SCM_moz_comm_REPOSITORY=${MOZ_HG_BASE_URI}/${MOZ_HG_MODULE_COMM}
+	SCM_moz_ldap_sdks_REPOSITORY=${MOZ_HG_BASE_URI}/${MOZ_HG_MODULE_LDAP_SDKS}
+	SCM_moz_venkman_REPOSITORY=${MOZ_HG_BASE_URI}/${MOZ_HG_MODULE_VENKMAN}
+	SCM_moz_irc_REPOSITORY=${MOZ_HG_BASE_URI}/${MOZ_HG_MODULE_IRC}
 
-export_exlib_phases pkg_setup src_unpack src_prepare src_configure src_install
+	exparam -b comm && SCM_SECONDARY_REPOSITORIES="moz_comm moz_ldap_sdks ${SCM_SECONDARY_REPOSITORIES}"
+	SCM_SECONDARY_REPOSITORIES="dom-inspector? ( moz_dom_inspector ) ${SCM_SECONDARY_REPOSITORIES}"
 
-# It is really quicker and we do not need a full repo here
-scm-hg_do_unpack() {
-	scm-hg_hg archive \
-		--rev=$(scm-hg_revision_spec) \
-		"$(scm_get_var UNPACK_TO)"
-}
+	require autotools [ supported_autoconf=[ 2.1 ] supported_automake=[ none ] ]
+	require scm-hg
 
+	# It is really quicker and we do not need a full repo here
+	scm-hg_do_unpack() {
+		scm-hg_hg archive \
+			--rev=$(scm-hg_revision_spec) \
+			"$(scm_get_var UNPACK_TO)"
+	}
+fi
 
-DOWNLOADS=""
+export_exlib_phases src_configure src_install
 
 LICENCES="MPL-2.0"
 SLOT="0"
 
 MYOPTIONS="
 	dbus
+	dom-inspector [[ description = [ Build and install the DOM Inspector extension ] ]]
+	gstreamer [[ description = [ Allow using gstreamer to play html5 <video> and <audio> ] ]]
 	gtk3
 	pulseaudio
 	raw [[ description = [ RAW image formats ] ]]
 	startup-notification
 	wifi
 "
+if exparam -b comm; then
+	MYOPTIONS+="
+		lightning [[ description = [ Install the calendar extension Lightning ] ]]
+	"
+fi
 
-case "${XULRUNNER_HG_MODULE}" in
-	releases/mozilla-beta|releases/mozilla-release) MYOPTIONS+=" bindist "  ;;
-esac
+if ! ever is_scm; then
+	MYOPTIONS+="
+		bindist [[ description = [ Disable official branding, allowing binary redistribution ] ]]
+	"
+fi
 
 DEPENDENCIES="
 	build:
@@ -93,6 +102,10 @@ DEPENDENCIES="
 		x11-libs/pixman
 
 		dbus? ( dev-libs/dbus-glib[>=0.72] )
+		gstreamer? (
+			media-libs/gstreamer:1.0[>=1.0]
+			media-plugins/gst-plugins-base:1.0[>=1.0]
+		)
 		gtk3? ( x11-libs/gtk+:3 )
 		!gtk3? ( x11-libs/gtk+:2[>=2.14.0] )
 		startup-notification? ( x11-libs/startup-notification )
@@ -102,115 +115,113 @@ DEPENDENCIES="
 "
 
 WORK="${WORKBASE}"/build
-ECONF_SOURCE="${WORKBASE}"/moz_xulrunner
 
-mozilla-app_pkg_setup() {
-	default
+# Needed for comm
+# Should be fixed upstream
+DEFAULT_SRC_COMPILE_PARAMS=(
+	MKDIR=mkdir
+)
 
-	# Set by configure (plus USE_AUTOCONF=1), but useful for NSPR
-	export MOZILLA_CLIENT=1
-	export BUILD_OPT=1
-	export NO_STATIC_LIB=1
-	export PKG_SKIP_STRIP=1
-	export USE_PTHREADS=1
+if ever is_scm; then
+	export_exlib_phases src_unpack src_prepare
 
-	MOZILLA_FIVE_HOME="/usr/${LIBDIR}/${PN}"
-	case "${PN}" in
-		firefox)
-			MOZ_APPLICATION=browser
-		;;
-		thunderbird)
-			MOZ_APPLICATION=mail
-		;;
-		seamonkey)
-			MOZ_APPLICATION=suite
-		;;
-	esac
+	if exparam -b comm; then
+		ECONF_SOURCE="${WORKBASE}"/moz_comm
+	else
+		ECONF_SOURCE="${WORKBASE}"/moz_xulrunner
+	fi
 
+	mozilla-app_src_unpack() {
+		scm_src_unpack
+		option dom-inspector && edo mv "${WORKBASE}"/moz_dom_inspector "${WORKBASE}"/moz_xulrunner/extensions/inspector
+		edo mkdir "${WORK}"
 
-	case "${XULRUNNER_HG_MODULE}" in
-		mozilla-central)
-			MOZ_BRANDING=nightly
-		;;
-		releases/mozilla-aurora)
-			MOZ_BRANDING=aurora
-		;;
-		releases/mozilla-beta|releases/mozilla-release)
-			if option bindist; then
-				MOZ_BRANDING=unofficial
-			else
-				MOZ_BRANDING=official
-			fi
-		;;
-	esac
-}
+		if exparam -b comm; then
+			edo mv "${WORKBASE}"/moz_xulrunner "${WORKBASE}"/moz_comm/mozilla
+			edo mv "${WORKBASE}"/moz_ldap_sdks "${WORKBASE}"/moz_comm/ldap/sdks
+		fi
+	}
 
-mozilla-app_src_unpack() {
-	scm_src_unpack
-	edo mv "${WORKBASE}"/moz_dom_inspector "${WORKBASE}"/moz_xulrunner/extensions/inspector
-	edo mkdir "${WORK}"
-}
+	mozilla-scm_patch_baseconfig() {
+		# Exherbo install dirs
+		edo sed -i \
+			-e "/^installdir/ c installdir = /usr/${LIBDIR}/${PN}" \
+			-e "/^includedir/ c includedir = /usr/include/${PN}" \
+			-e "/^idldir/ c idldir = /usr/share/idl/${PN}" \
+			-e "/^sdkdir/ c sdkdir = /usr/${LIBDIR}/${PN}-devel" \
+			config/baseconfig.mk
+	}
 
-mozilla-app_src_prepare() {
-	edo pushd "${ECONF_SOURCE}"
+	mozilla-app_src_prepare() {
+		edo pushd "${ECONF_SOURCE}"
 
-	default
+		default
 
-	# Exherbo install dirs
-	edo sed -i \
-		-e "/^installdir/ c installdir = ${MOZILLA_FIVE_HOME}" \
-		-e "/^includedir/ c includedir = /usr/include/${PN}" \
-		-e "/^idldir/ c idldir = /usr/share/idl/${PN}" \
-		-e "/^sdkdir/ c sdkdir = /usr/${LIBDIR}/${PN}-devel" \
-		config/baseconfig.mk
+		if exparam -b comm; then
+			mozilla-scm_patch_baseconfig
 
-	# Force symbols file to be regenerated
-	edo sed -i \
-		-e '/MAPFILE =/s/def/sym/' \
-		security/nss/lib/ckfw/builtins/manifest.mn \
-		security/nss/lib/ckfw/capi/manifest.mn \
-		security/nss/lib/ckfw/nssmkey/manifest.mn \
-		security/nss/lib/nss/manifest.mn \
-		security/nss/lib/ssl/manifest.mn \
-		security/nss/lib/util/manifest.mn \
-		security/nss/lib/smime/manifest.mn \
-		security/nss/lib/freebl/manifest.mn \
-		security/nss/lib/sqlite/manifest.mn \
-		security/nss/lib/softoken/legacydb/manifest.mn \
-		security/nss/lib/softoken/manifest.mn
+			eautoconf
 
-	# Avoid failures when nothing to remove (.pyc)
-	edo sed -i \
-		-e 's/xargs rm/xargs rm -f/' \
-		toolkit/mozapps/installer/packager.mk
+			edo popd
+			edo pushd "${ECONF_SOURCE}"/mozilla
+		fi
 
-	edo sed -i \
-		-e '/GCC_TREAT_WARNINGS_AS_ERRORS/s/YES/NO/' \
-		media/webrtc/trunk/build/common.gypi
+		mozilla-scm_patch_baseconfig
 
-	eautoconf
+		# Force symbols file to be regenerated
+		edo sed -i \
+			-e '/MAPFILE =/s/def/sym/' \
+			security/nss/lib/ckfw/builtins/manifest.mn \
+			security/nss/lib/ckfw/capi/manifest.mn \
+			security/nss/lib/ckfw/nssmkey/manifest.mn \
+			security/nss/lib/nss/manifest.mn \
+			security/nss/lib/ssl/manifest.mn \
+			security/nss/lib/util/manifest.mn \
+			security/nss/lib/smime/manifest.mn \
+			security/nss/lib/freebl/manifest.mn \
+			security/nss/lib/sqlite/manifest.mn \
+			security/nss/lib/softoken/legacydb/manifest.mn \
+			security/nss/lib/softoken/manifest.mn
 
-	cd js/src
+		# Avoid failures when nothing to remove (.pyc)
+		edo sed -i \
+			-e 's/xargs rm/xargs rm -f/' \
+			toolkit/mozapps/installer/packager.mk
 
-	edo mkdir .deps
+		edo sed -i \
+			-e '/GCC_TREAT_WARNINGS_AS_ERRORS/s/YES/NO/' \
+			media/webrtc/trunk/build/common.gypi
 
-	eautoconf
+		eautoconf
 
-	edo popd
-}
+		edo pushd js/src
+
+		edo mkdir .deps
+
+		eautoconf
+
+		edo popd
+		edo popd
+	}
+fi
 
 mozilla-app_src_configure() {
+	# Prevent the build system to use any default configuration
+	edo touch "${ECONF_SOURCE}"/.mozconfig
+
+	export PKG_SKIP_STRIP=1
+
 	# Optimization CFLAG
-	local opt=-O2
+	local x opt=-O2
 	# Set optimization level based on CFLAGS
-	for x in ${CFLAGS}; do
+	for x in ${CFLAGS} ${CXXFLAGS}; do
 		case ${x} in
 			-O0|-01|-O2|-O3|-Os) opt=${x} ;;
 		esac
 	done
 
-	# Now strip optimization from CFLAGS so it doesn't end up in the
-	# compile string
+	# Now filter -O from CFLAGS/CXXFLAGS to avoid a duplicate in the resulting
+	# compile string.
 	filter-flags '-O*'
 
 	# Ensure we do not fail on i{3,5,7} processors that support -mavx
@@ -239,8 +250,8 @@ mozilla-app_src_configure() {
 
 		# Use system libs
 		# --with-system-jpeg # needs libjpeg-turbo
-		# --enable-system-cairo # needs disable-subpixel-antialiasing.patch (in ff tree)
 		--with-system-bz2
+		--enable-system-cairo
 		--enable-system-ffi
 		--enable-system-hunspell
 		--with-system-icu
@@ -265,12 +276,10 @@ mozilla-app_src_configure() {
 		--disable-crashreporter
 		--disable-profilesharing
 		--disable-profilelocking
-		--disable-gconf		  # Deprecated
-		--disable-gnomeui		# Deprecated
-		--disable-gnomevfs	   # Deprecated
-		--disable-gstreamer
+		--disable-gconf
 		--disable-websms-backend
 		$(option_enable dbus)
+		$(option_enable gstreamer gstreamer 1.0)
 		$(option_enable pulseaudio)
 		$(option_enable raw)
 		$(option_enable startup-notification)
@@ -279,8 +288,8 @@ mozilla-app_src_configure() {
 		# Application defaults
 		--enable-ipc
 		--enable-application=${MOZ_APPLICATION}
-		--with-default-mozilla-five-home="${MOZILLA_FIVE_HOME}"
-		--enable-extensions=default,-gnomevfs,inspector
+		--with-default-mozilla-five-home=/usr/${LIBDIR}/${PN}
+		$(option dom-inspector --enable-extensions=default,inspector --enable-extensions=default)
 
 		# Basic features
 		--enable-crypto
@@ -293,13 +302,19 @@ mozilla-app_src_configure() {
 		--enable-places_bookmarks
 	)
 
-	if [ "${MOZ_BRANDING}" = "official" ]; then
+	if ever is_scm || option bindist; then
 		econf_params+=(
-			--enable-official-branding
+			--with-branding=${MOZ_APPLICATION}/branding/${MOZ_BRANDING}
 		)
 	else
 		econf_params+=(
-			--with-branding=${MOZ_APPLICATION}/branding/${MOZ_BRANDING}
+			--enable-official-branding
+		)
+	fi
+
+	if exparam -b comm; then
+		econf_params+=(
+			$(option_enable lightning calendar)
 		)
 	fi
 
@@ -314,26 +329,30 @@ mozilla-app_src_install() {
 
 	find "${IMAGE}" -type d -empty -printf "rmdir %P\n" -delete 1>&2
 
-	local branding_path_base branding_path icon iconsname size
-	branding_path_base="${ECONF_SOURCE}"/${MOZ_APPLICATION}/branding
-
-	[[ ! -d "${branding_path_base}"/official ]] && \
-		ln -sf ../../other-licenses/branding/${PN} "${branding_path_base}"/official
-
-	branding_path="${branding_path_base}"/${MOZ_BRANDING}
-	source "${branding_path}"/configure.sh
-	targeticonname="${MOZ_APP_DISPLAYNAME,,}"
+	local branding_path="${ECONF_SOURCE}"/ icon iconsname size
 
 	iconsname=default
 	case "${MOZ_APPLICATION}" in
 		mail)
 			iconsname=mailicon
 		;;
-		browser)
-			# In case MOZ_APP_DISPLAYNAME is multi-word
-			targeticonname=${MOZ_BRANDING,,}
-		;;
 	esac
+
+	if ever is_scm || option bindist; then
+		branding_path+=${MOZ_APPLICATION}/branding/${MOZ_BRANDING}
+	else
+		case "${MOZ_APPLICATION}" in
+			browser)
+				branding_path+=other-licenses/branding/${PN}
+			;;
+			*)
+				branding_path+=${MOZ_APPLICATION}/branding/official
+			;;
+		esac
+	fi
+
+	source "${branding_path}"/configure.sh
+	targeticonname="${MOZ_APP_DISPLAYNAME,,}"
 
 	# Install icons
 	for size in 16 22 24 32 48 64 72 96 128 256; do
@@ -360,24 +379,31 @@ mozilla-app_src_install() {
 		-e "s:@ICON@:${targeticonname}:" \
 		"${IMAGE}"/usr/share/applications/${PN}.desktop
 
-	# Add StartupNotify=true bug 237317
-	if option startup-notification ; then
-		edo sed -i \
-			-e '$ a StartupNotify=true' \
-			"${IMAGE}"/usr/share/applications/${PN}.desktop
-	fi
+	option startup-notification || edo sed -i \
+		-e '/StartupNotify=true/d' \
+		"${IMAGE}"/usr/share/applications/${PN}.desktop
 
 	# Plugins dir
 	hereenvd 50${PN} <<EOF
-MOZ_PLUGIN_PATH="${MOZILLA_FIVE_HOME}/plugins:/usr/${LIBDIR}/mozilla/plugins:/usr/${LIBDIR}/nsbrowser/plugins:/opt/nsbrowser/plugins"
+MOZ_PLUGIN_PATH="/usr/${LIBDIR}/${PN}/plugins:/usr/${LIBDIR}/mozilla/plugins:/usr/${LIBDIR}/nsbrowser/plugins:/opt/nsbrowser/plugins"
 COLON_SEPARATED="MOZ_PLUGIN_PATH"
 EOF
+
+	option dom-inspector && mozilla-app_unpack_extension 'inspector@mozilla.org' mozilla/dist/xpi-stage/inspector*.xpi
+
+	if exparam -b comm; then
+		if option lightning; then
+			mozilla-app_unpack_extension '{a62ef8ec-5fdc-40c2-873c-223b8a6925cc}' mozilla/dist/xpi-stage/gdata-provider*.xpi
+			mozilla-app_unpack_extension calendar-timezones@mozilla.org mozilla/dist/xpi-stage/calendar-timezones*.xpi
+			mozilla-app_unpack_extension '{e2fda1a4-762b-4020-b5ad-a41df1933103}' mozilla/dist/xpi-stage/lightning*.xpi
+		fi
+	fi
 }
 
 mozilla-app_unpack_extension() {
 	local emid=$1 xpi=$2
-	dodir ${MOZILLA_FIVE_HOME}/extensions/${emid}
-	edo pushd "${IMAGE}"${MOZILLA_FIVE_HOME}/extensions/${emid}
+	dodir /usr/${LIBDIR}/${PN}/extensions/${emid}
+	edo pushd "${IMAGE}"usr/${LIBDIR}/${PN}/extensions/${emid}
 	edo unzip "${WORK}"/${xpi}
 	edo popd
 }
