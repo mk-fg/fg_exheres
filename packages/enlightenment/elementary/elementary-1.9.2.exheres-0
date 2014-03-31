@@ -1,0 +1,49 @@
+# Copyright 2012-2014 Mike Kazantsev
+# Copyright 2010 Paul Seidler
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Enlightenment's basic widget set, based on EFL with focus mobile touch-screen devices."
+
+HOMEPAGE="https://phab.enlightenment.org/diffusion/ELM/"
+DOWNLOADS="http://download.enlightenment.org/rel/libs/${PN}/${PNV}.tar.gz"
+
+LICENCES="LGPL-2.1"
+SLOT="1"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="doc"
+
+DEPENDENCIES="
+    build+run:
+        enlightenment/efl
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --disable-static
+
+    --enable-ecore-x
+    --enable-quick-launch
+    --enable-elementary-config
+
+    # TODO/dont need it
+    --disable-ecore-fb
+    --disable-ecore-sdl
+    --disable-ecore-cocoa
+    --disable-ecore-win32
+    --disable-ecore-wince
+    --disable-ecore-wayland
+
+    --disable-build-examples
+    --disable-install-examples
+
+    --disable-emap
+    --disable-eweather
+    --disable-elocation
+
+    --with-tests=none
+    --with-elementary-web-backend=none
+)
+
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( doc )
