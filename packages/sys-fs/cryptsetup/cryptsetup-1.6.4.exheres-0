@@ -1,4 +1,4 @@
-# Copyright 2011-2013 Mike Kazantsev
+# Copyright 2011-2014 Mike Kazantsev
 # Copyright 2011-2012 Wulf C. Krueger <philantrop@exherbo.org>
 # Copyright 2009 Mike Kelly
 # Copyright 2008 Stephen Bennett
@@ -7,6 +7,8 @@
 require googlecode easy-multibuild
 
 SUMMARY="Userland utilities for dm-crypt"
+
+DOWNLOADS="mirror://kernel/linux/utils/${PN}/v$(ever range 1-2)/${PNV}.tar.xz"
 
 LICENCES="GPL-2"
 SLOT="0"
