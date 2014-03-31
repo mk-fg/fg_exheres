@@ -1,4 +1,4 @@
-# Copyright 2012 Mike Kazantsev
+# Copyright 2012-2014 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 FONT="${PN}"
@@ -10,7 +10,7 @@ SUMMARY="Google Croscore Fonts"
 HOMEPAGE="https://fedoraproject.org/wiki/Google_Croscore_fonts"
 DOWNLOADS="https://gsdview.appspot.com/chromeos-localmirror/distfiles/${PNV}.tar.gz"
 
-LICENCES="OFL"
+LICENCES="OFL-1.1"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
