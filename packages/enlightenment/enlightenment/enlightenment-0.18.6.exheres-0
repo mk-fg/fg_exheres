@@ -20,8 +20,8 @@ DEPENDENCIES="
         doc? ( app-doc/doxygen )
     build+run:
         enlightenment/efl
+        enlightenment/elementary
         sys-libs/pam
-        sys-power/pm-utils
         systemd? ( sys-apps/systemd )
 "
 

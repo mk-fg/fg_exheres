@@ -17,6 +17,9 @@ DEPENDENCIES="
         doc? ( app-doc/doxygen )
     build+run:
         enlightenment/efl
+    recommendation:
+        enlightenment/emotion_generic_players
+        enlightenment/evas_generic_loaders
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
@@ -49,3 +52,9 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
 )
 
 DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( doc )
+
+src_install() {
+    default
+
+    nonfatal edo rmdir -p "$IMAGE"/usr/share/elementary/examples
+}
