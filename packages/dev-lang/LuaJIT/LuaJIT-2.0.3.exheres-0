@@ -1,0 +1,26 @@
+# Copyright 2014 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Just-In-Time Compiler for the Lua programming language."
+
+HOMEPAGE="http://luajit.org/"
+DOWNLOADS="http://luajit.org/download/${PNV}.tar.gz"
+
+LICENCES="as-is"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_COMPILE_PARAMS=( PREFIX=/usr MULTILIB=$LIBDIR )
+DEFAULT_SRC_INSTALL_PARAMS=( "${DEFAULT_SRC_COMPILE_PARAMS[@]}" )
+
+src_install() {
+    default
+
+    nonfatal edo rmdir -p "$IMAGE"/usr/{$LIBDIR,share}/lua/5.1
+}

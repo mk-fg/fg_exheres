@@ -1,0 +1,137 @@
+# Copyright 2012-2014 Mike Kazantsev
+# Copyright 2010 Paul Seidler
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Core Enlightenment Foundation Libraries on which most e17 stuff is built."
+
+HOMEPAGE="https://phab.enlightenment.org/diffusion/EFL/"
+DOWNLOADS="http://download.enlightenment.org/rel/libs/${PN}/${PNV}.tar.gz"
+
+LICENCES="BSD-2"
+SLOT="1"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="
+    doc
+    pixman [[ description = [ Enable pixman for software rendering ] ]]
+    systemd
+"
+
+DEPENDENCIES="
+    build:
+        dev-util/pkg-config
+        x11-proto/kbproto
+        x11-proto/printproto
+        x11-proto/xineramaproto
+        doc? ( app-doc/doxygen )
+    build+run:
+        dev-lang/LuaJIT
+        dev-libs/fribidi
+        dev-libs/glib
+        dev-libs/openssl
+        media-libs/freetype:2
+        media-libs/fontconfig
+        media-libs/giflib
+        media-libs/jpeg
+        media-libs/libpng
+        media-libs/libsndfile
+        media-libs/libwebp
+        media-sound/pulseaudio
+        net-misc/curl
+        sci-physics/bullet
+        sys-apps/dbus
+        sys-apps/util-linux
+        sys-libs/zlib
+        x11-dri/libdrm
+        x11-dri/mesa
+        x11-libs/harfbuzz
+        x11-libs/libX11
+        x11-libs/libXau
+        x11-libs/libxcb
+        x11-libs/libXcomposite
+        x11-libs/libXcursor
+        x11-libs/libXdamage
+        x11-libs/libXdmcp
+        x11-libs/libXext
+        x11-libs/libXfixes
+        x11-libs/libXi
+        x11-libs/libXinerama
+        x11-libs/libXp
+        x11-libs/libXrandr
+        x11-libs/libXrender
+        x11-libs/libXScrnSaver
+        x11-libs/libXtst
+        x11-utils/xcb-util
+        systemd? ( sys-apps/systemd )
+        pixman? ( x11-libs/pixman )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS+=(
+    --enable-drm
+    --enable-fontconfig
+    --enable-fribidi
+    --enable-eo-id
+    --enable-harfbuzz
+    --enable-tile-rotate
+    --enable-cserve
+    --enable-audio
+    --enable-pulseaudio
+    --enable-xinput22
+    --enable-xim
+    --enable-scim
+    --enable-libmount
+    --enable-physics
+    --enable-multisense
+
+    --disable-static
+    --disable-magic-debug
+    --disable-valgrind
+    --disable-wayland
+    --disable-fb
+    --disable-sdl
+    --disable-egl
+    --disable-g-main-loop
+    --disable-gstreamer
+    --disable-gstreamer1
+    --disable-tizen
+    --disable-tslib
+    --disable-avahi
+    --disable-gesture
+    --disable-xpresent
+    --disable-ibus
+    --disable-multisense
+    --disable-xine
+    --disable-v4l2
+    --disable-always-build-examples
+
+    --enable-image-loader-bmp
+    --enable-image-loader-eet
+    --enable-image-loader-generic
+    --enable-image-loader-gif
+    --enable-image-loader-ico
+    --enable-image-loader-jpeg
+    --enable-image-loader-pmaps
+    --enable-image-loader-png
+    --enable-image-loader-psd
+    --enable-image-loader-wbmp
+    --enable-image-loader-webp
+    --enable-image-loader-xpm
+    --enable-image-loader-tga
+    --disable-image-loader-jp2k
+    --disable-image-loader-tiff
+
+    --with-crypto=openssl
+    --with-tests=none
+    --with-opengl=full
+    --with-x
+    --with-glib=yes
+
+    # --with-x11=xcb # "opengl does not work with xcb (yet)"
+
+    # For --disable-gstreamer1
+    --enable-i-really-know-what-i-am-doing-and-that-this-will-probably-break-things-and-i-will-fix-them-myself-and-send-patches-aaa
+)
+
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES+=( doc pixman systemd )
