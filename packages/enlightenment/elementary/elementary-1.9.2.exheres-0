@@ -13,6 +13,8 @@ PLATFORMS="~amd64 ~x86"
 MYOPTIONS="doc"
 
 DEPENDENCIES="
+    build:
+        doc? ( app-doc/doxygen )
     build+run:
         enlightenment/efl
 "

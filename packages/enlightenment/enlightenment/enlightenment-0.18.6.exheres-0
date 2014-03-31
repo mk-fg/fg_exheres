@@ -1,0 +1,49 @@
+# Copyright 2012-2014 Mike Kazantsev
+# Copyright 2011 Paul Seidler
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Enlightenment, the window manager."
+
+HOMEPAGE="http://www.enlightenment.org/"
+DOWNLOADS="http://download.enlightenment.org/rel/apps/${PN}/${PNV}.tar.gz"
+
+LICENCES="BSD-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="doc systemd"
+
+DEPENDENCIES="
+    build:
+        dev-util/intltool
+        sys-devel/gettext[>=0.12.1]
+        x11-proto/xproto
+        doc? ( app-doc/doxygen )
+    build+run:
+        enlightenment/efl
+        sys-libs/pam
+        sys-power/pm-utils
+        systemd? ( sys-apps/systemd )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS+=(
+    --enable-device-udev
+    --disable-device-hal
+
+    --enable-mount-eeze
+    --enable-mount-udisks
+
+    --enable-pam
+    --enable-simple-x11
+    --enable-install-sysactions
+    --enable-enotify
+
+    --disable-bluez4
+    --disable-connman
+    --disable-wayland-clients
+    --disable-wayland-egl
+)
+
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( doc )

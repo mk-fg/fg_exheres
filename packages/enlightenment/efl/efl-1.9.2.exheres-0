@@ -61,6 +61,7 @@ DEPENDENCIES="
         x11-libs/libXScrnSaver
         x11-libs/libXtst
         x11-utils/xcb-util
+        x11-utils/xcb-util-keysyms
         systemd? ( sys-apps/systemd )
         pixman? ( x11-libs/pixman )
 "
