@@ -1,4 +1,4 @@
-# Copyright 2012-2013 Mike Kazantsev
+# Copyright 2012-2014 Mike Kazantsev
 # Copyright 2010, 2011 Johannes Nixdorf <mixi@user-helfen-usern.de>
 # Distributed under the terms of the GNU General Public License v2
 
@@ -35,19 +35,20 @@ src_configure() {
     CONFIG=$(<${config}.in)
 
     CONFIG+="
-    CC = ${CC}
-    CFLAGS = ${CFLAGS}
-    LDFLAGS = ${LDFLAGS}
-    NETPBMLIBTYPE = unixshared
-    NETPBMLIBSUFFIX = so
-    LDRELOC = ld --reloc
-    LINKER_CAN_DO_EXPLICIT_LIBRARY = N
-    CFLAGS_SHLIB = ${CFLAGS} -fPIC
-    ZLIB = libz.so
-    LINKERISCOMPILER = Y
-    STRIPFLAG =
-    SYMLINK = ln -sf
-    "
+CC = ${CC}
+CFLAGS = ${CFLAGS}
+LDFLAGS = ${LDFLAGS}
+NETPBMLIBTYPE = unixshared
+NETPBMLIBSUFFIX = so
+LDRELOC = ld --reloc
+LINKER_CAN_DO_EXPLICIT_LIBRARY = N
+CFLAGS_SHLIB = ${CFLAGS} -fPIC
+ZLIB = libz.so
+LINKERISCOMPILER = Y
+STRIPFLAG =
+SYMLINK = ln -sf
+STATICLIB_TOO = N
+"
 
     echo "$CONFIG" > ${config}
 }
