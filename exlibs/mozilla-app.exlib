@@ -351,8 +351,8 @@ mozilla-app_src_install() {
 		esac
 	fi
 
-	source "${branding_path}"/configure.sh
-	targeticonname="${MOZ_APP_DISPLAYNAME,,}"
+	source "${branding_path}"/configure.sh # for MOZ_APP_DISPLAYNAME
+	targeticonname="${MOZ_BRANDING}"
 
 	# Install icons
 	for size in 16 22 24 32 48 64 72 96 128 256; do
@@ -389,13 +389,13 @@ MOZ_PLUGIN_PATH="/usr/${LIBDIR}/${PN}/plugins:/usr/${LIBDIR}/mozilla/plugins:/us
 COLON_SEPARATED="MOZ_PLUGIN_PATH"
 EOF
 
-	option dom-inspector && mozilla-app_unpack_extension 'inspector@mozilla.org' mozilla/dist/xpi-stage/inspector*.xpi
+	option dom-inspector && mozilla-app_unpack_extension 'inspector@mozilla.org' dist/xpi-stage/inspector*.xpi
 
 	if exparam -b comm; then
 		if option lightning; then
-			mozilla-app_unpack_extension '{a62ef8ec-5fdc-40c2-873c-223b8a6925cc}' mozilla/dist/xpi-stage/gdata-provider*.xpi
-			mozilla-app_unpack_extension calendar-timezones@mozilla.org mozilla/dist/xpi-stage/calendar-timezones*.xpi
-			mozilla-app_unpack_extension '{e2fda1a4-762b-4020-b5ad-a41df1933103}' mozilla/dist/xpi-stage/lightning*.xpi
+			mozilla-app_unpack_extension '{a62ef8ec-5fdc-40c2-873c-223b8a6925cc}' dist/xpi-stage/gdata-provider*.xpi
+			mozilla-app_unpack_extension calendar-timezones@mozilla.org dist/xpi-stage/calendar-timezones*.xpi
+			mozilla-app_unpack_extension '{e2fda1a4-762b-4020-b5ad-a41df1933103}' dist/xpi-stage/lightning*.xpi
 		fi
 	fi
 }
