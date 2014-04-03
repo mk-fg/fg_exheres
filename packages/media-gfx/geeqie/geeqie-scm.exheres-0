@@ -5,7 +5,7 @@
 SCM_REPOSITORY="git://git.code.sf.net/p/geeqie/git"
 
 require scm-git sourceforge [ pnv=${MY_PNV} suffix=tar.gz ]\
-    autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.10 ] ]
+    autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.13 ] ]
 
 SUMMARY="Lightweight GTK+ based image viewer"
 
@@ -39,6 +39,7 @@ src_prepare() {
 }
 
 src_install() {
+    mkdir -p "$IMAGE"/usr/share/doc/geeqie-1.0/html
     default
     find "$IMAGE" -type d -empty -delete
 }
