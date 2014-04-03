@@ -1,0 +1,38 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://w1.fi/srv/git/hostap.git"
+
+require scm-git
+
+SUMMARY="User space IEEE 802.11 AP and IEEE 802.1X/WPA/WPA2/EAP Authenticator and RADIUS authentication server."
+
+HOMEPAGE="http://hostap.epitest.fi/"
+DOWNLOADS=""
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/gnutls
+        net-libs/libnl:3.0
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="$WORK"/hostapd
+
+src_configure() {
+    edo cp "$FILES"/config .config
+}
+
+src_install() {
+    default
+
+    edo mv "$IMAGE"/usr/local/* "$IMAGE"/usr/
+    edo rmdir "$IMAGE"/usr/local
+}
