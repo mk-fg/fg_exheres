@@ -1,0 +1,29 @@
+# Copyright 2013 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://github.com/jashkenas/underscore"
+
+require scm-git
+
+SUMMARY="JavaScript's functional programming helper library."
+
+HOMEPAGE="https://github.com/jashkenas/underscore"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-lang/node
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    insinto /usr/$LIBDIR/node/$PN
+    doins underscore.js package.json
+    emagicdocs
+}

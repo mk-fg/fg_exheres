@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2014 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 SCM_REPOSITORY="https://github.com/jashkenas/coffee-script.git"
@@ -16,6 +16,7 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     build+run:
+        dev-js/underscore
         dev-lang/node
 "
 
