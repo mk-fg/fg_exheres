@@ -36,8 +36,6 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 # WORK="${WORKBASE}"/${PNV,,}
 
-DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}"/no_serial_tests_option.patch )
-
 DEFAULT_SRC_CONFIGURE_PARAMS=(
     --with-milter --with-db --with-tre
 
