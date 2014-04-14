@@ -1,0 +1,26 @@
+# Copyright 2014 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://github.com/pyca/cryptography"
+
+require pypi distutils scm-git
+
+SUMMARY="Package designed to expose cryptographic primitives and recipes to Python developers."
+
+HOMEPAGE="https://github.com/pyca/cryptography"
+DOWNLOADS=""
+
+LICENCES="Apache-2.0"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/openssl
+    run:
+        dev-python/cffi
+        dev-python/six
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
