@@ -20,7 +20,8 @@ DEPENDENCIES="
     recommendation:
         dev-python/pyasn1 [[ note = [ for using ssh keys with twisted.conch ] ]]
         dev-python/pycrypto [[ note = [ for twisted.conch ] ]]
-        dev-python/pyopenssl [[ note = [ enables SSL support ] ]]
+        dev-python/pyopenssl [[ note = [ enables TLS support ] ]]
+        dev-python/service_identity [[ note = [ for proper TLS cert verification support ] ]]
     run:
         dev-python/zopeinterface[>=3.0.1]
 "

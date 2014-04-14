@@ -1,0 +1,21 @@
+# Copyright 2014 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require pypi distutils\
+    checksums [ sha1=[ ${PNV}.tar.gz=108bdef1b3ca7050ff93c59e7ef7225c9c1a8b07 ] ]
+
+SUMMARY="Collection of ASN.1 data structures."
+
+HOMEPAGE="https://github.com/hynek/service_identity"
+
+LICENCES="as-is"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-python/pyasn1
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
