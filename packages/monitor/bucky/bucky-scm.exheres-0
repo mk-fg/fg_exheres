@@ -16,6 +16,7 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     run:
+        dev-python/pathtools
         dev-python/pycrypto
         dev-python/setproctitle
         dev-python/six

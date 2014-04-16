@@ -1,0 +1,21 @@
+# Copyright 2014 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://github.com/gorakhargosh/pathtools"
+SCM_EXTERNAL_REFS="docs/source/_themes:"
+
+require pypi distutils scm-git
+
+SUMMARY="Pattern matching and various utilities for file systems paths."
+
+HOMEPAGE="http://github.com/gorakhargosh/pathtools"
+DOWNLOADS=""
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
