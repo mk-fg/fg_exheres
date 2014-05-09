@@ -28,10 +28,10 @@ src_compile() {
 
 src_install() {
     # Main C parts
-    dobin cjdroute dnsserv
+    dobin cjdroute
 
     # Helper C tools
-    for bin in cleanconfig benc2json privatetopublic publictoip6 makekeys sybilsim
+    for bin in privatetopublic publictoip6 makekeys randombytes sybilsim
     do newbin $bin cjdns_${bin}
     done
 
