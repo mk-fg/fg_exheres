@@ -1,0 +1,30 @@
+# Copyright 2014 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require checksums [ sha1=[ runit-${PV}.tar.gz=8eee39639dcb79ba251ca4ab2c7cde38059f09c2 ] ]
+
+SUMMARY="Standalone runit’s (init system) service logging daemon."
+
+HOMEPAGE="http://smarden.org/runit/svlogd.8.html"
+DOWNLOADS="http://smarden.org/runit/runit-${PV}.tar.gz"
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="${WORKBASE}/admin/runit-${PV}/src"
+
+src_compile() {
+    edo make svlogd
+}
+
+src_install() {
+    dobin svlogd
+    doman ../man/svlogd.8
+}

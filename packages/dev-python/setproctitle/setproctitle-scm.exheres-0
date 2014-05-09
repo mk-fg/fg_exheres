@@ -1,0 +1,20 @@
+# Copyright 2014 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://github.com/dvarrazzo/py-setproctitle"
+
+require pypi distutils scm-git
+
+SUMMARY="A library to allow customization of the process title."
+
+HOMEPAGE="https://code.google.com/p/py-setproctitle/"
+DOWNLOADS=""
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
