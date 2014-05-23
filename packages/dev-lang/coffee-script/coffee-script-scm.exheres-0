@@ -16,6 +16,7 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     build+run:
+        dev-js/mkdirp
         dev-js/underscore
         dev-lang/node
 "
