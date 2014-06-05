@@ -1,0 +1,153 @@
+# Copyright 2014 Mike Kazantsev
+# Copyright 2009-2014 Wulf C. Krueger
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://code.wireshark.org/review/p/wireshark.git"
+
+require scm-git\
+    autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.12 ] ]
+
+SUMMARY="network protocol analyzer, formerly known as Ethereal"
+
+HOMEPAGE="http://www.wireshark.org"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~arm ~x86"
+MYOPTIONS="
+    c-ares  [[ description = [ Use the GNU c-ares library to resolve DNS names ] ]]
+    caps
+    geoip   [[ description = [ Enable support for GeoIP location data ] ]]
+    gnutls
+    gtk   [[ description = [ build the GTK+-2 GUI ] ]]
+    kerberos
+    lua     [[ description = [ Enable support for LUA scripting ] ]]
+    portaudio [[ description = [ Build rtp_player (uses PortAudio) ] ]]
+    qt    [[ description = [ build the Qt-4 GUI in addition to GTK+ ] ]]
+    smi     [[ description = [ Use libsmi to resolve numeric OIDs into human readable format ] ]]
+    zlib    [[ description = [
+        Wireshark has problems with some zlib versions. If it doesn't capture properly, turn this off.
+    ] ]]
+"
+
+DEPENDENCIES="
+    build:
+        app-doc/asciidoc
+        dev-util/pkg-config[>=0.15.0]
+    build+run:
+        dev-libs/libgcrypt
+        dev-libs/libpcap
+        net-libs/libnl
+        group/${PN}
+        caps? ( sys-libs/libcap )
+        c-ares? ( net-dns/c-ares[>=1.5] )
+        geoip?  ( net-libs/GeoIP )
+        gnutls? ( dev-libs/gnutls[>=3.1.10] )
+        gtk? (
+            dev-libs/glib:2[>=2.14.0]
+            x11-libs/cairo
+            x11-libs/gdk-pixbuf:2.0
+            x11-libs/gtk+:2[>=2.12.0]
+            x11-libs/pango
+        )
+        kerberos? ( app-crypt/heimdal )
+        lua? ( dev-lang/lua[>=5.1] )
+        portaudio? ( media-libs/portaudio )
+        qt? ( x11-libs/qt:4[>=4.6.0] )
+        smi? ( net-libs/libsmi )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+REMOTE_IDS="freecode:${PN}"
+UPSTREAM_DOCUMENTATION="${HOMEPAGE}/docs/"
+
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --sysconfdir=/etc/wireshark
+    --enable-ipv6
+    --enable-packet-editor
+    --enable-pcap-ng-default
+    --enable-setuid-install
+    --disable-profile-build
+    --disable-usr-local
+    --disable-warnings-as-errors
+    --with-gcrypt
+    --with-libnl
+    --with-pcap
+    --with-plugins
+    --with-ssl
+    --enable-captype
+    --enable-tfshark
+)
+
+
+DEFAULT_SRC_CONFIGURE_OPTION_WITHS=(
+    c-ares
+    "caps libcap"
+    geoip
+    gnutls
+    "gtk gtk2"
+    "kerberos krb5"
+    lua
+    portaudio
+    qt
+    "smi libsmi"
+    zlib
+)
+
+src_prepare() {
+    # Wireshark only compiles with Qt4 at the moment.
+    AT_M4DIR=( aclocal-fallback )
+    edo sed -i -e "s:Qt5::" acinclude.m4
+    eautoreconf
+}
+
+src_configure() {
+    local myconf=(
+        "${DEFAULT_SRC_CONFIGURE_PARAMS[@]}" \
+        $(for s in "${DEFAULT_SRC_CONFIGURE_OPTIONS[@]}" ; do \
+            option ${s} ; \
+        done ) \
+        $(for s in "${DEFAULT_SRC_CONFIGURE_OPTION_ENABLES[@]}" ; do \
+            option_enable ${s} ; \
+        done ) \
+        $(for s in "${DEFAULT_SRC_CONFIGURE_OPTION_WITHS[@]}" ; do \
+            option_with ${s} ; \
+        done )
+    )
+
+    if option gtk || option qt ; then
+        myconf+=( --enable-wireshark )
+    fi
+    if ! option gtk && ! option qt ; then
+        myconf+=( --disable-wireshark )
+    fi
+
+    econf "${myconf[@]}"
+}
+
+src_install() {
+    default
+
+    edo chown 0:wireshark "${IMAGE}"/usr/bin/tshark
+    edo chmod 6550 "${IMAGE}"/usr/bin/tshark
+    edo chown 0:wireshark "${IMAGE}"/usr/bin/dumpcap
+    edo chmod 6550 "${IMAGE}"/usr/bin/dumpcap
+
+    insinto /usr/include/wiretap
+    doins wiretap/wtap.h
+
+    dodoc doc/randpkt.txt
+
+    if option gtk ; then
+        insinto /usr/share/icons/hicolor/16x16/apps
+        newins image/hi16-app-wireshark.png wireshark.png
+        insinto /usr/share/icons/hicolor/32x32/apps
+        newins image/hi32-app-wireshark.png wireshark.png
+        insinto /usr/share/icons/hicolor/48x48/apps
+        newins image/hi48-app-wireshark.png wireshark.png
+        insinto /usr/share/applications
+        doins wireshark.desktop
+    fi
+}
