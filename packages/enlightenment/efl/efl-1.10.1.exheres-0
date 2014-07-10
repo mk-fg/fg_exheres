@@ -38,6 +38,7 @@ DEPENDENCIES="
         media-libs/tiff
         media-sound/pulseaudio
         net-misc/curl
+        net-misc/neon
         sci-physics/bullet
         sys-apps/dbus
         sys-apps/util-linux
@@ -61,6 +62,7 @@ DEPENDENCIES="
         x11-libs/libXrender
         x11-libs/libXScrnSaver
         x11-libs/libXtst
+        x11-libs/libxkbcommon
         x11-utils/xcb-util
         x11-utils/xcb-util-keysyms
         systemd? ( sys-apps/systemd )
@@ -71,7 +73,10 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 DEFAULT_SRC_CONFIGURE_PARAMS+=(
+    --enable-neon
+    --enable-c++11
     --enable-drm
+    --enable-drm-hw-accel
     --enable-fontconfig
     --enable-fribidi
     --enable-eo-id
@@ -123,6 +128,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS+=(
     --enable-image-loader-tga
     --enable-image-loader-tiff
     --disable-image-loader-jp2k
+    --disable-image-loader-tgv
 
     --with-crypto=openssl
     --with-tests=none

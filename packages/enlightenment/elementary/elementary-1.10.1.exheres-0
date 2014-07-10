@@ -29,6 +29,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
     --disable-static
 
     --enable-ecore-x
+    --enable-ecore-drm
     --enable-quick-launch
     --enable-elementary-config
 
