@@ -401,7 +401,7 @@ def check_licences(): # no tests
 		it.imap(os.listdir, it.chain.from_iterable(it.imap(glob, masters))) ))
 
 	from subprocess import Popen, PIPE
-	proc = Popen(['grep', '-rPA10', 'LICENCES=', join(base_dir, 'packages')], stdout=PIPE)
+	proc = Popen(['grep', '-rA10', 'LICENCES=', join(base_dir, 'packages')], stdout=PIPE)
 	src = proc.stdout
 	from ast import literal_eval
 	for line in src:

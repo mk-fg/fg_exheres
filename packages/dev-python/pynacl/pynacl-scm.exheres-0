@@ -1,0 +1,33 @@
+# Copyright 2014 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://github.com/pyca/pynacl/"
+
+require distutils scm-git
+
+SUMMARY="Python binding to the Networking and Cryptography (NaCl) library."
+
+HOMEPAGE="http://pynacl.readthedocs.org/"
+
+LICENCES="Apache-2.0"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_prepare() {
+    grep -F --disable-pie setup.py\
+        || sed -i 's/\(configure, \)\("--disable-shared"\)/\1"--disable-pie", \2/' setup.py
+}
+
+src_compile() {
+    : # "build" causes "File exists: .../build/temp.linux-i686-2.7" on install
+}
+
+src_install() {
+    edo python -B setup.py install --root=/var/tmp/paludis/build/dev-python-pynacl-scm/image/ --no-compile
+}
