@@ -29,5 +29,6 @@ src_compile() {
 }
 
 src_install() {
-    edo python -B setup.py install --root=/var/tmp/paludis/build/dev-python-pynacl-scm/image/ --no-compile
+    nonfatal edo python -B setup.py install --root=/var/tmp/paludis/build/dev-python-pynacl-scm/image/ --no-compile
+    edo test -f "$IMAGE"/usr/$LIBDIR/python*/site-packages/nacl/__init__.py
 }
