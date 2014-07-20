@@ -16,6 +16,7 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     run:
+        dev-python/enum34
         dev-python/munkres
         dev-python/musicbrainzngs
         dev-python/mutagen
