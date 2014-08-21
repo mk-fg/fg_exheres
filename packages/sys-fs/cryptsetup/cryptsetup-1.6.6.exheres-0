@@ -4,7 +4,7 @@
 # Copyright 2008 Stephen Bennett
 # Distributed under the terms of the GNU General Public License v2
 
-require googlecode easy-multibuild
+require googlecode easy-multibuild [ multiunpack=true ]
 
 SUMMARY="Userland utilities for dm-crypt"
 
