@@ -24,5 +24,8 @@ DEPENDENCIES="
 BUGS_TO="mk.fraggod@gmail.com"
 
 
-DEFAULT_SRC_CONFIGURE_PARAMS=( --disable-gstreamer )
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --disable-gstreamer
+    --disable-gstreamer1
+)
 DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( 'pdf poppler' 'ps spectre' 'raw libraw' svg )

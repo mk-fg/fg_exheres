@@ -74,7 +74,8 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 DEFAULT_SRC_CONFIGURE_PARAMS+=(
     --enable-neon
-    --enable-c++11
+    --enable-gui
+    --enable-cxx-bindings
     --enable-drm
     --enable-drm-hw-accel
     --enable-fontconfig
@@ -98,6 +99,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS+=(
     --disable-wayland
     --disable-fb
     --disable-sdl
+    --disable-cocoa
     --disable-egl
     --disable-g-main-loop
     --disable-gstreamer
@@ -129,6 +131,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS+=(
     --enable-image-loader-tiff
     --disable-image-loader-jp2k
     --disable-image-loader-tgv
+    --disable-image-loader-dds
 
     --with-crypto=openssl
     --with-tests=none
@@ -139,7 +142,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS+=(
     # --with-x11=xcb # "opengl does not work with xcb (yet)"
 
     # For --disable-gstreamer1
-    --enable-i-really-know-what-i-am-doing-and-that-this-will-probably-break-things-and-i-will-fix-them-myself-and-send-patches-aaa
+    --enable-i-really-know-what-i-am-doing-and-that-this-will-probably-break-things-and-i-will-fix-them-myself-and-send-patches-aba
 )
 
 DEFAULT_SRC_CONFIGURE_OPTION_ENABLES+=( doc pixman systemd )
