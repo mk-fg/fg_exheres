@@ -17,6 +17,7 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     run:
+        dev-python/characteristic
         dev-python/pyasn1
         dev-python/pyasn1-modules
         dev-python/pyopenssl
