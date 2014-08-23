@@ -1,0 +1,30 @@
+# Copyright 2011-2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://github.com/powdahound/twisted.git"
+SCM_REVISION="060c9081f578ecfa65d7885c9f7408cc8c2b7926"
+
+require distutils scm-git
+
+SUMMARY="An asynchronous networking framework written in Python."
+
+HOMEPAGE="http://www.twistedmatrix.com/"
+
+LICENCES="as-is"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        !net-twisted/twisted
+    recommendation:
+        dev-python/pyasn1 [[ note = [ for using ssh keys with twisted.conch ] ]]
+        dev-python/pycrypto [[ note = [ for twisted.conch ] ]]
+        dev-python/pyopenssl [[ note = [ enables TLS support ] ]]
+        dev-python/service_identity [[ note = [ for proper TLS cert verification support ] ]]
+    run:
+        dev-python/zopeinterface[>=3.0.1]
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
