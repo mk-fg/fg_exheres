@@ -2,6 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 SCM_REPOSITORY="https://github.com/unbit/uwsgi.git"
+SCM_BRANCH="uwsgi-2.1"
 
 require scm-git python systemd-service
 
