@@ -42,6 +42,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS+=(
 
     --disable-bluez4
     --disable-connman
+    --disable-wayland-only
     --disable-wayland-clients
     --disable-wayland-egl
 )
