@@ -6,7 +6,7 @@ MY_PV=${PV/-rc/~rc}
 LPV=${PV/-rc/.rc}
 LPV=${LPV/\.0\.rc/.rc}
 
-require perl-module launchpad [[ pv="$LPV" pnv="$PN-$MY_PV" ]]\
+require launchpad [[ pv="$LPV" pnv="$PN-$MY_PV" ]]\
     autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 1.10 ] ]
 
 SUMMARY="AppArmor LSM userspace library and tools."
@@ -15,23 +15,17 @@ LICENCES="GPL-2 LGPL-2"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS="pam"
-# apache
-# perl is used in tools, so can't really be disabled, w/o them disabled as well
-# there's also ruby (don't care about it myself)
+# apache perl ruby
 
 DEPENDENCIES="
-    build+run:
+    build:
         dev-lang/perl
+    build+run:
         dev-lang/python
         dev-lang/swig
         sys-devel/bison
         sys-devel/flex
         pam? ( sys-libs/pam )
-    run:
-        dev-perl/File-Tail
-        dev-perl/Locale-gettext
-        dev-perl/RPC-XML
-        dev-perl/TermReadKey
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
@@ -50,7 +44,7 @@ src_prepare() {
 
 src_configure() {
     pushd libraries/libapparmor
-    econf --with-perl --with-python
+    econf --with-python
     popd
 }
 
@@ -66,10 +60,9 @@ src_compile() {
 src_install() {
     for dir in ${components[@]}; do
         pushd $dir
-        emake DESTDIR="$IMAGE" install
+        emake PERLTOOLS= DESTDIR="$IMAGE" install
         popd
     done
-    edo sed -i '/^\#\!\/usr\/bin\/perl$/ s:/perl:/perl -X:' "$IMAGE"/usr/sbin/aa-*
 
     option pam && {
         emake -C changehat/pam_apparmor DESTDIR="$IMAGE" install
@@ -78,14 +71,10 @@ src_install() {
 
     # SUSE init.d stuff
     edo rm -r "$IMAGE"/lib/apparmor
-    edo rmdir "$IMAGE"/{lib,etc/apparmor.d/disable}
+    option pam || rmdir "$IMAGE"/lib
+    edo rmdir "$IMAGE"/etc/apparmor.d/disable
 
     keepdir /var/lib/apparmor
-
-    # Looks like a bug in package
-    perlinfo
-    insinto "$VENDOR_LIB"
-    doins libraries/libapparmor/swig/perl/LibAppArmor.pm
 }
 
 src_test() {
