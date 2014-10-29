@@ -1,4 +1,4 @@
-# Copyright 2011-2013 Mike Kazantsev
+# Copyright 2011-2014 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 MY_PV=${PV/-rc/~rc}
@@ -14,7 +14,7 @@ SUMMARY="AppArmor LSM userspace library and tools."
 LICENCES="GPL-2 LGPL-2"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
-MYOPTIONS="pam python"
+MYOPTIONS="pam"
 # apache
 # perl is used in tools, so can't really be disabled, w/o them disabled as well
 # there's also ruby (don't care about it myself)
@@ -22,11 +22,11 @@ MYOPTIONS="pam python"
 DEPENDENCIES="
     build+run:
         dev-lang/perl
+        dev-lang/python
         dev-lang/swig
         sys-devel/bison
         sys-devel/flex
         pam? ( sys-libs/pam )
-        python? ( dev-lang/python )
     run:
         dev-perl/File-Tail
         dev-perl/Locale-gettext
@@ -50,7 +50,7 @@ src_prepare() {
 
 src_configure() {
     pushd libraries/libapparmor
-    econf --with-perl $(option_with python)
+    econf --with-perl --with-python
     popd
 }
 
@@ -60,6 +60,7 @@ src_compile() {
         emake
         popd
     done
+    option pam && emake -C changehat/pam_apparmor
 }
 
 src_install() {
@@ -69,6 +70,11 @@ src_install() {
         popd
     done
     edo sed -i '/^\#\!\/usr\/bin\/perl$/ s:/perl:/perl -X:' "$IMAGE"/usr/sbin/aa-*
+
+    option pam && {
+        emake -C changehat/pam_apparmor DESTDIR="$IMAGE" install
+        newdoc changehat/pam_apparmor/README README.pam_apparmor
+    }
 
     # SUSE init.d stuff
     edo rm -r "$IMAGE"/lib/apparmor
