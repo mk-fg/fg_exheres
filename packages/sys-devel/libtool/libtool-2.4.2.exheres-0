@@ -1,0 +1,43 @@
+# Copyright 2014 Mike Kazantsev
+# Copyright 2007 Bryan Østergaard
+# Copyright 2008 Richard Brown
+# Distributed under the terms of the GNU General Public License v2
+
+require gnu [ suffix=xz ] easy-multibuild
+
+SUMMARY="Generic library support script"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~arm ~x86"
+MYOPTIONS="multibuild_c: 32 64"
+
+DEPENDENCIES="
+    build:
+        sys-devel/autoconf:2.5
+    build+run:
+        sys-devel/gnuconfig
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+RESTRICT="test"
+WORK="${WORKBASE}/${PNV%a}"
+
+DEFAULT_SRC_INSTALL_EXTRA_DOCS=( docs/PLATFORMS )
+
+src_prepare() {
+    # Force regeneration of broken infopages
+    edo rm doc/libtool.info{,-{1,2}}
+    default
+}
+
+src_install() {
+    easy-multibuild_src_install
+
+    for f in $(find "${IMAGE}" -type f -name config.guess -o -name config.sub); do
+        edo rm ${f}
+        edo ln -s /usr/share/gnuconfig/${f##*/} "${f}"
+    done
+}
