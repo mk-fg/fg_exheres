@@ -1,13 +1,12 @@
 # Copyright 2014 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="https://github.com/pyca/pynacl/"
-
-require distutils scm-git
+require distutils pypi checksums [ sha1=[ ${PNV}.tar.gz=533af9e6804f3f373b6c7b4f0e6f3d38f21854cd ] ]
 
 SUMMARY="Python binding to the Networking and Cryptography (NaCl) library."
 
 HOMEPAGE="http://pynacl.readthedocs.org/"
+DOWNLOADS="https://pypi.python.org/packages/source/P/PyNaCl/PyNaCl-0.2.3.tar.gz -> ${PNV}.tar.gz"
 
 LICENCES="Apache-2.0"
 SLOT="0"
