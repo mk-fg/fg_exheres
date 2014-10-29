@@ -273,11 +273,19 @@ mozilla-app_src_configure() {
 		--enable-svg
 		--enable-wave
 		--enable-webm
+		--enable-webrtc
+		--enable-webspeech
+		--enable-ffmpeg
+		--enable-fmp4
+		--enable-wave
+
 		--disable-crashreporter
 		--disable-profilesharing
 		--disable-profilelocking
 		--disable-gconf
 		--disable-websms-backend
+		--disable-eme
+
 		$(option_enable dbus)
 		$(option_enable gstreamer gstreamer 1.0)
 		$(option_enable pulseaudio)
@@ -292,6 +300,7 @@ mozilla-app_src_configure() {
 		$(option dom-inspector --enable-extensions=default,inspector --enable-extensions=default)
 
 		# Basic features
+		--enable-universalchardet
 		--enable-crypto
 		--enable-tracejit
 		--enable-pango
