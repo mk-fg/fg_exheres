@@ -1,8 +1,7 @@
-# Copyright 2011-2013 Mike Kazantsev
+# Copyright 2011-2014 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 SCM_REPOSITORY="https://github.com/unbit/uwsgi.git"
-SCM_BRANCH="uwsgi-2.1"
 
 require scm-git python systemd-service
 
@@ -49,17 +48,21 @@ src_install() {
 
     edo mkdir -p "$IMAGE"/usr/lib/uwsgi
 
-    # BAD automagic follows
+    # BAD automagic follows - only builds stuff for currently selected python
 
-    which python 2>/dev/null && {
-        edo python2.7 uwsgiconfig.py --plugin plugins/python package python27
+    py2a= py2b= py3a= py3b=
+    read py2a py2b < <(python2 -c 'import sys; v=sys.version_info; print v.major, v.minor' 2>/dev/null)
+    read py3a py3b < <(python3 -c 'import sys; v=sys.version_info; print(v.major, v.minor)' 2>/dev/null)
+
+    [[ -n "$py2a" ]] && {
+        edo python2 uwsgiconfig.py --plugin plugins/python package python"${py2a}${py2b}"
         export PYTHON="/usr/bin/python"
         insinto $(python_get_sitedir)
         doins uwsgidecorators.py
     }
 
-    which python3 2>/dev/null && {
-        edo python3.3 uwsgiconfig.py --plugin plugins/python package python33
+    [[ -n "$py3a" ]] && {
+        edo python3 uwsgiconfig.py --plugin plugins/python package python"${py3a}${py3b}"
         export PYTHON="/usr/bin/python3"
         insinto $(python_get_sitedir)
         doins uwsgidecorators.py
