@@ -58,8 +58,9 @@ def err_traceback(tb=None):
 	for frame in _build_stack(tb):
 		line = open(frame.f_code.co_filename).readlines()[frame.f_lineno - 1]
 		if frame.f_code.co_name == 'safe_chk': continue # hide internals
-		err.append('  {}: {!r}{}'.format( frame.f_code.co_name, line.strip(),
-				',\n    line={!r}'.format(frame.f_locals['line']) if 'line' in frame.f_locals else '' ))
+		err.append('  {}[{}]: {!r}{}'.format(
+			frame.f_code.co_name, frame.f_lineno, line.strip(),
+			',\n    line={!r}'.format(frame.f_locals['line']) if 'line' in frame.f_locals else '' ))
 	return err
 
 def chk_wrapper(func, unwind=True):
@@ -202,6 +203,9 @@ def chk_ordering( vardef,
 def chk_deps(deps):
 	if not deps.endswith('\n') or not deps.startswith('\n'):
 		raise ChkDepsError('Dependencties are written inline or quoted lisp-style')
+	if 'providers:' in deps:
+		print('SKIPPED: deps are too complex for simple checks')
+		return
 	chk_ordering(deps, token_grouper = _deps_grouper)
 
 def _deps_grouper(tokens):
