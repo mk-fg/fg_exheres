@@ -1,4 +1,4 @@
-# Copyright 2013 Mike Kazantsev
+# Copyright 2013-2014 Mike Kazantsev
 # Copyright 2011-2012 Quentin "Sardem FF7" Glidic <sardemff7@exherbo.org>
 # Distributed under the terms of the GNU General Public License v2
 
@@ -22,7 +22,7 @@ DEPENDENCIES="
         dev-libs/libxml2
         dev-libs/libstrl
         dev-libs/tre
-        mail-mta/sendmail
+        mail-filter/libmilter
         net-misc/curl
         sys-libs/db:=
         !gnutls? ( dev-libs/openssl )

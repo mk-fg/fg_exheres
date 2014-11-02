@@ -1,4 +1,4 @@
-# Copyright 2013 Mike Kazantsev
+# Copyright 2013-2014 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 require distutils pypi
@@ -14,7 +14,7 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     run:
-        mail-mta/sendmail
+        mail-filter/libmilter
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
