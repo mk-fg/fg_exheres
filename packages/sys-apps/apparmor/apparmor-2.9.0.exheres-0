@@ -71,8 +71,12 @@ src_install() {
 
     # SUSE init.d stuff
     edo rm -r "$IMAGE"/lib/apparmor
-    option pam || rmdir "$IMAGE"/lib
     edo rmdir "$IMAGE"/etc/apparmor.d/disable
+
+    if option pam
+    then [[ $LIBDIR != lib ]] && mv "$IMAGE"/{lib,$LIBDIR}
+    else rmdir "$IMAGE"/lib
+    fi
 
     keepdir /var/lib/apparmor
 }
