@@ -31,6 +31,6 @@ src_install() {
         -e 's|libdir=/usr|libdir=${prefix}|'\
         -e 's|datadir=/usr|datadir=${prefix}|'\
         -i Makefile
-    edo sed -i 's|docbook2man|true|' doc/Makefile # heavy deps
     default
+    nonfatal edo rmdir -p "$IMAGE"/usr/$LIBDIR/erlang/lib/tsung*/priv
 }
