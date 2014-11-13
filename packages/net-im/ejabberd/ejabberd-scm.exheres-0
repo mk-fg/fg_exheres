@@ -17,7 +17,6 @@ MYOPTIONS="pam postgresql"
 
 DEPENDENCIES="
     build+run:
-        dev-erlang/exmpp
         dev-lang/erlang
         dev-libs/openssl
         group/jabber
