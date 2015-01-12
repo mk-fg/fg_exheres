@@ -1,0 +1,43 @@
+# Copyright 2012 Mike Kazantsev
+# Copyright 2009 Maxime Coste <frrrwww@gmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://gitorious.org/obexftp/mainline.git"
+
+require scm-git cmake
+
+SUMMARY="OBEX file transfert library and tools"
+
+HOMEPAGE="https://gitorious.org/obexftp/"
+DOWNLOADS=""
+
+LICENCES="GPL-2 LGPL-2.1"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="perl python ruby tcl"
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/xmltok
+        net-wireless/openobex[>=1.6]
+        perl? ( dev-lang/swig dev-lang/perl )
+        python? ( dev-lang/swig dev-lang/python )
+        ruby? ( dev-lang/swig dev-lang/ruby )
+        tcl? ( dev-lang/swig dev-lang/tcl )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+CMAKE_SRC_CONFIGURE_OPTION_ENABLES=( PERL PYTHON RUBY TCL )
+
+src_prepare() {
+    # Make sure it tries to use 2.7, and not pick different versions for lib/bin
+    edo sed -i 's:\(Python\(Libs\|Interp\)\)\s\+\(REQUIRED\):\1 2.7 \3:' swig/python/CMakeLists.txt
+    cmake_src_prepare
+}
+
+src_install() {
+    cmake_src_install
+    nonfatal edo rmdir -p "$IMAGE"/usr/share/doc/obexftp/html
+}
