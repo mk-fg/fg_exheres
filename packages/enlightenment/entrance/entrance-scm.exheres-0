@@ -1,0 +1,35 @@
+# Copyright 2015 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="https://git.enlightenment.org/misc/entrance.git"
+
+require scm-git\
+    autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.13 ] ]
+
+SUMMARY="Enlightenment counterpart for xdm."
+
+HOMEPAGE="https://git.enlightenment.org/misc/entrance.git"
+DOWNLOADS=""
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        enlightenment/efl
+        sys-apps/systemd
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --enable-pam
+    --enable-systemd
+
+    --disable-grub2 # tweaks /etc/default/grub
+    --disable-ekbd # on-screen keyboard
+    --disable-consolekit
+)
