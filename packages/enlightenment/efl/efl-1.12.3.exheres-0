@@ -24,6 +24,7 @@ DEPENDENCIES="
         x11-proto/xineramaproto
         doc? ( app-doc/doxygen )
     build+run:
+        app-arch/lz4
         dev-lang/LuaJIT
         dev-libs/fribidi
         dev-libs/glib
@@ -73,11 +74,13 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 DEFAULT_SRC_CONFIGURE_PARAMS+=(
+    --enable-liblz4
     --enable-neon
     --enable-gui
     --enable-cxx-bindings
     --enable-drm
     --enable-drm-hw-accel
+    --enable-gl-drm
     --enable-fontconfig
     --enable-fribidi
     --enable-eo-id
@@ -85,11 +88,11 @@ DEFAULT_SRC_CONFIGURE_PARAMS+=(
     --enable-tile-rotate
     --enable-cserve
     --enable-audio
+    --enable-libmount
     --enable-pulseaudio
     --enable-xinput22
     --enable-xim
     --enable-scim
-    --enable-libmount
     --enable-physics
     --enable-multisense
 
@@ -97,6 +100,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS+=(
     --disable-magic-debug
     --disable-valgrind
     --disable-wayland
+    --disable-wayland-ivi-shell
     --disable-fb
     --disable-sdl
     --disable-cocoa

@@ -13,19 +13,19 @@ PLATFORMS="~amd64 ~x86"
 MYOPTIONS="pdf ps raw svg"
 
 DEPENDENCIES="
-    build+run:
-        enlightenment/efl
-        pdf? ( app-text/poppler )
-        ps? ( app-text/libspectre )
-        raw? ( media-libs/libraw )
-        svg? ( media-libs/libsvg )
+	build+run:
+		enlightenment/efl
+		pdf? ( app-text/poppler )
+		ps? ( app-text/libspectre )
+		raw? ( media-libs/libraw )
+		svg? ( media-libs/libsvg )
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
 
 
 DEFAULT_SRC_CONFIGURE_PARAMS=(
-    --disable-gstreamer
-    --disable-gstreamer1
+	--disable-gstreamer
+	--disable-gstreamer1
 )
 DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( 'pdf poppler' 'ps spectre' 'raw libraw' svg )
