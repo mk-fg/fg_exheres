@@ -1,4 +1,4 @@
-# Copyright 2011-2014 Mike Kazantsev
+# Copyright 2011-2015 Mike Kazantsev
 # Copyright 2009 Jan Meier
 # Distributed under the terms of the GNU General Public License v2
 
@@ -21,7 +21,7 @@ DEPENDENCIES="
     build:
         dev-python/setuptools
     suggestion:
-        dev-python/Imaging [[ description = [ Allows django to produce capchas ] ]]
+        dev-python/Pillow [[ description = [ Allows django to produce capchas and such ] ]]
         dev-python/mysql-python [[ description = [ To use mysql database as object storage backend ] ]]
         dev-python/psycopg2 [[ description = [ To use postgresql database as object storage backend ] ]]
         dev-python/pytz [[ description = [ Needed for USE_TZ
