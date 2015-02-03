@@ -80,7 +80,6 @@ DEFAULT_SRC_CONFIGURE_PARAMS+=(
     --enable-cxx-bindings
     --enable-drm
     --enable-drm-hw-accel
-    --enable-gl-drm
     --enable-fontconfig
     --enable-fribidi
     --enable-eo-id
@@ -105,6 +104,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS+=(
     --disable-sdl
     --disable-cocoa
     --disable-egl
+    --disable-gl-drm # requires egl
     --disable-g-main-loop
     --disable-gstreamer
     --disable-gstreamer1

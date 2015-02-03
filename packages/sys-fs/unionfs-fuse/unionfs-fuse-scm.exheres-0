@@ -1,13 +1,13 @@
-# Copyright 2011-2012 Mike Kazantsev
+# Copyright 2011-2015 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-SCM_REPOSITORY="http://hg.podgorny.cz/unionfs-fuse"
+SCM_REPOSITORY="https://github.com/rpodgorny/unionfs-fuse"
 
-require scm-hg
+require scm-git cmake
 
 SUMMARY="Flexible FUSE unionfs implementation."
 
-HOMEPAGE="http://podgorny.cz/moin/UnionFsFuse"
+HOMEPAGE="https://github.com/rpodgorny/unionfs-fuse"
 
 LICENCES="GPL-2"
 SLOT="0"
@@ -20,9 +20,3 @@ DEPENDENCIES="
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
-
-
-src_prepare() {
-    edo sed -i 's:/usr/local:/usr:' Makefile
-    edo sed -i 's:LIB = :LIB = -lpthread :' src/Makefile
-}
