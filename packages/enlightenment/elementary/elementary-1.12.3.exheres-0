@@ -28,25 +28,16 @@ BUGS_TO="mk.fraggod@gmail.com"
 DEFAULT_SRC_CONFIGURE_PARAMS=(
     --disable-static
 
-    --enable-ecore-x
-    --enable-ecore-drm
     --enable-quick-launch
+    --enable-nls
     --enable-cxx-bindings
+    --enable-ecore-x
     --enable-elementary-config
-
-    # TODO/dont need it
-    --disable-ecore-fb
-    --disable-ecore-sdl
-    --disable-ecore-cocoa
-    --disable-ecore-win32
-    --disable-ecore-wince
-    --disable-ecore-wayland
 
     --disable-build-examples
     --disable-install-examples
+    --disable-rpath
 
-    --disable-emap
-    --disable-eweather
     --disable-elocation
 
     --with-tests=none

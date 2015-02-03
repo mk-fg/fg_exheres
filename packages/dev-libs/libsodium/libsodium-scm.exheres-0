@@ -1,4 +1,4 @@
-# Copyright 2013 Mike Kazantsev
+# Copyright 2013-2014 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 SCM_REPOSITORY="https://github.com/jedisct1/libsodium.git"
@@ -16,6 +16,8 @@ DEPENDENCIES=""
 
 BUGS_TO="mk.fraggod@gmail.com"
 
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --disable-pie )
 
 src_prepare() {
     edo ./autogen.sh

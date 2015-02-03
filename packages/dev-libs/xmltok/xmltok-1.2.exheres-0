@@ -1,0 +1,35 @@
+# Copyright 2012 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+deb_tar=libxmltok_${PV}.orig.tar.gz
+deb_patch=libxmltok_${PV}-3.diff.gz
+
+require checksums [ sha1=[\
+    ${deb_tar}=5dab2918859febf67e0192e0347ad5ca864baa67\
+    ${deb_patch}=02a5f8a7ca6504c5951b2feaf3b1ebe8f19b8c50 ] ]
+
+SUMMARY="xmltok/xmlparse libraries from expat 1.2."
+
+HOMEPAGE="http://www.jclark.com/xml/expat.html"
+DOWNLOADS="
+    http://ftp.debian.org/debian/pool/main/libx/libxmltok/${deb_tar}
+    http://ftp.debian.org/debian/pool/main/libx/libxmltok/${deb_patch}
+"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK="${WORKBASE}/expat-${PV}"
+DEFAULT_SRC_COMPILE_PARAMS=( prefix="$IMAGE"/usr )
+DEFAULT_SRC_INSTALL_PARAMS=( prefix="$IMAGE"/usr )
+
+src_prepare() {
+    edo patch -p1 < <(zcat "${FETCHEDDIR}/${deb_patch}")
+}

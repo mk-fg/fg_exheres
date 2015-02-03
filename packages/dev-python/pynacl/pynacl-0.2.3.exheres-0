@@ -22,7 +22,7 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 src_prepare() {
-    grep -F --disable-pie setup.py\
+    grep -F -e --disable-pie setup.py\
         || sed -i 's/\(configure, \)\("--disable-shared"\)/\1"--disable-pie", \2/' setup.py
 }
 
