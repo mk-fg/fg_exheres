@@ -18,6 +18,8 @@ DEPENDENCIES="
     build+run:
         dev-python/dbus-python
         gnome-bindings/pygobject
+    recommendation:
+        media-libs/libcanberra
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
