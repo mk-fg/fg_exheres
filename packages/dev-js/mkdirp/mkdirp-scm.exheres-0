@@ -1,4 +1,4 @@
-# Copyright 2014 Mike Kazantsev
+# Copyright 2014-2015 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 SCM_REPOSITORY="https://github.com/substack/node-mkdirp"
@@ -23,7 +23,7 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 src_install() {
-    insinto /usr/$LIBDIR/node/$PN
+    insinto /usr/"$(exhost --target)"/lib/node/$PN
     doins index.js package.json
     emagicdocs
 }

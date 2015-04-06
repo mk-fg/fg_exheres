@@ -1,4 +1,4 @@
-# Copyright 2011-2014 Mike Kazantsev
+# Copyright 2011-2015 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 MY_PV=${PV/-rc/~rc}
@@ -72,11 +72,6 @@ src_install() {
     # SUSE init.d stuff
     edo rm -r "$IMAGE"/lib/apparmor
     edo rmdir "$IMAGE"/etc/apparmor.d/disable
-
-    if option pam
-    then [[ $LIBDIR != lib ]] && mv "$IMAGE"/{lib,$LIBDIR}
-    else rmdir "$IMAGE"/lib
-    fi
 
     keepdir /var/lib/apparmor
 }

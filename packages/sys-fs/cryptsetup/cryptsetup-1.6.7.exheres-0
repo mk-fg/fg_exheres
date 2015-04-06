@@ -1,0 +1,43 @@
+# Copyright 2015 Mike Kazantsev
+# Copyright 2008 Stephen Bennett
+# Copyright 2009 Mike Kelly
+# Copyright 2011-2012 Wulf C. Krueger <philantrop@exherbo.org>
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Userland utilities for dm-crypt"
+
+HOMEPAGE="https://gitlab.com/${PN}/${PN}"
+DOWNLOADS="mirror://kernel/linux/utils/${PN}/v$(ever range 1-2)/${PNV}.tar.xz"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="python"
+
+DEPENDENCIES="
+    build:
+        sys-devel/gettext[>=0.15]
+        virtual/pkg-config
+    build+run:
+        dev-libs/popt[>=1.7]
+        sys-apps/util-linux [[ note = [ cryptsetup needs libuuid ] ]]
+        sys-fs/lvm2 [[ note = [ cryptsetup needs device-mapper from the LVM2 package ] ]]
+        python? ( dev-lang/python:=[>=2.6] )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_configure() {
+    econf --enable-cryptsetup-reencrypt \
+        --enable-dev-random \
+        --enable-nls \
+        --enable-udev \
+        --disable-fips \
+        --disable-pwquality \
+        --disable-selinux \
+        --disable-static-cryptsetup \
+        $(option_enable gcrypt gcrypt-pbkdf2) \
+        $(option_enable python) \
+        --with-crypto_backend=kernel
+}

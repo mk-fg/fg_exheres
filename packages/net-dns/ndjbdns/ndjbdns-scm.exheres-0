@@ -1,4 +1,4 @@
-# Copyright 2011-2013 Mike Kazantsev
+# Copyright 2011-2015 Mike Kazantsev
 # Copyright 2008 Daniel Mierswa <impulze@impulze.org>
 # Distributed under the terms of the GNU General Public License v2
 
@@ -24,7 +24,6 @@ BUGS_TO="mk.fraggod@gmail.com"
 src_install() {
     default
 
-    edo mv "$IMAGE"/usr/{lib,$LIBDIR}
     edo pushd "$IMAGE"/etc/ndjbdns
     for p in *.conf; do edo mv $p $p.default; done
     rm -rf ip servers

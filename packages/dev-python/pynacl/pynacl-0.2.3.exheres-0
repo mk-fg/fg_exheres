@@ -1,4 +1,4 @@
-# Copyright 2014 Mike Kazantsev
+# Copyright 2014-2015 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 MY_PN=PyNaCl
@@ -32,5 +32,5 @@ src_compile() {
 
 src_install() {
     nonfatal edo python -B setup.py install --root="$IMAGE" --no-compile
-    edo test -f "$IMAGE"/usr/$LIBDIR/python*/site-packages/nacl/__init__.py
+    edo test -f "$IMAGE"/usr/"$(exhost --target)"/lib/python*/site-packages/nacl/__init__.py
 }

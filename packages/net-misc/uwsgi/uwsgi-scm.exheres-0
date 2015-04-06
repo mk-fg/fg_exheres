@@ -68,11 +68,6 @@ src_install() {
         doins uwsgidecorators.py
     }
 
-    [[ $LIBDIR != lib ]] && {
-        edo mv "$IMAGE"/usr/{lib,$LIBDIR}/uwsgi
-        edo rmdir "$IMAGE"/usr/lib
-    }
-
     option systemd && keepdir /etc/uwsgi
     install_systemd_files
 }
