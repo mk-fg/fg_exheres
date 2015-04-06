@@ -9,7 +9,7 @@ HOMEPAGE="http://nagiosplugins.org/"
 
 LICENCES="GPL-2"
 SLOT="0"
-MYOPTIONS="ipv6 postgresql snmp"
+MYOPTIONS="postgresql snmp"
 
 DEPENDENCIES="
 	build+run:
@@ -33,7 +33,7 @@ DEFAULT_SRC_CONFIGURE_PARAMS=(
 	# I just don't need these
 	--disable-perl-modules
 	--without-ldap --without-mysql )
-DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( ipv6 'postgresql pgsql=/usr' )
+DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( 'postgresql pgsql=/usr' )
 
 
 src_configure() {
