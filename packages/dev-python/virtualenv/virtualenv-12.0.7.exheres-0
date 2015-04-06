@@ -1,0 +1,21 @@
+# Copyright 2015 Mike Kazantsev
+# Copyright 2010 Ingmar Vanhassel
+# Copyright 2008-2009 Ali Polatel
+# Distributed under the terms of the GNU General Public License v2
+# Based in part upon 'setuptools-0.6_rc8-r1.ebuild' from Gentoo, which is:
+#   Copyright 1999-2008 Gentoo Foundation
+
+require pypi setup-py [ import=distutils has_bin=true ]
+
+SUMMARY="Virtual Python Environment builder"
+
+HOMEPAGE="https://virtualenv.pypa.io/"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~arm ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
