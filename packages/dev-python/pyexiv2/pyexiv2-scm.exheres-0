@@ -23,3 +23,10 @@ DEPENDENCIES="
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    scons_src_install
+    edo mkdir "${IMAGE}usr/$(exhost --target)"
+    edo mv "${IMAGE}usr/lib" "${IMAGE}usr/$(exhost --target)"
+}
