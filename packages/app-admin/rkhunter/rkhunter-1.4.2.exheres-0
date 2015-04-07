@@ -34,6 +34,5 @@ src_install() {
     find "$IMAGE" -type f |
         while read f; do sed -i "s:${IMAGE%/}::g" "$f"; done
 
-    edo mv "${IMAGE}usr/bin" "${IMAGE}usr/$(exhost --target)"
-    edo mv "${IMAGE}usr/lib64" "${IMAGE}usr/$(exhost --target)/lib"
+    edo mv "${IMAGE}usr/$(exhost --target)/lib64" "${IMAGE}usr/$(exhost --target)/lib"
 }
