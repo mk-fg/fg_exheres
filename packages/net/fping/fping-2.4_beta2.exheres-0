@@ -46,9 +46,9 @@ src_compile() {
 }
 
 src_install () {
-    dosbin fping # v4
-    newsbin "${WORK}6"/fping fping6 # v6
-    edo chmod 4555 "$IMAGE"usr/sbin/fping*
+    dobin fping # v4
+    newbin "${WORK}6"/fping fping6 # v6
+    edo chmod 4555 "${IMAGE}usr/$(exhost --target)/bin"/fping*
     doman fping.8
     emagicdocs
 }
