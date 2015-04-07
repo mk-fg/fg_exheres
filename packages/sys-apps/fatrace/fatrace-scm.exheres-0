@@ -21,5 +21,6 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 src_install() {
-    emake PREFIX="$IMAGE"usr install
+    emake PREFIX="${IMAGE}usr/$(exhost --target)" install
+    edo mv "${IMAGE}usr/$(exhost --target)"/{s,}bin
 }
