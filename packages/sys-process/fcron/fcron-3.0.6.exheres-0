@@ -69,7 +69,7 @@ src_install() {
     keepdir /var/spool/fcron
 
     insinto /usr/bin
-    dosbin fcron || die
+    dosbin fcron
 
     # fcronsighup needs to be able to send a HUP to the running
     #  fcron daemon, crontab should be able to access any users' tab
@@ -93,7 +93,11 @@ src_install() {
     newpamd files/fcron.pam fcron
     install_systemd_files
 
-    newdoc files/fcron.conf fcron.conf.sample || die
-    doman doc/en/man/*.{1,5,8} || die
+    edo mv "${IMAGE}usr/bin" "${IMAGE}usr/$(exhost --target)/bin"
+    edo mv "${IMAGE}usr/$(exhost --target)/sbin"/* "${IMAGE}usr/$(exhost --target)/bin"
+    edo rmdir "${IMAGE}usr/$(exhost --target)/sbin"
+
+    newdoc files/fcron.conf fcron.conf.sample
+    doman doc/en/man/*.{1,5,8}
     emagicdocs
 }
