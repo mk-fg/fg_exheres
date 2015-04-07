@@ -25,10 +25,10 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 src_install() {
-    edo ./bin/cake --prefix "${IMAGE}"usr install
+    edo ./bin/cake --prefix "${IMAGE}usr/$(exhost --target)" install
 
-    edo rm "${IMAGE}"usr/bin/{cake,coffee}
+    edo rm "${IMAGE}"usr/$(exhost --target)/bin/{cake,coffee}
     for bin in cake coffee
-    do dosym ../lib/coffee-script/bin/"${bin}" /usr/bin/"${bin}"
+    do dosym ../lib/coffee-script/bin/$bin /usr/$(exhost --target)/bin/$bin
     done
 }
