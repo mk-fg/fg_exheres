@@ -19,5 +19,5 @@ DEPENDENCIES=""
 BUGS_TO="mk.fraggod@gmail.com"
 
 
-DEFAULT_SRC_COMPILE_PARAMS=( PREFIX=/usr )
-DEFAULT_SRC_INSTALL_PARAMS=( PREFIX=/usr )
+DEFAULT_SRC_COMPILE_PARAMS=( PREFIX=/usr/$(exhost --target) )
+DEFAULT_SRC_INSTALL_PARAMS=( PREFIX=/usr/$(exhost --target) )
