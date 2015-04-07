@@ -36,14 +36,11 @@ src_compile() {
 }
 
 src_install() {
-    dbmake DESTDIR="${IMAGE}" install
+    edo dbmake DESTDIR="${IMAGE}" install
 
-    for prog in dbclient dropbearkey dropbearconvert
-    do edo ln -s dropbearmulti "${IMAGE}"usr/bin/"${prog}"
+    for prog in dropbear dbclient dropbearkey dropbearconvert
+    do edo ln -s dropbearmulti "${IMAGE}"usr/"$(exhost --target)"/bin/"${prog}"
     done
-
-    dodir /usr/sbin
-    edo ln -s ../bin/dropbearmulti "${IMAGE}"usr/sbin/dropbear
 
     doman dbclient.1 dropbear{,key}.8
     emagicdocs
