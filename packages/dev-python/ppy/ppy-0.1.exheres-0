@@ -1,4 +1,4 @@
-# Copyright 2011-2012 Mike Kazantsev
+# Copyright 2011-2015 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 WORK="${WORKBASE}"
@@ -29,21 +29,21 @@ src_unpack() {
 }
 
 src_compile() {
-    edo cc $CFLAGS -lcap-ng ppy.c -o ppy
+    edo gcc $CFLAGS -lcap-ng ppy.c -o ppy
 }
 
 src_install() {
-    exeinto /usr/bin
+    exeinto /usr/$(exhost --target)/bin
     exeopts -m551
     doexe ppy
 
     # cave failed to transfer these in the past (writing after setting caps), but this
     #  can also fail because /var/tmp (or whatever) is tmpfs and has no xattr support
-    nonfatal edo setcap 'all=ep' "${IMAGE}"usr/bin/ppy
+    nonfatal edo setcap 'all=ep' "${IMAGE}"usr/$(exhost --target)/bin/ppy
 }
 
 pkg_postinst() {
     [[ -z "$(getcap /usr/bin/ppy)" ]] &&\
-        setcap 'all=ep' /usr/bin/ppy ||\
+        setcap 'all=ep' /usr/$(exhost --target)/bin/ppy ||\
         die "Failed to set posix capabilities for ppy binary"
 }
