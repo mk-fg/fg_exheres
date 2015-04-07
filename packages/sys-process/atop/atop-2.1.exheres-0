@@ -1,0 +1,38 @@
+# Copyright 2011-2015 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+# Based upon 'atop-1.25.ebuild' from Gentoo, which is:
+#  Copyright 1999-2010 Gentoo Foundation
+
+require systemd-service
+
+SUMMARY="Full-screen ASCII performance monitor."
+
+HOMEPAGE="http://www.atoptool.nl/"
+DOWNLOADS="http://www.atoptool.nl/download/${PNV}-1.tar.gz"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+src_install() {
+    edo mkdir -p "${IMAGE}usr/sbin"
+    default
+
+    edo mkdir "${IMAGE}usr/$(exhost --target)"
+    edo mv "${IMAGE}usr/bin" "${IMAGE}usr/$(exhost --target)"
+    edo mv "${IMAGE}usr/sbin"/* "${IMAGE}usr/$(exhost --target)/bin"
+    edo rmdir "${IMAGE}usr/sbin"
+
+    edo rm -rf "${IMAGE}etc" # init.d and cron.d stuff
+
+    if option systemd; then
+        insinto "${SYSTEMDSYSTEMUNITDIR}"
+        doins atop.service
+    fi
+}
