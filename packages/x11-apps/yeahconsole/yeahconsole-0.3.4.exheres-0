@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2015 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 # Based upon 'yeahconsole-0.3.4-r1.ebuild' from Gentoo, which is:
 #  Copyright 1999-2010 Gentoo Foundation
@@ -26,7 +26,7 @@ BUGS_TO="mk.fraggod@gmail.com"
 DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}/${PNV}-make.patch" )
 
 src_install() {
-    dodir /usr/bin
-    emake PREFIX="${IMAGE}"usr install
+    edo mkdir -p "${IMAGE}usr/$(exhost --target)/bin"
+    emake PREFIX="${IMAGE}usr/$(exhost --target)" install
     emagicdocs
 }
