@@ -1,4 +1,4 @@
-# Copyright 2013 Mike Kazantsev
+# Copyright 2013-2015 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 require checksums [ sha1=[ ${PNV}.tgz=b61e02853a7b94ffce17c563250230e03f76a598 ] ]
@@ -29,9 +29,6 @@ src_prepare() {
 src_install() {
     dobin skdet
     newman "$FETCHEDDIR"/${PNV}.1 skdet.1
-
-    insinto /usr/include
-    doins include/skdet.h
 
     emagicdocs
 }
