@@ -30,5 +30,5 @@ BUGS_TO="mk.fraggod@gmail.com"
 src_install() {
     dobin "${PN}"
     doman "${PN}".1
-    dosym "${PN}" /usr/bin/transmission-curses
+    dosym "${PN}" /usr/$(exhost --target)/bin/transmission-curses
 }
