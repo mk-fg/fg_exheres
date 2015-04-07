@@ -36,5 +36,9 @@ DEFAULT_SRC_PREPARE_PATCHES=(
 
 src_install() {
     default
+
+    edo mkdir "${IMAGE}usr/$(exhost --target)"
+    edo mv "${IMAGE}usr/sbin" "${IMAGE}usr/$(exhost --target)/bin"
+
     dodoc DEVELOPERS USING
 }
