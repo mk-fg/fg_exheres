@@ -5,7 +5,7 @@ MY_PN=PyNaCl
 MY_PNV=${MY_PN}-${PV}
 WORK="${WORKBASE}/${MY_PNV}"
 
-require distutils pypi checksums [ sha1=[ ${MY_PNV}.tar.gz=533af9e6804f3f373b6c7b4f0e6f3d38f21854cd ] ]
+require distutils pypi checksums [ sha1=[ ${MY_PNV}.tar.gz=ab8e3ca1c5487077e04b8c7a0b60e8eaa1fb4e33 ] ]
 
 SUMMARY="Python binding to the Networking and Cryptography (NaCl) library."
 
@@ -16,15 +16,14 @@ SLOT="0"
 PLATFORMS="~amd64 ~x86"
 MYOPTIONS=""
 
-DEPENDENCIES=""
+DEPENDENCIES="
+    build+run:
+        dev-libs/libsodium
+        dev-python/cffi
+"
 
 BUGS_TO="mk.fraggod@gmail.com"
 
-
-src_prepare() {
-    grep -F -e --disable-pie setup.py\
-        || sed -i 's/\(configure, \)\("--disable-shared"\)/\1"--disable-pie", \2/' setup.py
-}
 
 src_compile() {
     : # "build" causes "File exists: .../build/temp.linux-i686-2.7" on install
