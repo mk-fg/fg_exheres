@@ -1,4 +1,4 @@
-# Copyright 2012-2013 Mike Kazantsev
+# Copyright 2012-2015 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 # SCM_REPOSITORY=":pserver:anonymous@cimg.cvs.sourceforge.net:/cvsroot/cimg"
@@ -17,7 +17,7 @@ DEPENDENCIES=""
 BUGS_TO="mk.fraggod@gmail.com"
 
 src_install() {
-    insinto /usr/include
+    insinto /usr/$(exhost --target)/include
     doins CImg.h
     emagicdocs
 }
