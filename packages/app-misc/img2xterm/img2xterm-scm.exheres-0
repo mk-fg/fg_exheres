@@ -25,6 +25,6 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 src_install() {
     dobin img2xterm
-    dosym img2xterm /usr/bin/img2cow
+    dosym img2xterm /usr/$(exhost --target)/bin/img2cow
     doman man6/img2xterm.6.gz
 }
