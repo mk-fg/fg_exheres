@@ -78,12 +78,10 @@ src_install() {
     edo rmdir "${IMAGE}usr/sbin"
     edo mv "${IMAGE}sbin"/* "${IMAGE}usr/$(exhost --target)/bin"
     edo rmdir "${IMAGE}sbin"
-    edo mv "${IMAGE}"lib/python*/site-packages/* "${IMAGE}usr/$(exhost --target)"/lib/python*/site-packages/
-    edo rmdir -p "${IMAGE}"lib/python*/site-packages
+    edo mv "${IMAGE}"usr/lib/python*/site-packages/* "${IMAGE}usr/$(exhost --target)"/lib/python*/site-packages/
+    nonfatal edo rmdir -p "${IMAGE}"usr/lib/python*/site-packages
     edo mv "${IMAGE}lib"/* "${IMAGE}usr/$(exhost --target)/lib"
     edo rmdir "${IMAGE}lib"
-    edo mv "${IMAGE}usr/lib"/* "${IMAGE}usr/$(exhost --target)/lib"
-    edo rmdir "${IMAGE}usr/lib"
 
     keepdir /var/lib/apparmor
 }
