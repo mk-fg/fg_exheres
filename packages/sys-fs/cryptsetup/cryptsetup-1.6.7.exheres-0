@@ -37,7 +37,6 @@ src_configure() {
         --disable-pwquality \
         --disable-selinux \
         --disable-static-cryptsetup \
-        $(option_enable gcrypt gcrypt-pbkdf2) \
         $(option_enable python) \
         --with-crypto_backend=kernel
 }
