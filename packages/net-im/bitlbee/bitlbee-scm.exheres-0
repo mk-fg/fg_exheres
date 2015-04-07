@@ -109,15 +109,15 @@ src_install() {
     # Install the forking bitlbee daemon
     insinto /usr/bin
     doins bitlbeed
-    edo chmod 755 "${IMAGE}"/usr/bin/bitlbeed
+    edo chmod 755 "${IMAGE}"usr/bin/bitlbeed
 
     # Install a compatibility symlink for /usr/bin/bitlbee
     dosym /usr/sbin/bitlbee /usr/bin/bitlbee
 
     # Bitlbee needs this to save user configuration
-    edo mkdir -p "${IMAGE}"/var/lib/bitlbee
+    edo mkdir -p "${IMAGE}"var/lib/bitlbee
     keepdir /var/lib/bitlbee
-    edo chown bitlbee:bitlbee "${IMAGE}"/var/lib/bitlbee
+    edo chown bitlbee:bitlbee "${IMAGE}"var/lib/bitlbee
 
     # Install docs describing how to run skyped if it's enabled
     dodoc protocols/skype/skyped.txt

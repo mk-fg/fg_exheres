@@ -33,7 +33,7 @@ src_install() {
     declare -A exes
     for bin in ${exes_names[@]}; do exes[$bin]=t; done
 
-    mkdir -p "$IMAGE"/usr/bin
+    mkdir -p "$IMAGE"usr/bin
     exeinto "$dst"
     for bin in $(find * -maxdepth 0 -type f -executable); do
         [[ -z "${exes[$bin]}" ]] && die "New binary: $bin"

@@ -57,7 +57,7 @@ src_install() {
         einstall
         edo popd
     done
-    rm -f "${IMAGE}"/usr/lib*/claws-mail/plugins/*.{a,la}
+    rm -f "${IMAGE}"usr/lib*/claws-mail/plugins/*.{a,la}
     find "${IMAGE}" -exec rmdir -p {} \; 2>/dev/null
 }
 

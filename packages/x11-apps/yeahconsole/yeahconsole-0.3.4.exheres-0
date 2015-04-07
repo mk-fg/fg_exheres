@@ -27,6 +27,6 @@ DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}/${PNV}-make.patch" )
 
 src_install() {
     dodir /usr/bin
-    emake PREFIX="${IMAGE}"/usr install
+    emake PREFIX="${IMAGE}"usr install
     emagicdocs
 }

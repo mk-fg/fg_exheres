@@ -64,18 +64,18 @@ src_compile() {
 }
 
 src_install() {
-    emake -j1 package pkgdir="${IMAGE}/usr"
+    emake -j1 package pkgdir="${IMAGE}usr"
 
-    edo rm -f "${IMAGE}/usr/bin/"{doc.url,manweb}
-    edo rm -r "${IMAGE}/usr/man/web"
-    edo rm -r "${IMAGE}/usr/link"
-    edo rm -r "${IMAGE}/usr/"{README,VERSION,config_template,pkginfo}
+    edo rm -f "${IMAGE}usr/bin/"{doc.url,manweb}
+    edo rm -r "${IMAGE}usr/man/web"
+    edo rm -r "${IMAGE}usr/link"
+    edo rm -r "${IMAGE}usr/"{README,VERSION,config_template,pkginfo}
     dodir /usr/share
-    edo mv "${IMAGE}/usr/man" "${IMAGE}/usr/share/"
-    edo mv "${IMAGE}/usr/misc" "${IMAGE}/usr/share/netpbm"
-    [[ ${LIBDIR} != "lib" ]] && edo mv "${IMAGE}/usr/lib" "${IMAGE}/usr/${LIBDIR}"
+    edo mv "${IMAGE}usr/man" "${IMAGE}usr/share/"
+    edo mv "${IMAGE}usr/misc" "${IMAGE}usr/share/netpbm"
+    [[ ${LIBDIR} != "lib" ]] && edo mv "${IMAGE}usr/lib" "${IMAGE}usr/${LIBDIR}"
 
-    edo ln -s libnetpbm.so.${PV%.*} "${IMAGE}/usr/${LIBDIR}/libnetpbm.so"
+    edo ln -s libnetpbm.so.${PV%.*} "${IMAGE}usr/${LIBDIR}/libnetpbm.so"
 
     emagicdocs
 }

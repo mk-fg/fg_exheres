@@ -27,7 +27,7 @@ REMOTE_IDS="freshmeat:${PN}"
 
 
 DEFAULT_SRC_PREPARE_PATCHES=( "$FILES"/no_docs.patch )
-DEFAULT_SRC_INSTALL_PARAMS=( PREFIX="${IMAGE}/usr" INSTALLINFO=echo )
+DEFAULT_SRC_INSTALL_PARAMS=( PREFIX="${IMAGE}usr" INSTALLINFO=echo )
 
 src_compile() {
     edo mkdir -p "$TEMP"/.emacs.d/emms
@@ -36,8 +36,8 @@ src_compile() {
 }
 
 src_install() {
-    edo mkdir -p "$IMAGE"/usr/share/man/man1 "$IMAGE"/usr/info
+    edo mkdir -p "$IMAGE"usr/share/man/man1 "$IMAGE"usr/info
     default
-    nonfatal edo rmdir -p "$IMAGE"/usr/share/man/man1 "$IMAGE"/usr/info
+    nonfatal edo rmdir -p "$IMAGE"usr/share/man/man1 "$IMAGE"usr/info
     option taglib && dobin src/emms-print-metadata
 }

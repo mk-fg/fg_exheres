@@ -24,9 +24,9 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 EMAKE_PARAMS=(
     DESTDIR="${IMAGE}"
-    PREFIX="${IMAGE}/usr"
-    LISPDIR="${IMAGE}/${ELISP_SITE_LISP}"
-    VERSION_SPECIFIC_LISPDIR="${IMAGE}/${ELISP_SITE_LISP}" )
+    PREFIX="${IMAGE}usr"
+    LISPDIR="${IMAGE}${ELISP_SITE_LISP}"
+    VERSION_SPECIFIC_LISPDIR="${IMAGE}${ELISP_SITE_LISP}" )
 
 src_prepare() {
     cat <<-EOF >> APEL-CFG

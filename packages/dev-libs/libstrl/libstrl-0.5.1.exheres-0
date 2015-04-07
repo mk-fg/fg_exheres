@@ -18,5 +18,5 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 src_install() {
     default
-    rmdir -p "$IMAGE"/usr/share/man/man0
+    rmdir -p "$IMAGE"usr/share/man/man0
 }

@@ -35,7 +35,7 @@ BUGS_TO="mk.fraggod@gmail.com"
 src_prepare() {
     edo test -f buildconf/default.ini
     edo cat "$FILES"/build_profile.ini > buildconf/default.ini
-    edo sed -i "s:plugin_dir = /usr/lib/uwsgi:plugin_dir = ${IMAGE}/usr/lib/uwsgi:" buildconf/package.ini
+    edo sed -i "s:plugin_dir = /usr/lib/uwsgi:plugin_dir = ${IMAGE}usr/lib/uwsgi:" buildconf/package.ini
 }
 
 src_compile() {
@@ -46,7 +46,7 @@ src_install() {
     dobin uwsgi
     emagicdocs
 
-    edo mkdir -p "$IMAGE"/usr/lib/uwsgi
+    edo mkdir -p "$IMAGE"usr/lib/uwsgi
 
     # BAD automagic follows - only builds stuff for currently selected python
 

@@ -72,7 +72,7 @@ src_install() {
     install_systemd_files
 
     dodir /etc/djbdns/resolver
-    edo cd "${IMAGE}"/etc/djbdns/resolver
+    edo cd "${IMAGE}"etc/djbdns/resolver
     insinto /etc/djbdns/resolver
     hereins env.default <<EOF
 UID=65534
@@ -82,7 +82,7 @@ IP=
 EOF
 
     dodir /etc/djbdns/cache
-    edo cd "${IMAGE}"/etc/djbdns/cache
+    edo cd "${IMAGE}"etc/djbdns/cache
     insinto /etc/djbdns/cache
     hereins env.default <<EOF
 UID=65534

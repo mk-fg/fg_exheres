@@ -24,7 +24,7 @@ BUGS_TO="mk.fraggod@gmail.com"
 src_install() {
     default
 
-    edo pushd "$IMAGE"/etc/ndjbdns
+    edo pushd "$IMAGE"etc/ndjbdns
     for p in *.conf; do edo mv $p $p.default; done
     rm -rf ip servers
     edo popd

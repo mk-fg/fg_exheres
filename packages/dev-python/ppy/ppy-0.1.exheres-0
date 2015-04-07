@@ -39,7 +39,7 @@ src_install() {
 
     # cave failed to transfer these in the past (writing after setting caps), but this
     #  can also fail because /var/tmp (or whatever) is tmpfs and has no xattr support
-    nonfatal edo setcap 'all=ep' "${IMAGE}"/usr/bin/ppy
+    nonfatal edo setcap 'all=ep' "${IMAGE}"usr/bin/ppy
 }
 
 pkg_postinst() {

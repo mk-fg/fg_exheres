@@ -39,5 +39,5 @@ src_prepare() {
 
 src_install() {
     cmake_src_install
-    nonfatal edo rmdir -p "$IMAGE"/usr/share/doc/obexftp/html
+    nonfatal edo rmdir -p "$IMAGE"usr/share/doc/obexftp/html
 }

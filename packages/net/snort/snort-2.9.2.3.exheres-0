@@ -77,9 +77,9 @@ src_install() {
 
     [[ $LIBDIR != lib ]]\
         && edo mv "$IMAGE"{/usr/lib/*,/usr/$LIBDIR/}\
-        && edo rmdir "$IMAGE"/usr/lib
+        && edo rmdir "$IMAGE"usr/lib
 
-    edo mkdir -p "$IMAGE"/usr/share/snort
-    edo mv "$IMAGE"/usr/{src/snort_dynamicsrc,share/snort/dynamicsrc}
-    edo rmdir "$IMAGE"/usr/src
+    edo mkdir -p "$IMAGE"usr/share/snort
+    edo mv "$IMAGE"usr/{src/snort_dynamicsrc,share/snort/dynamicsrc}
+    edo rmdir "$IMAGE"usr/src
 }

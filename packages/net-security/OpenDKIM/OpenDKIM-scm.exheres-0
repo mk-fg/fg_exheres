@@ -66,5 +66,5 @@ src_configure() {
 src_install() {
     default
     dodoc opendkim/opendkim.conf.{sample,simple,simple-verify}
-    edo rmdir "$IMAGE"/usr/share/man/man1
+    edo rmdir "$IMAGE"usr/share/man/man1
 }

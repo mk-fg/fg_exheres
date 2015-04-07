@@ -27,8 +27,8 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 WORK="${WORKBASE}/expat-${PV}"
-DEFAULT_SRC_COMPILE_PARAMS=( prefix="$IMAGE"/usr )
-DEFAULT_SRC_INSTALL_PARAMS=( prefix="$IMAGE"/usr )
+DEFAULT_SRC_COMPILE_PARAMS=( prefix="$IMAGE"usr )
+DEFAULT_SRC_INSTALL_PARAMS=( prefix="$IMAGE"usr )
 
 src_prepare() {
     edo patch -p1 < <(zcat "${FETCHEDDIR}/${deb_patch}")

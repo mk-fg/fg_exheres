@@ -35,7 +35,7 @@ src_install() {
     # Installs to /opt. Fine with me, since that's upstream.
     distutils_src_install
 
-    rmdir -p "$IMAGE"/usr/"$(exhost --target)"/lib/python*/site-packages
+    rmdir -p "$IMAGE"usr/"$(exhost --target)"/lib/python*/site-packages
 
     keepdir /opt/graphite/storage/rrd
     keepdir /opt/graphite/storage/lists

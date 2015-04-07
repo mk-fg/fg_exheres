@@ -81,11 +81,11 @@ src_configure() {
 }
 
 src_install() {
-    einstall xapploaddir="${IMAGE}/usr/share/X11/app-defaults" \
-        mandir="${IMAGE}/usr/share/man/man1" INSTPGMFLAGS=""
+    einstall xapploaddir="${IMAGE}usr/share/X11/app-defaults" \
+        mandir="${IMAGE}usr/share/man/man1" INSTPGMFLAGS=""
 
     pamd_mimic_system xlock auth
-    edo chmod 755 "$IMAGE"/usr/bin/xlock
+    edo chmod 755 "$IMAGE"usr/bin/xlock
 
     eautomagicdocs
 }

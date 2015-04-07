@@ -230,5 +230,5 @@ src_install() {
     install_systemd_files
 
     keepdir /var/lib/collectd
-    edo rmdir "$IMAGE"/var/{run,log}
+    edo rmdir "$IMAGE"var/{run,log}
 }

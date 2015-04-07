@@ -1,4 +1,4 @@
-# Copyright 2011 Mike Kazantsev
+# Copyright 2011-2015 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
 SCM_REPOSITORY="https://github.com/processone/tsung.git"
@@ -32,5 +32,5 @@ src_install() {
         -e 's|datadir=/usr|datadir=${prefix}|'\
         -i Makefile
     default
-    nonfatal edo rmdir -p "$IMAGE"/usr/$LIBDIR/erlang/lib/tsung*/priv
+    nonfatal edo rmdir -p "$IMAGE"usr/"$(exhost --target)"/erlang/lib/tsung*/priv
 }

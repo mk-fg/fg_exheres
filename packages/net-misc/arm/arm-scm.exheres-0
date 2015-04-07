@@ -31,5 +31,5 @@ src_install() {
     distutils_src_install
 
     # Installs all the *.py files to /usr/share
-    rmdir -p "$IMAGE"/usr/"$(exhost --target)"/lib/python*/site-packages
+    rmdir -p "$IMAGE"usr/"$(exhost --target)"/lib/python*/site-packages
 }

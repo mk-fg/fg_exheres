@@ -27,24 +27,24 @@ BUGS_TO="mk.fraggod@gmail.com"
 src_install() {
     distutils_src_install
 
-    for file in "$IMAGE"/usr/bin/shinken-*.py
+    for file in "$IMAGE"usr/bin/shinken-*.py
     do [[ $(sha1sum <"$file") = $(sha1sum <"${file%.py}") ]] && edo rm "$file"
     done
 
-    edo mv "$IMAGE"/etc/shinken/{nagios.cfg,arbiterd.ini}
-    edo cat <<EOF >>"$IMAGE"/etc/shinken/arbiterd.ini
+    edo mv "$IMAGE"etc/shinken/{nagios.cfg,arbiterd.ini}
+    edo cat <<EOF >>"$IMAGE"etc/shinken/arbiterd.ini
 
 # Shinken-specific configuration
 cfg_file=shinken-specific.cfg
 EOF
 
-    rm -rf "$IMAGE"/etc/{default,init.d,shinken/nagios-windows.cfg,shinken/*-windows.ini}
-    rm -rf "$IMAGE"/var/{run,log,lib}
-    sed -i "s|$IMAGE|/|" "$IMAGE"/etc/shinken/*.{ini,cfg}
-    edo rmdir "$IMAGE"/etc/shinken/objects/discovery
-    edo mv "$IMAGE"/etc/shinken "$IMAGE"/usr/share/doc/"${PNV}"
-    edo find "$IMAGE"/usr/share/doc/"${PNV}" -type d -empty -delete
-    edo rmdir "$IMAGE"/{etc,var}
+    rm -rf "$IMAGE"etc/{default,init.d,shinken/nagios-windows.cfg,shinken/*-windows.ini}
+    rm -rf "$IMAGE"var/{run,log,lib}
+    sed -i "s|$IMAGE|/|" "$IMAGE"etc/shinken/*.{ini,cfg}
+    edo rmdir "$IMAGE"etc/shinken/objects/discovery
+    edo mv "$IMAGE"etc/shinken "$IMAGE"usr/share/doc/"${PNV}"
+    edo find "$IMAGE"usr/share/doc/"${PNV}" -type d -empty -delete
+    edo rmdir "$IMAGE"{etc,var}
 
     install_systemd_files
 }

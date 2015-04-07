@@ -39,6 +39,6 @@ src_install() {
     default
 
     # RH-specific stuff
-    cd "$IMAGE"/etc
+    cd "$IMAGE"etc
     rm -Rf sysconfig rc.d
 }

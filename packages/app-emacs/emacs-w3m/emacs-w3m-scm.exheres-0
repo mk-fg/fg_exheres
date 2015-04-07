@@ -37,7 +37,7 @@ WORK="${WORK}/${PN}"
 EMAKE_PARAMS=(
     lispdir="${IMAGE}${ELISP_SITE_LISP}/${PN}"
     ICONDIR="${IMAGE}${ELISP_SITE_LISP}/${PN}/etc"
-    infodir="${IMAGE}/usr/share/info" )
+    infodir="${IMAGE}usr/share/info" )
 
 src_fetch_extra() {
     if [[ -d $(scm_get_var CHECKOUT_TO) ]]; then

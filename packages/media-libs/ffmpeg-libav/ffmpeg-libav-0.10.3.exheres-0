@@ -197,9 +197,9 @@ src_install() {
     default
 
     for d in "${CLEAN_DIRS[@]}"
-    do rm -Rf "${IMAGE}/${d}"
+    do rm -Rf "${IMAGE}${d}"
     done
 
-    edo rm "$IMAGE"/usr/lib/*.{so,a}
-    edo rm "$IMAGE"/usr/lib/lib{postproc,sw}*
+    edo rm "$IMAGE"usr/lib/*.{so,a}
+    edo rm "$IMAGE"usr/lib/lib{postproc,sw}*
 }

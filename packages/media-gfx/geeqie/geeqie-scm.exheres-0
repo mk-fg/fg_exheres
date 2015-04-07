@@ -39,7 +39,7 @@ src_prepare() {
 }
 
 src_install() {
-    mkdir -p "$IMAGE"/usr/share/doc/geeqie-1.0/html
+    mkdir -p "$IMAGE"usr/share/doc/geeqie-1.0/html
     default
     find "$IMAGE" -type d -empty -delete
 }

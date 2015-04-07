@@ -46,6 +46,6 @@ src_prepare() {
     edo ./autogen.sh
     edo sed -i\
             -e "s:\$(sysconfdir):${IMAGE}\$(sysconfdir):g"\
-            -e "s:install -m:mkdir ${IMAGE}/etc \&\& install -m:"\
+            -e "s:install -m:mkdir ${IMAGE}etc \&\& install -m:"\
         etc/Makefile.in
 }

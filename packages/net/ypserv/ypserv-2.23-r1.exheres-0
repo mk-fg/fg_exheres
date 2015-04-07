@@ -40,5 +40,5 @@ src_install() {
     newins etc/securenets securenets.default
 
     # It's not under CONFIG_PROTECT and probably shouldn't be
-    edo mv "${IMAGE}"/var/yp/Makefile{,.default}
+    edo mv "${IMAGE}"var/yp/Makefile{,.default}
 }
