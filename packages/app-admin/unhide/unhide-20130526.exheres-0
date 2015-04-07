@@ -33,7 +33,7 @@ src_compile() {
 
 src_install() {
     dobin unhide-linux unhide_rb unhide-tcp
-    dosym unhide-linux /usr/bin/unhide
+    dosym unhide-linux /usr/$(exhost --target)/bin/unhide
     doman man/unhide{,-tcp}.8
     emagicdocs
 }
