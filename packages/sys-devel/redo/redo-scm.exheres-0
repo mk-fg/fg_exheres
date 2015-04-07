@@ -31,4 +31,7 @@ src_compile() {
 
 src_install() {
     LIBDIR= DESTDIR="$IMAGE" edo make install
+    
+    edo mkdir "${IMAGE}usr/$(exhost --target)"
+    edo mv "${IMAGE}usr"/{bin,lib} "${IMAGE}usr/$(exhost --target)"/
 }
