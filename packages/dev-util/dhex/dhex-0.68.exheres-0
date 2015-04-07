@@ -29,6 +29,11 @@ src_prepare() {
 
 src_install() {
     edo mkdir -p "$IMAGE"usr/bin "$IMAGE"usr/man/man{1,5}
+
     emake DESTDIR="$IMAGE"usr install
+
+    edo mkdir "${IMAGE}usr/$(exhost --target)"
+    edo mv "${IMAGE}usr/bin" "${IMAGE}usr/$(exhost --target)"
+
     emagicdocs
 }
