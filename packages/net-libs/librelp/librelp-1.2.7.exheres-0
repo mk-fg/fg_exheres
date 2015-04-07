@@ -1,0 +1,23 @@
+# Copyright 2015 Mike Kazantsev
+# Copyright 2009-2010 Nathan McSween
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="A library for the relp protocol"
+
+HOMEPAGE="http://www.${PN}.com"
+DOWNLOADS="http://download.rsyslog.com/${PN}/${PNV}.tar.gz"
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="tls"
+
+DEPENDENCIES="
+    build+run:
+        tls? ( dev-libs/gnutls )
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( tls )
