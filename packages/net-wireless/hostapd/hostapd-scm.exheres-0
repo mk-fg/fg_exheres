@@ -33,6 +33,7 @@ src_configure() {
 src_install() {
     default
 
-    edo mv "$IMAGE"usr/local/* "$IMAGE"usr/
+    edo mkdir "${IMAGE}usr/$(exhost --target)"
+    edo mv "$IMAGE"usr/local/* "${IMAGE}usr/$(exhost --target)"
     edo rmdir "$IMAGE"usr/local
 }
