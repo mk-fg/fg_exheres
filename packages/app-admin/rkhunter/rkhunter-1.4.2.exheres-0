@@ -26,11 +26,14 @@ BUGS_TO="mk.fraggod@gmail.com"
 
 
 src_install() {
-    edo mkdir "$IMAGE"usr
+    edo mkdir -p "${IMAGE}usr/$(exhost --target)"
     sed -i s:'\<\(VAR\|SYSCONFIG\)DIR="${PREFIX}/':'\1DIR="'"$IMAGE": installer.sh
-    edo ./installer.sh --layout custom "$IMAGE"usr --install
+    edo ./installer.sh --layout custom "${IMAGE}usr/$(exhost --target)" --install
 
     # --striproot won't work, because it does "find $PREFIX .."
     find "$IMAGE" -type f |
         while read f; do sed -i "s:${IMAGE%/}::g" "$f"; done
+
+    edo mv "${IMAGE}usr/bin" "${IMAGE}usr/$(exhost --target)"
+    edo mv "${IMAGE}usr/lib64" "${IMAGE}usr/$(exhost --target)/lib"
 }
