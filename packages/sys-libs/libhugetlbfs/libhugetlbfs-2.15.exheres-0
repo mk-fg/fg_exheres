@@ -23,5 +23,13 @@ src_compile() {
 
 src_install() {
     emake -j1 ${MAKE_PARAMS[@]} DESTDIR="$IMAGE" install
+
+    edo mkdir "${IMAGE}usr/$(exhost --target)"
+    edo mv "${IMAGE}usr/bin" "${IMAGE}usr/$(exhost --target)"
+    edo mv "${IMAGE}usr/lib" "${IMAGE}usr/$(exhost --target)"
+    edo mv "${IMAGE}usr/include" "${IMAGE}usr/$(exhost --target)"
+    edo mv "${IMAGE}usr/lib64"/* "${IMAGE}usr/$(exhost --target)/lib"
+    edo rmdir "${IMAGE}usr/lib64"
+
     emagicdocs
 }
