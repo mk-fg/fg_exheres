@@ -1,0 +1,91 @@
+# Copyright 2015 Mike Kazantsev
+# Copyright 2008 Richard Brown
+# Distributed under the terms of the GNU General Public License v2
+# Based in part upon 'conky-1.5.2_pre01116.ebuild' from Gentoo, which is:
+#	 Copyright 1999-2008 Gentoo Foundation
+
+SCM_REPOSITORY="http://github.com/brndnmtthws/conky"
+
+require scm-git cmake
+
+SUMMARY="A free, light-weight system monitor"
+
+HOMEPAGE="http://conky.sf.net"
+
+LICENCES="GPL-3 BSD-3 LGPL-2.1 MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        virtual/pkg-config
+        x11-libs/libXt
+        x11-proto/xextproto
+        x11-proto/xproto
+    build+run:
+        dev-lang/toluapp[>=1.0.93][lua_abis:*(-)?]
+        media-libs/freetype:2
+        media-libs/fontconfig
+        media-libs/imlib2[>=1.4.2][X]
+        net-wireless/wireless_tools
+        x11-libs/cairo[X]
+        x11-libs/libICE
+        x11-libs/libSM
+        x11-libs/libX11
+        x11-libs/libXdamage
+        x11-libs/libXext
+        x11-libs/libXft
+        x11-libs/libXrender
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+UPSTREAM_CHANGELOG="${HOMEPAGE}/changelog.html"
+UPSTREAM_DOCUMENTATION="${HOMEPAGE}/documentation.html"
+
+
+# ccmake .
+# awk 'match($0,/^(BUILD_[^:]+):\S+(=\S+)/,a)
+#  {sub(/^\/+\s*/, "    # ", prev_line); print "-D" a[1] a[2] prev_line} {prev_line=$0}' CMakeCache.txt
+
+CMAKE_SRC_CONFIGURE_PARAMS=(
+    -DBUILD_APCUPSD=OFF    # Enable APCUPSD support
+    -DBUILD_ARGB=ON    # Build ARGB (real transparency) support
+    -DBUILD_AUDACIOUS=OFF    # Build audacious (music player) support
+    -DBUILD_BMPX=OFF    # Build BMPx (music player) support
+    -DBUILD_BUILTIN_CONFIG=ON    # Enable builtin default configuration
+    -DBUILD_CMUS=OFF    # Enable support for cmus music player
+    -DBUILD_CURL=OFF    # Enable if you want Curl support
+    -DBUILD_EVE=OFF    # Enable if you want Eve-Online skill monitoring support
+    -DBUILD_HDDTEMP=OFF    # Support for hddtemp
+    -DBUILD_HTTP=OFF    # Enable if you want HTTP support
+    -DBUILD_I18N=ON    # Enable if you want internationalization support
+    -DBUILD_IBM=OFF    # Support for IBM/Lenovo notebooks
+    -DBUILD_ICAL=OFF    # Enable if you want iCalendar (RFC 5545) support
+    -DBUILD_ICONV=ON    # Enable iconv support
+    -DBUILD_IMLIB2=ON    # Enable Imlib2 support
+    -DBUILD_IOSTATS=ON    # Enable disk I/O stats
+    -DBUILD_IPV6=ON    # Enable if you want IPv6 support
+    -DBUILD_IRC=OFF    # Enable if you want IRC support
+    -DBUILD_LUA_CAIRO=ON    # Build cairo bindings for Lua
+    -DBUILD_LUA_IMLIB2=ON    # Build Imlib2 bindings for Lua
+    -DBUILD_LUA_RSVG=ON    # Build rsvg bindings for Lua
+    -DBUILD_MATH=ON    # Enable math support
+    -DBUILD_MOC=OFF    # Enable if you want MOC (music player) support
+    -DBUILD_MPD=OFF    # Enable if you want MPD (music player) support
+    -DBUILD_MYSQL=OFF    # Enable if you want MySQL support
+    -DBUILD_NCURSES=ON    # Enable ncurses support
+    -DBUILD_NVIDIA=OFF    # Enable nvidia support
+    -DBUILD_OLD_CONFIG=ON    # Enable support for the old syntax of configurations
+    -DBUILD_PORT_MONITORS=ON    # Build TCP portmon support
+    -DBUILD_RSS=OFF    # Enable if you want RSS support
+    -DBUILD_WEATHER_METAR=OFF    # Enable METAR weather support
+    -DBUILD_WEATHER_XOAP=OFF    # Enable XOAP weather support
+    -DBUILD_WLAN=ON    # Enable wireless support
+    -DBUILD_X11=ON    # Build X11 support
+    -DBUILD_XDAMAGE=ON    # Build Xdamage support
+    -DBUILD_XDBE=ON    # Build Xdbe (double-buffer) support
+    -DBUILD_XFT=ON    # Build Xft (freetype fonts) support
+    -DBUILD_XMMS2=OFF    # Enable if you want XMMS2 (music player) support
+    -DBUILD_XSHAPE=ON    # Enable Xshape support
+)
