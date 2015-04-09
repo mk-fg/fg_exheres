@@ -1,0 +1,54 @@
+# Copyright 2011-2015 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+# Based upon 'fcron-3.0.6-r1.ebuild' from Gentoo, which is:
+#  Copyright 1999-2010 Gentoo Foundation
+
+require pam
+
+SUMMARY="Simple, high-reliability, distributed software configuration management"
+
+HOMEPAGE="http://fcron.free.fr/"
+DOWNLOADS="http://fcron.free.fr/archives/${PNV}.src.tar.gz"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        group/cron
+        sys-libs/libcap
+        sys-libs/pam
+        user/cron
+"
+
+BUGS_TO="mk.fraggod@gmail.com"
+
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --with-run-non-privileged=no
+    --with-fcrondyn=yes
+    --with-username=cron
+    --with-groupname=cron
+    --with-audit=yes
+    --with-pam=yes
+    --with-selinux=no
+
+    --with-editor=/bin/true # should be set via $EDITOR
+    --with-boot-install=no
+    --localstatedir=/var
+)
+
+src_prepare() {
+    edo sed -i -e 's|^\(install:.*\) strip\>|\1|' -e 's|^\(perms:.*\) strip\>|\1|' Makefile.in
+    default
+}
+
+src_install() {
+    default
+
+    edo rm "$IMAGE"etc/pam.conf
+    edo rmdir "$IMAGE"var/run
+    keepdir /var/spool/fcron
+}
