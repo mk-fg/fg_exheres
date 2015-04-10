@@ -1,9 +1,10 @@
 # Copyright 2011 Mike Kazantsev
 # Distributed under the terms of the GNU General Public License v2
 
-require sourceforge [ suffix=tar.gz ]
-
 SUMMARY="Tool to decompress any format using libarchive."
+
+HOMEPAGE="http://excat.sf.net"
+DOWNLOADS=""
 
 LICENCES="BSD-2"
 SLOT="0"
@@ -16,3 +17,14 @@ DEPENDENCIES="
 "
 
 BUGS_TO="mk.fraggod@gmail.com"
+
+
+WORK=$WORKBASE
+
+src_compile() {
+    edo $CC $CFLAGS -larchive "$FILES"/excat.c -o excat
+}
+
+src_install() {
+    dobin excat
+}
