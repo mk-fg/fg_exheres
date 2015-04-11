@@ -1,0 +1,18 @@
+# Copyright 2015 Mike Kazantsev
+# Distributed under the terms of the GNU General Public License v2
+
+require checksums [ sha1=[ ${PNV}.tar.gz=34ad5ff3feaf52fe198a7078714339860a06af30 ] ]
+
+SUMMARY="Small utility to modify the dynamic linker and RPATH of ELF executables."
+
+HOMEPAGE="https://nixos.org/patchelf.html"
+DOWNLOADS="https://nixos.org/releases/${PN}/${PNV}/${PNV}.tar.gz"
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="mk.fraggod@gmail.com"
